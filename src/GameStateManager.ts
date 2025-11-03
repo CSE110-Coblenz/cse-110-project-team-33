@@ -4,7 +4,7 @@ import { MenuController } from "./screens/MenuScreen/MenuController.ts";
 // import { SettingsController } from "./screens/SettingsScreen/SettingsController";
 import { Level1Controller } from "./screens/GameScreen/Level1Screen/Level1Controller.ts";
 // import { Level2Controller } from "./screens/GameScreen/Level2Screen/Level2Controller";
-// import { Level3Controller } from "./screens/GameScreen/Level3Screen/Level3Controller";
+import { Level3Controller } from "./screens/GameScreen/Level3Screen/Level3Controller";
 // import { Level4Controller } from "./screens/GameScreen/Level4Screen/Level4Controller";
 // import { ResultsController } from "./screens/ResultsScreen/ResultsController";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants";
@@ -27,7 +27,7 @@ class App implements ScreenSwitcher {
     // private settingsController: SettingsController;
 	private level1Controller: Level1Controller;
     // private level2Controller: Level2Controller;
-    // private level3Controller: Level3Controller;
+    private level3Controller: Level3Controller;  // MY TESTING
     // private level4Controller: Level4Controller;
     // private resultsController: ResultsController;
 
@@ -49,7 +49,7 @@ class App implements ScreenSwitcher {
 		// this.settingsController = new SettingsController(this);
         this.level1Controller = new Level1Controller(this);
         // this.level2Controller = new Level2Controller(this);
-        // this.level3Controller = new Level3Controller(this);
+        this.level3Controller = new Level3Controller(this); // MY TESTING
         // this.level4Controller = new Level4Controller(this);
         // this.resultsController = new ResultsController(this);
 
@@ -59,7 +59,7 @@ class App implements ScreenSwitcher {
         // this.layer.add(this.settingsController.getView().getGroup());
 		this.layer.add(this.level1Controller.getView().getGroup());
         // this.layer.add(this.level2Controller.getView().getGroup());
-        // this.layer.add(this.level3Controller.getView().getGroup());
+        this.layer.add(this.level3Controller.getView().getGroup()); // MY TESTING
         // this.layer.add(this.level4Controller.getView().getGroup());
         // this.layer.add(this.resultsController.getView().getGroup());
 
@@ -84,7 +84,7 @@ class App implements ScreenSwitcher {
         // this.settingsController.hide();
 		this.level1Controller.hide();
         // this.level2Controller.hide();
-        // this.level3Controller.hide();
+        this.level3Controller.hide(); // MY TESTING
         // this.level4Controller.hide();
 		// this.resultsController.hide();
 
@@ -107,7 +107,7 @@ class App implements ScreenSwitcher {
                 break;
 
             case "level3":
-                // this.level3Controller.show();
+                this.level3Controller.show();
                 break;
 
             case "level4":
