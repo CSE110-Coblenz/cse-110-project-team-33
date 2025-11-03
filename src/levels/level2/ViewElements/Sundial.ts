@@ -32,7 +32,6 @@ export class Sundial {
 
     constructor(xPos: number, yPos: number, height: number, uniqueID: string): Sundial {
         this.group = new Konva.Group({visible: false});
-        this.group.id(uniqueID);
         
         // TODO: Replace these with actual sprites
         this.baseSprite = new Konva.Rect({
@@ -54,6 +53,10 @@ export class Sundial {
 
         this.group.add(this.baseSprite);
         this.group.add(this.dialSprite);
+
+        this.group.name(uniqueID);
+        this.dialSprite.name(uniqueID);
+        this.baseSprite.name(uniqueID);
 
         this.group.x(this.xPos);
         this.group.y(this.yPos);

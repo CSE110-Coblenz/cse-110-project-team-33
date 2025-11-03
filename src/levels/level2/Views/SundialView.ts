@@ -1,6 +1,7 @@
 import Konva from "konva";
 import {STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
 
+
 export class SundialView {
 
     static get sundialWidth()   { return STAGE_WIDTH/2; }

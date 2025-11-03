@@ -2,6 +2,8 @@ import Konva from "konva";
 import { Sundial } from "../ViewElements/Sundial.ts";
 import { Door } from "../ViewElements/Door.ts";
 import {STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
+
+
 export class MainView {
     private group: Konva.Group;
 

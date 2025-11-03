@@ -23,31 +23,31 @@ export class Level2Controller {
         this.mainView   = new MainView();
         this.sundial1View = new SundialView();
 
+/*
         this.mainView.sundial1.getGroup().listening(true);
         this.mainView.sundial1.getGroup().on("click", () => {
            this.mainView.hide();
            this.sundial1View.show();
         });
+*/
 
+        this.levelView.getGroup().on("click", function(evt) {
+            const target = evt.target;
+            switch(target.name()) {
+                case "sundial1":
+                    this.mainView.hide();
+                    this.sundial1View.show();
+                    break;
+                default:
+                    alert(target.name());
+                    break;
+            }
+        });
 
         this.levelView.addToGroup(this.mainView.getGroup());
         this.levelView.addToGroup(this.sundial1View.getGroup());
         this.model.resetLevel();
-/*
-        this.levelView.getGroup().listening(true);
-        this.mainView.getGroup().listening(true);
-        this.mainView.getGroup().on("click", function(evt) {
-            target = evt.target;
-            switch(target.getName()) {
-                case "sundial1":
-                    this.mainView.hide();
-                    break;
-                default:
-                    alert("placeholder poopoo");
-                    break;
-            }
-        });
-*/
+
         this.mainView.show();
     }
 
