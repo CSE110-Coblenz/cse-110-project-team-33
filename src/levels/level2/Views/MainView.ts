@@ -7,9 +7,9 @@ import {STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
 export class MainView {
     private group: Konva.Group;
 
-    public sundial1: Sundial;
-    public sundial2: Sundial;
-    public sundial3: Sundial;
+    private sundial1: Sundial;
+    private sundial2: Sundial;
+    private sundial3: Sundial;
     private door: Door;
     private bg: Konva.Rect;
 
@@ -45,6 +45,14 @@ export class MainView {
 
     hide(): void {
         this.group.visible(false);
+    }
+
+    getSundial(idx: number) {
+        switch(idx) {
+            case 1:     return this.sundial1.getGroup();
+            case 2:     return this.sundial2.getGroup();
+            case 3:     return this.sundial3.getGroup();
+        }
     }
 
     getGroup(): Konva.Group {

@@ -1,27 +1,25 @@
+import { MainView } from "./Views/MainView.ts"
+import { SundialView } from "./Views/SundialView.ts"
+import { InventoryView } from "./Views/InventoryView.ts"
 
 /* Level 2 demo model */
 export class Level2Model {
-    
-    private sundial1Height : number = 1;
-    private sundial2Height : number = 1;
-    private sundial3Height : number = 1;
-    private sundial1TargetHeight : number = 0;
-    private sundial2TargetHeight : number = 0;
-    private sundial3TargetHeight : number = 0;
+
+    public sundial1State: SundialModel;
+    public sundial2State: SundialModel;
+    public sundial3State: SundialModel;
     private doorLocked: boolean = true;
+
+    private currentLevelView: null | MainView | SundialView | InventoryView;
 
     resetLevel(): void {
 
+        this.sundial1State = new SundialModel(0,1);
+        this.sundial2State = new SundialModel(0,1);
+        this.sundial3State = new SundialModel(0,1);
+        
         this.doorLocked = true;
-    
-        this.sundial1Height = 1;
-        this.sundial2Height = 1;
-        this.sundial3Height = 1;
-
-        // TODO: Decide how to implement target height generation
-        this.sundial1TargetHeight = 0;
-        this.sundial2TargetHeight = 0;
-        this.sundial3TargetHeight = 0;
+        this.currentLevelView = null;
 
     }
 
@@ -29,56 +27,30 @@ export class Level2Model {
         return this.doorLocked;
     }
 
-    getSundial1Height(): number {
-        return this.sundial1Height;
-    }
-    getSundial2Height(): number {
-        return this.sundial1Height;
-    }
-    getSundial3Height(): number {
-        return this.sundial1Height;
+}
+
+class SundialModel {
+    private currentHeight: number;
+    private targetHeight: number;
+
+    constructor(currentHeight: number, targetHeight: number): void {
+        this.currentHeight = currentHeight;
+        this.targetHeight = targetHeight;
     }
 
-
-    // Blah blah blah copy-paste code is bad but it still does its job
-
-    getSundial1TargetHeight(): number {
-        return this.sundial1TargetHeight;
+    getCurrentHeight(): number {
+        return this.currentHeight;
     }
-    
-    setSundial1TargetHeight(height: number) : void {
-        // TODO: Throw an assert or some other error handling thing here
-        // to better sanitize this input.
-        if(height >= 0)
-        {
-            this.sundial1TargetHeight = height;
+
+    setCurrentHeight(height: number): void {
+        // We clamp between -1 and 1
+        this.currentHeight = Math.min(Math.max(-1, height), 1);
+    }
+
+    onTarget(): boolean {
+        if(this.currentHeight == this.targetHeight) {
+            return true;
         }
+        return false;
     }
-
-    getSundial2TargetHeight(): number {
-        return this.sundial2TargetHeight;
-    }
-    
-    setSundial2TargetHeight(height: number) : void {
-        // TODO: Throw an assert or some other error handling thing here
-        // to better sanitize this input.
-        if(height >= 0)
-        {
-            this.sundial2TargetHeight = height;
-        }
-    }
-
-        getSundial3TargetHeight(): number {
-        return this.sundial3TargetHeight;
-    }
-    
-    setSundial3TargetHeight(height: number) : void {
-        // TODO: Throw an assert or some other error handling thing here
-        // to better sanitize this input.
-        if(height >= 0)
-        {
-            this.sundial3TargetHeight = height;
-        }
-    }
-
 }

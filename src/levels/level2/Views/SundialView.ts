@@ -13,11 +13,18 @@ export class SundialView {
     private baseSprite: Konva.Rect;
     private dialSprite: Konva.Ellipse;
 
+    private returnViewArrow: Konva.Arrow;
+
+    private sundialPlateHeight: number;
+    static get heightScale() { return 64; }
+
     // Turns out, the indicatory part of the sundial is called a 'Gnomon!'
     private gnomonSprite: Konva.Shape;
 
     constructor(): MainView {
         this.group = new Konva.Group();
+
+        this.sundialPlateHeight = 0;
 
         // Create main area view
         this.bg = new Konva.Rect({
@@ -45,6 +52,16 @@ export class SundialView {
             
         });
 
+        this.returnViewArrow = new Konva.Arrow({
+            x: STAGE_WIDTH*0.05, y: STAGE_HEIGHT*0.95,
+            points: [32,0 , 0,0],
+            pointerLength: 8,
+            pointerWidth: 8,
+            fill: "black",
+            stroke: "black",
+            strokeWidth: 16
+        });
+
         this.gnomonSprite = new Konva.Shape({
             sceneFunc: function (context, shape) {
                 context.beginPath();
@@ -64,6 +81,7 @@ export class SundialView {
         this.group.add(this.baseSprite);
         this.group.add(this.dialSprite);
         this.group.add(this.gnomonSprite);
+        this.group.add(this.returnViewArrow);
 
         this.hide();
     }
@@ -78,6 +96,11 @@ export class SundialView {
 
     getGroup(): Konva.Group {
         return this.group;
+    }
+
+    // So we can hook our return callbacks into it in the controller
+    getReturnArrow() : Konva.Arrow {
+        return this.returnViewArrow;
     }
 
 }
