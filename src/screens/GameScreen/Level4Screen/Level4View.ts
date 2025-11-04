@@ -58,6 +58,7 @@ export class Level4View {
             y: this.centerY,
             radius: this.radius,
             stroke: "black",
+            fill: "#ede8d0",
             strokeWidth: 2,
         });
 
@@ -73,6 +74,26 @@ export class Level4View {
 
         this.group.add(circle, xAxis, yAxis);
         this.layer.draw();
+    }
+
+
+    createDraggableLabel(text: string, x: number, y: number): Konva.Text {
+        const label = new Konva.Text({
+            x,
+            y,
+            text,
+            fontSize: 20,
+            fill: "black",
+            draggable: true,
+        });
+        this.group.add(label);
+        return label;
+    }
+
+    updateLabelColor(labelNode: Konva.Text, placed: boolean) {
+        labelNode.fill(placed ? "green" : "black");
+        labelNode.draggable(placed ? false : true);
+        this.layer.batchDraw();
     }
 
 }
