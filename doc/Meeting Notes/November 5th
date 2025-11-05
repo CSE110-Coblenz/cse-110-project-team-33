@@ -3,20 +3,20 @@ Wednesday, November 5th at 11 AM
 
 What did I do?
 Cailey: Completed level 1 UI and trig logic. Pull request for level 1.
-Connor: 
-Janeen: 
+Connor: Level 2 UI and game logic.
+Janeen: I was not able to attend due to health reasons, but I submitted a pull request for the work I did for sprint 1.
 Sonia: Created a branch for main menu. Pull request for level 4.
 
 What will I do?
 Cailey: Create local data structure for player data and inventory.
-Connor: Work on settings UI.
-Janeen: Work on design/pixel art for main menu and levels.
+Connor: Work on settings UI and pull request for level 2.
+Janeen: I will work on pixel art designs for the menu, settings and anything left for the levels. I will implement a load UI and the logic to list all of the saved games and to load that saved game. Finally, I will code review one of my team member's merge request.
 Sonia: Work on main menu UI.
 
 Am I stuck?
 Cailey: No.
 Connor: No.
-Janeen: No.
+Janeen: I am sort of stuck on implementing the logic to load previously saved runs of the game, but I will as my team members for ideas if I get completely stuck during development.
 Sonia: No.
 
 Other Notes:
