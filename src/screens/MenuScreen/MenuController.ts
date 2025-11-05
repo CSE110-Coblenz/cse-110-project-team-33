@@ -13,13 +13,13 @@ export class MenuController extends ScreenController {
 		super();
 		this.screenSwitcher = screenSwitcher;
 
-		this.view = new MenuView(() => this.handleClick());
+		this.view = new MenuView(() => this.handleStartClick());
 	}
 
 	/**
 	 * Handle start button click
 	 */
-	private handleClick(): void {
+	private handleStartClick(): void {
 		this.screenSwitcher.switchToScreen({ type: "level1" }); // CHANGE THIS TO YOUR LEVEL
 	}
 

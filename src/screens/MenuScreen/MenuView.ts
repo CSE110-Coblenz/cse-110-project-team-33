@@ -13,27 +13,16 @@ export class MenuView implements View {
 		this.group = new Konva.Group({ visible: true });
 
 		const startButtonGroup = new Konva.Group();
-		const startButton = new Konva.Rect({
-			x: STAGE_WIDTH / 2 - 100,
-			y: 250,
-			width: 200,
-			height: 60,
-			cornerRadius: 10,
-			stroke: "black",
-			strokeWidth: 3,
-		});
-		const startText = new Konva.Text({
-			x: STAGE_WIDTH / 2,
-			y: 270,
-			text: "START LEVEL",
-			fontSize: 24,
-			fontFamily: "Arial",
-			fill: "black",
-			align: "center",
-		});
-		startText.offsetX(startText.width() / 2);
-		startButtonGroup.add(startButton);
-		startButtonGroup.add(startText);
+
+
+		Konva.Image.fromURL("/res/start.png", (image) => {
+			//image.on("click", onClick);
+			image.x(STAGE_WIDTH / 2 - image.width() / 2);
+			image.y(250);	
+			startButtonGroup.add(image);
+			startButtonGroup.getLayer()?.draw();	
+		  });
+		
 		startButtonGroup.on("click", onClick);
 		this.group.add(startButtonGroup);
 	}
