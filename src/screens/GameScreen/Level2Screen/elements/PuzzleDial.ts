@@ -15,12 +15,15 @@ export class PuzzleDial implements Element {
 
     private group: Konva.Group;
     private sundialSprite: Konva.Image;
-    private shadow: Konva.Shape;
+    private gnomonSprite: Konva.Image;
+    private gnomonShadow: Konva.Image;
     private xPos : number;
     private yPos : number;
     private id: string;
 
     getURL()            { return "/img/level2/sundial_large.png"; }
+    getGnomonURL()            { return "/img/level2/gnomon.png"; }
+    getShadowURL()            { return "/img/level2/gnomon_shadow.png"; }
     getID()             { return this.id; }
     getDefaultWidth()   { return 512; }
     getDefaultHeight()  { return 512*2; }
@@ -46,29 +49,52 @@ export class PuzzleDial implements Element {
         });
 
         /* Gross calculation to determine shadow width based on pixel ratios */
-        const shadowWidth = this.getDefaultWidth() * (80/128);
-        this.shadow = new Konva.Shape({
-            sceneFunc: (context, shape) => {
-                context.beginPath();
-                context.moveTo(0,0);
-                context.lineTo(0,64);
-                context.lineTo(shadowWidth, 0);
-                context.lineTo(0,0);
-                context.closePath();
-                context.fillStrokeShape(shape);
-            },
+        const gnomonWidth = this.getDefaultWidth() * (80/128);
+        const gnomonHeight = this.getDefaultHeight() * (30/256);
+        let shadowHeight = 64;
+        this.gnomonSprite = new Konva.Image();
+        this.gnomonShadow = new Konva.Image();
+        Konva.Image.fromURL(this.getShadowURL(), (img) => {
+            this.gnomonShadow.image(img.image());
+            this.gnomonShadow.x(0);
+            this.gnomonShadow.y(0);
+            this.gnomonShadow.id(this.id + "_shadow");
+            this.gnomonShadow.width(gnomonWidth);
+            this.gnomonShadow.height(shadowHeight);
+            this.gnomonShadow.offsetX(gnomonWidth/2);
+            this.gnomonShadow.offsetY(this.getDefaultHeight() * (-30/256));
+            this.gnomonShadow.opacity(0.5);
+        });
+        Konva.Image.fromURL(this.getGnomonURL(), (img) => {
+            this.gnomonSprite.image(img.image());
+            this.gnomonSprite.x(0);
+            this.gnomonSprite.y(0);
+            this.gnomonSprite.id(this.id + "_gnomon");
+            this.gnomonSprite.width(gnomonWidth);
+            this.gnomonSprite.height(gnomonHeight);
+            this.gnomonSprite.offsetX(gnomonWidth/2);
+            //this.gnomonSprite.offsetY(this.getDefaultHeight() * (-29/256));
+        });
+
+        this.group.listening(true);
+        this.gnomonShadow.on("click", () => {
+            shadowHeight += 4;
+            this.gnomonShadow.height(shadowHeight);
+        });
+/*        this.shadow = new Konva.Image({
+            
             x: 0,
             y: 0,
             offsetX: shadowWidth/2,
             offsetY: -this.getDefaultHeight() * (29/256),
             fill: "red",
         });
-        this.shadow.cache();
-        this.shadow.filters([Konva.Filters.Invert]);
-        this.shadow.pixelSize(10);
+*/
+
 
         this.group.add(this.sundialSprite);
-        this.group.add(this.shadow);
+        this.group.add(this.gnomonShadow);
+        this.group.add(this.gnomonSprite);
     }
 
 }
