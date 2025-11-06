@@ -28,7 +28,11 @@ export class Level2Controller extends ScreenController {
         this.sundial1View = new SundialView();
         this.levelView.getGroup().add(this.roomView.getGroup());
         this.levelView.getGroup().add(this.sundial1View.getGroup());
-        this.roomView.hide();
+
+        this.levelView.getGroup().listening(true);
+        this.levelView.getGroup().on("click", (evt) => this.commonElementEventHandler(evt));
+        
+        // this.roomView.show();
         this.sundial1View.show();
     }
 
@@ -38,8 +42,19 @@ export class Level2Controller extends ScreenController {
 
     /* This is the *one* event handler that is passed to all elements, it can
      * differentiate elements based on their element IDs that are assigned in
-     * the constructor. */
-    generalElementEventHandler(evt): void {
+     * the constructor. NOTE: This doesnt handle return arrows, that logic
+     * is predefined in the ReturnArrow element and (sort of) implemented in
+     * each subview, sue me if you don't like it. */
+    commonElementEventHandler(evt): void {
+        const target = evt.target;
+
+        //alert("[DEBUG] commonElementEventHandler :: " + target.id());
         
+        /* Conditional based on object ID */
+        switch(target.id()) {
+            case "sundial1":
+                this.sundial1View.pushToScreen(this.roomView);
+                break;
+        }
     }
 }

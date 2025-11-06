@@ -11,34 +11,64 @@
 import Konva from "konva";
 import type { Element } from "./Element.ts";
 
-export class Sundial implements Element {
+export class PuzzleDial implements Element {
 
+    private group: Konva.Group;
     private sundialSprite: Konva.Image;
+    private shadow: Konva.Shape;
     private xPos : number;
     private yPos : number;
     private id: string;
 
-    getURL()            { return "/img/level2/sundial_small2.png"; }
+    getURL()            { return "/img/level2/sundial_large.png"; }
     getID()             { return this.id; }
-    getDefaultWidth()   { return 96; }
-    getDefaultHeight()  { return 96*2; }
-    getElement()        { return this.sundialSprite; }
+    getDefaultWidth()   { return 512; }
+    getDefaultHeight()  { return 512*2; }
+    getElement()        { return this.group; }
     
     constructor (x : number, y : number, id: string) {
         this.xPos = x;
         this.yPos = y;
         this.id = id;
+        this.group = new Konva.Group({
+            x: this.xPos,
+            y: this.yPos
+        });
         this.sundialSprite = new Konva.Image();
         Konva.Image.fromURL(this.getURL(), (img) => {
             this.sundialSprite.image(img.image());
             this.sundialSprite.id(id);
-            this.sundialSprite.x(this.xPos);
-            this.sundialSprite.y(this.yPos);
+            this.sundialSprite.x(0);
+            this.sundialSprite.y(0);
             this.sundialSprite.width(this.getDefaultWidth());
             this.sundialSprite.height(this.getDefaultHeight());
             this.sundialSprite.offsetX(this.getDefaultWidth()/2);
-            this.sundialSprite.offsetY(this.getDefaultHeight()/2);
         });
+
+        /* Gross calculation to determine shadow width based on pixel ratios */
+        const shadowWidth = this.getDefaultWidth() * (80/128);
+        this.shadow = new Konva.Shape({
+            sceneFunc: (context, shape) => {
+                context.beginPath();
+                context.moveTo(0,0);
+                context.lineTo(0,64);
+                context.lineTo(shadowWidth, 0);
+                context.lineTo(0,0);
+                context.closePath();
+                context.fillStrokeShape(shape);
+            },
+            x: 0,
+            y: 0,
+            offsetX: shadowWidth/2,
+            offsetY: -this.getDefaultHeight() * (29/256),
+            fill: "red",
+        });
+        this.shadow.cache();
+        this.shadow.filters([Konva.Filters.Invert]);
+        this.shadow.pixelSize(10);
+
+        this.group.add(this.sundialSprite);
+        this.group.add(this.shadow);
     }
 
 }
