@@ -10,9 +10,20 @@ export class MenuView implements View {
 	private group: Konva.Group;
 
 	constructor(onClick: () => void) {
+		
 		this.group = new Konva.Group({ visible: true });
 
+
 		const startButtonGroup = new Konva.Group();
+
+		const bg = new Konva.Rect({
+			x: 0,
+			y: 0,
+			width: STAGE_WIDTH,
+			height: STAGE_HEIGHT,
+			fill: "#E6CEB1", 
+		});
+		this.group.add(bg);
 
 
 		Konva.Image.fromURL("/res/start.png", (image) => {
