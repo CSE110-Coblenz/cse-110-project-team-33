@@ -6,17 +6,10 @@ export interface View {
 	hide(): void;
 }
 
-/**
- * Screen types for navigation
- *
- * - "menu": Main menu screen
- * - "game": Gameplay screen
- * - "result": Results screen with final score
- *   - score: Final score to display on results screen
- */
 export type Screen =
 	| { type: "menu" }
 	| { type: "settings"}
+	| { type: "inventory"}
 	| { type: "level1" }
     | { type: "level2" }
     | { type: "level3" }
@@ -38,3 +31,13 @@ export abstract class ScreenController {
 export interface ScreenSwitcher {
 	switchToScreen(screen: Screen): void;
 }
+
+export interface PlayerData {
+	id: string;
+	name: string;
+	level: number;
+	coins: number;
+	inventory: string[];
+}
+
+export type PlayersData = PlayerData[];
