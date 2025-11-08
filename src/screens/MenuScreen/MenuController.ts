@@ -20,7 +20,7 @@ export class MenuController extends ScreenController {
 	 * Handle start button click
 	 */
 	private handleClick(): void {
-		this.screenSwitcher.switchToScreen({ type: "level1" }); // CHANGE THIS TO YOUR LEVEL
+		this.screenSwitcher.switchToScreen({ type: "inventory" }); // CHANGE THIS TO YOUR LEVEL
 	}
 
 	/**

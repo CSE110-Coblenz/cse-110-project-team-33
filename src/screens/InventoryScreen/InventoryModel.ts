@@ -6,22 +6,22 @@ export class InventoryModel {
     private playerManager: PlayerManager;
     
     private playerId: string | null;
-    private inventory: string[] | null;
+    private inventory: string[];
 
     constructor() {
         this.localStorageManager = new LocalStorageManager();
         this.playerManager = new PlayerManager();
         
         this.playerId = this.playerManager.getCurrentPlayerId();
-        
+
         if (this.playerId !== null) {
             this.inventory = this.localStorageManager.loadPlayerInventory(this.playerId);
         } else {
-            this.inventory = null; 
+            this.inventory = [];
         }
     }
-    
-    public getInventory(): string[] | null {
+
+    public getInventory(): string[] {
         return this.inventory;
     }
 }

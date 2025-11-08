@@ -15,6 +15,8 @@ export class InventoryController extends ScreenController {
     
         this.model = new InventoryModel();
         this.view = new InventoryView();
+
+        this.view.updateInventory(this.model.getInventory());
     }
     
     getView(): InventoryView {
