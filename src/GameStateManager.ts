@@ -9,6 +9,7 @@ import { Level1Controller } from "./screens/GameScreen/Level1Screen/Level1Contro
 // import { ResultsController } from "./screens/ResultsScreen/ResultsController";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants";
 
+import { PauseOverlay } from "./PauseOverlay.ts";
 /**
  * Main Application - Coordinates all screens
  *
@@ -31,6 +32,8 @@ class App implements ScreenSwitcher {
     // private level4Controller: Level4Controller;
     // private resultsController: ResultsController;
 
+    private gamePauseOverlay: PauseOverlay;
+
 	constructor(container: string) {
 		// Initialize Konva stage (the main canvas)
 		this.stage = new Konva.Stage({
@@ -39,9 +42,12 @@ class App implements ScreenSwitcher {
 			height: STAGE_HEIGHT,
 		});
 
+
 		// Create a layer (screens will be added to this layer)
 		this.layer = new Konva.Layer();
 		this.stage.add(this.layer);
+		this.gamePauseOverlay = new PauseOverlay();
+
 
 		// Initialize all screen controllers
 		// Each controller manages a Model, View, and handles user interactions
@@ -63,6 +69,8 @@ class App implements ScreenSwitcher {
         // this.layer.add(this.level4Controller.getView().getGroup());
         // this.layer.add(this.resultsController.getView().getGroup());
 
+        // Add the UI overlay last
+        this.layer.add(this.gamePauseOverlay.getGroup());
 		// Draw the layer (render everything to the canvas)
 		this.layer.draw();
         
