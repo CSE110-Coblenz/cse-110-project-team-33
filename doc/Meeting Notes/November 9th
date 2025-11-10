@@ -1,0 +1,20 @@
+Sprint 2 Meeting
+Sunday, November 9th at 7 PM
+
+What did I do?
+Cailey: Completed local storage set up for player data and inventory.
+Connor: Pushed all changes, including level 2, and created a pull request. Created a new branch that implements pause button for settings.
+Janeen: Worked on designs for levels, buttons, main menu, coins, and inventory items!
+Sonia: Finished UI for main menu. Created a page for exit game which loops back to main menu if the user say no and does window.close() if the user says yes.
+
+What will I do?
+Cailey: Working on code reviews and exit game in main menu.
+Connor: Working on start game in main menu. 
+Janeen: Working on load game in main menu.
+Sonia: Working on mini games.
+
+Am I stuck?
+Cailey: No.
+Connor: Konva doesn't have a lot of support for text input.
+Janeen: Stuck on resolving merge conflicts. Other developers will help.
+Sonia: Window.close() doesn't work. We have to figure out how to exit the game. Needs to add title page.
