@@ -1,3 +1,20 @@
-Sprint 2
+Sprint 2 Meeting
 November 10th at 1 PM
 
+What did I do?
+Cailey: Player data (local storage) and inventory MVC. Explained to other teammates.
+Connor: Pause button on different levels. Explained to other teammates.
+Janeen: 
+Sonia: Main menu UI. Start and load game go to different screens. Pull request for main menu UI. Explained to other teammates.
+
+What will I do?
+Cailey: Code review for level 3. Next sprint I will have to implement more of inventory MVC after items are added to it.
+Connor: 
+Janeen:
+Sonia: Mini games. Code review for player data (local storage) and inventory MVC.
+
+Am I stuck?
+Cailey: No.
+Connor: No.
+Janeen: Some images aren't rendering.
+Sonia: No.
