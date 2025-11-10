@@ -32,13 +32,15 @@ export class MenuController extends ScreenController {
 	 */
 	private handleLoadClick(): void {
 		this.screenSwitcher.switchToScreen({ type: "level1" }); 
+		//how are we handling the loading for games?
+		// I can make a page for this 
 	}
 
 	/**
 	 * Handle start button click
 	 */
 	private handleExitClick(): void {
-		this.screenSwitcher.switchToScreen({ type: "level1" });
+		this.screenSwitcher.switchToScreen({ type: "exit" });
 	}
 
 	/**
