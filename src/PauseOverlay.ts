@@ -52,22 +52,36 @@ export class PauseOverlay {
             visible: false
         });
         
-        this.pauseButtonSprite.on("click", () => {
-            if(this.state) {
-                this.pauseButtonSprite.cropX(0);
-                this.pausedOverlay.visible(false);
-                this.state = false;
-            } else {
-                this.pauseButtonSprite.cropX(16);
-                this.pausedOverlay.visible(true);
-                this.state = true;
-            }
-        });
+        this.pauseButtonSprite.on("click", () => this.togglePauseButton());
         this.group.add(this.pausedOverlay);
         this.group.add(this.pauseButtonSprite);
         this.group.visible(true);
     }
 
+    togglePauseButton() {
+        if(this.state) {
+            this.pauseButtonSprite.cropX(0);
+            this.pausedOverlay.visible(false);
+            this.state = false;
+        } else {
+            this.pauseButtonSprite.cropX(16);
+            this.pausedOverlay.visible(true);
+            this.state = true;
+        }
+    }
+
+    registerKeyEventListener(container): void {
+        container.tabIndex = 1;
+        container.focus();
+
+        container.addEventListener("keydown", (e) => {
+            if(e.key == "Escape")
+            {
+                this.togglePauseButton();
+            }
+        });
+    }
+    
     getGroup(): Konva.Group {
         return this.group;
     }

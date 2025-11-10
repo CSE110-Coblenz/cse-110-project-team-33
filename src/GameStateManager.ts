@@ -37,7 +37,7 @@ class App implements ScreenSwitcher {
 	constructor(container: string) {
 		// Initialize Konva stage (the main canvas)
 		this.stage = new Konva.Stage({
-			container,
+			container: container,
 			width: STAGE_WIDTH,
 			height: STAGE_HEIGHT,
 		});
@@ -71,6 +71,7 @@ class App implements ScreenSwitcher {
 
         // Add the UI overlay last
         this.layer.add(this.gamePauseOverlay.getGroup());
+        this.gamePauseOverlay.registerKeyEventListener(this.stage.container());
 		// Draw the layer (render everything to the canvas)
 		this.layer.draw();
         
