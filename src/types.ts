@@ -22,7 +22,8 @@ export type Screen =
     | { type: "level3" }
     | { type: "level4" }
 	| { type: "result"}
-	| { type: "exit"};
+	| { type: "exit"}
+	| { type: "load"};
 
 export abstract class ScreenController {
 	abstract getView(): View;

@@ -9,6 +9,7 @@ import { Level1Controller } from "./screens/GameScreen/Level1Screen/Level1Contro
 // import { ResultsController } from "./screens/ResultsScreen/ResultsController";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants";
 import { ExitController } from "./screens/MenuScreen/ExitScreen/ExitController.ts";
+import { LoadController } from "./screens/MenuScreen/LoadScreen/LoadController.ts";
 
 /**
  * Main Application - Coordinates all screens
@@ -32,6 +33,7 @@ class App implements ScreenSwitcher {
     // private level4Controller: Level4Controller;
     // private resultsController: ResultsController;
 	private exitController: ExitController;
+	private loadController: LoadController;
 
 	constructor(container: string) {
 		// Initialize Konva stage (the main canvas)
@@ -55,6 +57,7 @@ class App implements ScreenSwitcher {
         // this.level4Controller = new Level4Controller(this);
         // this.resultsController = new ResultsController(this);
 		this.exitController = new ExitController(this);
+		this.loadController = new LoadController(this);
 
 		// Add all screen groups to the layer
 		// All screens exist simultaneously but only one is visible at a time
@@ -66,6 +69,7 @@ class App implements ScreenSwitcher {
         // this.layer.add(this.level4Controller.getView().getGroup());
         // this.layer.add(this.resultsController.getView().getGroup());
 		this.layer.add(this.exitController.getView().getGroup());
+		this.layer.add(this.loadController.getView().getGroup());
 
 		// Draw the layer (render everything to the canvas)
 		this.layer.draw();
@@ -92,6 +96,7 @@ class App implements ScreenSwitcher {
         // this.level4Controller.hide();
 		// this.resultsController.hide();
 		this.exitController.hide();
+		this.loadController.hide();
 
 		// Show the requested screen based on the screen type
 		switch (screen.type) {
@@ -124,6 +129,9 @@ class App implements ScreenSwitcher {
 				break;
 			case "exit":
 				this.exitController.show();
+				break;
+			case "load":
+				this.loadController.show();
 				break;
 		}
 	}
