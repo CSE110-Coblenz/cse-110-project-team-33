@@ -9,12 +9,11 @@ import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants.ts";
 export class MenuView implements View {
 	private group: Konva.Group;
 
-	constructor(onClick: () => void) {
+	constructor(onStartClick: () => void, 
+				onLoadClick: () => void,
+    			onExitClick: () => void) {
 		
 		this.group = new Konva.Group({ visible: true });
-
-
-		const startButtonGroup = new Konva.Group();
 
 		const bg = new Konva.Rect({
 			x: 0,
@@ -27,27 +26,26 @@ export class MenuView implements View {
 
 
 		Konva.Image.fromURL("/res/start.png", (image) => {
-			//image.on("click", onClick);
 			image.x(STAGE_WIDTH / 2 - image.width() / 2);
 			image.y(75);	
-			startButtonGroup.add(image);
-			//startButtonGroup.getLayer()?.draw();	
+			image.on("click", onStartClick);
+			this.group.add(image);
 		});
 
 		Konva.Image.fromURL("/res/load.png", (image) => {
 			image.x(STAGE_WIDTH / 2 - image.width() / 2);
 			image.y(STAGE_HEIGHT/2 - image.height()/2);
+			image.on("click", onLoadClick);
 			this.group.add(image);	
 		});
 
 		Konva.Image.fromURL("/res/exit.png", (image) => {
 			image.x(STAGE_WIDTH / 2 - image.width() / 2);
 			image.y(STAGE_HEIGHT - 75 - image.height());
+			image.on("click", onExitClick);
 			this.group.add(image);	
 		});
 		
-		startButtonGroup.on("click", onClick);
-		this.group.add(startButtonGroup);
 		this.group.getLayer()?.draw();
 	}
 
