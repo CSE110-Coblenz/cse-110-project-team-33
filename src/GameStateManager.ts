@@ -1,9 +1,10 @@
 import Konva from "konva";
 import type { ScreenSwitcher, Screen } from "./types.ts";
-import { MenuController } from "./screens/MenuScreen/MenuController.ts";
+import { MenuController } from "./screens/MenuScreen/MenuController";
+import { IntroScreenController } from "./screens/GameScreen/IntroScreen/IntroScreenController";
 // import { SettingsController } from "./screens/SettingsScreen/SettingsController";
-//import { Level1Controller } from "./screens/GameScreen/Level1Screen/Level1Controller.ts";
-import { Level2Controller } from "./screens/GameScreen/Level2Screen/Level2Controller.ts";
+import { Level1Controller } from "./screens/GameScreen/Level1Screen/Level1Controller.ts";
+import { Level2Controller } from "./screens/GameScreen/Level2Screen/Level2Controller";
 // import { Level3Controller } from "./screens/GameScreen/Level3Screen/Level3Controller";
 // import { Level4Controller } from "./screens/GameScreen/Level4Screen/Level4Controller";
 // import { ResultsController } from "./screens/ResultsScreen/ResultsController";
@@ -26,8 +27,9 @@ class App implements ScreenSwitcher {
 	private layer: Konva.Layer;
 
     private menuController: MenuController;
+    private introController: IntroScreenController;
     // private settingsController: SettingsController;
-	// private level1Controller: Level1Controller;
+	private level1Controller: Level1Controller;
     private level2Controller: Level2Controller;
     // private level3Controller: Level3Controller;
     // private level4Controller: Level4Controller;
@@ -59,8 +61,9 @@ class App implements ScreenSwitcher {
 		// Each controller manages a Model, View, and handles user interactions
         this.menuController = new MenuController(this);
 		// this.settingsController = new SettingsController(this);
-        // this.level1Controller = new Level1Controller(this);
+        this.level1Controller = new Level1Controller(this);
         this.level2Controller = new Level2Controller(this);
+        this.introController = new IntroScreenController(this);
         // this.level3Controller = new Level3Controller(this);
         // this.level4Controller = new Level4Controller(this);
         // this.resultsController = new ResultsController(this);
@@ -71,7 +74,8 @@ class App implements ScreenSwitcher {
 		// All screens exist simultaneously but only one is visible at a time
         this.layer.add(this.menuController.getView().getGroup());
         // this.layer.add(this.settingsController.getView().getGroup());
-		// this.layer.add(this.level1Controller.getView().getGroup());
+        this.layer.add(this.introController.getView().getGroup());
+		this.layer.add(this.level1Controller.getView().getGroup());
         this.layer.add(this.level2Controller.getView().getGroup());
         // this.layer.add(this.level3Controller.getView().getGroup());
         // this.layer.add(this.level4Controller.getView().getGroup());
@@ -81,9 +85,8 @@ class App implements ScreenSwitcher {
 
 		// Draw the layer (render everything to the canvas)
 		this.layer.draw();
-		// this.menuController.getView().show();
-		this.level2Controller.getView().show();
 
+		this.switchToScreen({type: "menu"});
 	}
 
 	/**
@@ -97,28 +100,30 @@ class App implements ScreenSwitcher {
 	 */
 	switchToScreen(screen: Screen): void {
 		// Hide all screens first by setting their Groups to invisible
-		this.menuController.hide();
+		// this.menuController.hide();
+		this.introController.hide();
         // this.settingsController.hide();
-		// this.level1Controller.hide();
+		this.level1Controller.hide();
         this.level2Controller.hide();
         // this.level3Controller.hide();
         // this.level4Controller.hide();
 		// this.resultsController.hide();
 		this.exitController.hide();
 		this.loadController.hide();
-
 		// Show the requested screen based on the screen type
 		switch (screen.type) {
 			case "menu":
 				this.menuController.show();
 				break;
-            
             case "settings":
 				// this.settingsController.show();
 				break;
-
+			case "intro":
+			    this.introController.show();
+			    break;
+			    
 			case "level1":
-				// this.level1Controller.show();
+				this.level1Controller.show();
 				break;
 
             case "level2":
@@ -143,6 +148,7 @@ class App implements ScreenSwitcher {
 				this.loadController.show();
 				break;
 		}
+		this.layer.draw();
 	}
 }
 
