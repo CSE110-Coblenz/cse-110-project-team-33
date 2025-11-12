@@ -1,6 +1,6 @@
 import Konva from "konva";
 import type { View } from "../../types.ts";
-import { STAGE_WIDTH } from "../../constants.ts";
+import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants.ts";
 
 
 /**
@@ -9,33 +9,44 @@ import { STAGE_WIDTH } from "../../constants.ts";
 export class MenuView implements View {
 	private group: Konva.Group;
 
-	constructor(onClick: () => void) {
+	constructor(onStartClick: () => void, 
+				onLoadClick: () => void,
+    			onExitClick: () => void) {
+		
 		this.group = new Konva.Group({ visible: true });
 
-		const startButtonGroup = new Konva.Group();
-		const startButton = new Konva.Rect({
-			x: STAGE_WIDTH / 2 - 100,
-			y: 250,
-			width: 200,
-			height: 60,
-			cornerRadius: 10,
-			stroke: "black",
-			strokeWidth: 3,
+		const bg = new Konva.Rect({
+			x: 0,
+			y: 0,
+			width: STAGE_WIDTH,
+			height: STAGE_HEIGHT,
+			fill: "#E6CEB1", 
 		});
-		const startText = new Konva.Text({
-			x: STAGE_WIDTH / 2,
-			y: 270,
-			text: "START LEVEL",
-			fontSize: 24,
-			fontFamily: "Arial",
-			fill: "black",
-			align: "center",
+		this.group.add(bg);
+
+
+		Konva.Image.fromURL("/res/start.png", (image) => {
+			image.x(STAGE_WIDTH / 2 - image.width() / 2);
+			image.y(75);	
+			image.on("click", onStartClick);
+			this.group.add(image);
 		});
-		startText.offsetX(startText.width() / 2);
-		startButtonGroup.add(startButton);
-		startButtonGroup.add(startText);
-		startButtonGroup.on("click", onClick);
-		this.group.add(startButtonGroup);
+
+		Konva.Image.fromURL("/res/load.png", (image) => {
+			image.x(STAGE_WIDTH / 2 - image.width() / 2);
+			image.y(STAGE_HEIGHT/2 - image.height()/2);
+			image.on("click", onLoadClick);
+			this.group.add(image);	
+		});
+
+		Konva.Image.fromURL("/res/exit.png", (image) => {
+			image.x(STAGE_WIDTH / 2 - image.width() / 2);
+			image.y(STAGE_HEIGHT - 75 - image.height());
+			image.on("click", onExitClick);
+			this.group.add(image);	
+		});
+		
+		this.group.getLayer()?.draw();
 	}
 
 	/**
