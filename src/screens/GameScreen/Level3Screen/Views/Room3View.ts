@@ -27,7 +27,6 @@ export class Room3View implements SubView {
         Konva.Image.fromURL("/res/Level3Default.png", (image) => {
             image.width(STAGE_WIDTH);
             image.height(STAGE_HEIGHT);
-
             
             //this.bg = image;
             //this.group.add(this.bg);
@@ -76,8 +75,7 @@ export class Room3View implements SubView {
     getGroup(): Konva.Group {
         return this.group;
     }
-
-    /*
+/*
     pushToScreen(parView: SubView): void {
         this.parentView = parView;
         this.parentView.hide();
@@ -88,5 +86,5 @@ export class Room3View implements SubView {
         this.hide();
         this.parentView.show();
     }
-    */
+*/
 }
