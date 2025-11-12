@@ -74,11 +74,9 @@ export class IntroScreenController extends ScreenController {
             this.currentTextPage = 5;
         } else if(this.currentTextPage == 5) {
             /* Final behavior of button, switch screen */
-            // TODO: Implement
             this.screenSwitcher.switchToScreen({type: "level1"});
         }
     }
-
 
     getView(): IntroScreenView {
         return this.view;
