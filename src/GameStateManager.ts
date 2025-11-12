@@ -9,7 +9,7 @@ import { InventoryController } from "./screens/InventoryScreen/InventoryControll
 // import { Level4Controller } from "./screens/GameScreen/Level4Screen/Level4Controller";
 // import { ResultsController } from "./screens/ResultsScreen/ResultsController";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants";
-import { LocalStorageUtils } from "./localStorageUtils.ts";
+import { LocalStorageUtils } from "./LocalStorageUtils.ts";
 
 class App implements ScreenSwitcher {
 	private stage: Konva.Stage;
