@@ -10,26 +10,90 @@ import type { View } from "../../../types";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants";
 
 
+/* Class to organize text pages (blocks of text on the screen), since this
+ * code is reused several times to display to intro text. */
+class TextPage {
+    private page: Konva.Image;
+
+    constructor(src: string) {
+        this.page = new Konva.Image({
+            image: undefined,
+            width: STAGE_WIDTH, 
+            height: STAGE_HEIGHT,
+            x: 0, 
+            y:0, 
+        });
+        Konva.Image.fromURL(src, (img) => {
+            this.page.image(img.image());
+        });
+    }
+
+    getElement(): Konva.Image {
+        return this.page;
+    }
+
+    visible(visible: boolean) {
+        this.page.visible(visible);
+    }
+}
+
+/* Button class, because if we're making each visible element into their own
+ * class, might as well include the button */
+class Button {
+    private button: Konva.Image;
+    private startURL: string;
+    private nextURL: string;
+
+    constructor(startURL: string, nextURL: string) {
+        this.startURL = startURL;
+        this.nextURL = nextURL;
+        
+        /* Hard code button position... */    
+        this.button = new Konva.Image({
+            image: undefined,
+            x: STAGE_WIDTH/2,
+            y: STAGE_HEIGHT * 0.88,
+            width: 128,
+            height: 64,
+            offsetX: 64
+        });  
+
+        this.setNextTex();
+    }
+
+    setStartTex() {
+        Konva.Image.fromURL(this.startURL, (img) => {
+            this.button.image(img.image());
+        });
+    }
+
+    setNextTex() {
+        Konva.Image.fromURL(this.nextURL, (img) => {
+            this.button.image(img.image());
+        });
+    }
+
+    getElement(): Konva.Image {
+        return this.button;
+    }
+}
+
+/* IntroScreenView class, instantiated in IntroScreenController */
 export class IntroScreenView implements View {
     private group: Konva.Group;
     
     private bg: Konva.Image;
-
     /* Currently storing intro text as images */
-    private page1: Konva.Image;
-    private page2: Konva.Image;
-    private page3: Konva.Image;
-    private page4: Konva.Image;
-
-    private button: Konva.Image;
-
-    private pageCount: number;
-    
+    private page1: TextPage;
+    private page2: TextPage;
+    private page3: TextPage;
+    private page4: TextPage;
+    private button: Button;
 
     constructor() {
         this.group = new Konva.Group({visible: false});
 
-        this.bg = new Konva.Image();
+        this.bg = new Konva.Image({image: undefined});
         Konva.Image.fromURL("/res/img/intro/bg.png", (img) => {
             this.bg.image(img.image());
             this.bg.x(0);
@@ -43,49 +107,24 @@ export class IntroScreenView implements View {
             });
         });
 
-        this.button = new Konva.Image({
-            x: STAGE_WIDTH/2,
-            y: STAGE_HEIGHT * 0.88,
-            width: 128,
-            height: 64,
-            offsetX: 64
-        });
+        this.page1 = new TextPage("/res/img/intro/text1.png");
+        this.page2 = new TextPage("/res/img/intro/text2.png");
+        this.page3 = new TextPage("/res/img/intro/text3.png");
+        this.page4 = new TextPage("/res/img/intro/text4.png");
 
-        /* Kind of a bad way to display text blocks ngl */
-        this.page1 = new Konva.Image({
-            x: 0, y:0, width: STAGE_WIDTH, 
-            height: STAGE_HEIGHT});
-        this.page2 = new Konva.Image({
-            x: 0, y:0, width: STAGE_WIDTH, 
-            height: STAGE_HEIGHT});
-        this.page3 = new Konva.Image({
-            x: 0, y:0, width: STAGE_WIDTH, 
-            height: STAGE_HEIGHT});    
-        this.page4 = new Konva.Image({
-            x: 0, y:0, width: STAGE_WIDTH, 
-            height: STAGE_HEIGHT});
+        this.button = new Button(
+            "/res/img/intro/start.png", 
+            "/res/img/intro/next.png"
+        );
 
-        Konva.Image.fromURL("/res/img/intro/text1.png", (img) => {
-            this.page1.image(img.image());
-        });
-        Konva.Image.fromURL("/res/img/intro/text2.png", (img) => {
-            this.page2.image(img.image());
-        });
-        Konva.Image.fromURL("/res/img/intro/text3.png", (img) => {
-            this.page3.image(img.image());
-        });
-        Konva.Image.fromURL("/res/img/intro/text4.png", (img) => {
-            this.page4.image(img.image());
-        });
+        /* Ordering matters */
         this.group.add(this.bg);
-        this.group.add(this.page1);
-        this.group.add(this.page2);
-        this.group.add(this.page3);
-        this.group.add(this.page4);
+        this.group.add(this.page1.getElement());
+        this.group.add(this.page2.getElement());
+        this.group.add(this.page3.getElement());
+        this.group.add(this.page4.getElement());
+        this.group.add(this.button.getElement());
 
-        this.group.add(this.button);
-
-        this.setButtonTextureToNext();
         this.switchToPage(1);
 
         }
@@ -95,19 +134,15 @@ export class IntroScreenView implements View {
     }
 
     getButton() {
-        return this.button;
+        return this.button.getElement();
     }
 
     setButtonTextureToNext() {
-        Konva.Image.fromURL("/res/img/intro/next.png", (img) => {
-            this.button.image(img.image());
-        });        
+        this.button.setNextTex(); 
     }
 
     setButtonTextureToStart() {
-        Konva.Image.fromURL("/res/img/intro/start.png", (img) => {
-            this.button.image(img.image());
-        });        
+        this.button.setStartTex(); 
     }
 
     switchToPage(page: number) {
@@ -137,11 +172,9 @@ export class IntroScreenView implements View {
 
     show(): void {
         this.group.visible(true);
-        //this.group.getLayer?.draw();
     }
     
     hide(): void {
         this.group.visible(false);
-        //this.group.getLayer?.draw();
     }
 }

@@ -5,8 +5,6 @@
  */
 
 
-import Konva from "konva";
-
 import { ScreenController } from "../../../types";
 import type { ScreenSwitcher } from "../../../types";
 import { IntroScreenView } from "./IntroScreenView";
@@ -17,9 +15,9 @@ export class IntroScreenController extends ScreenController {
     private view: IntroScreenView;
 
     /* BG scroll stuff */
-    private bgScrollTimer;
+    private bgScrollTimer: any;         /* Dangerous but we cope */
     private bgScrollOffset: number;
-    private bgScrollFunc;
+    private bgScrollFunc: any;
 
     /* Text page stuff */
     private currentTextPage: number;
@@ -74,7 +72,7 @@ export class IntroScreenController extends ScreenController {
             this.currentTextPage = 5;
         } else if(this.currentTextPage == 5) {
             /* Final behavior of button, switch screen */
-            this.screenSwitcher.switchToScreen({type: "level1"});
+            this.screenSwitcher.switchToScreen({type: "level2"});
         }
     }
 

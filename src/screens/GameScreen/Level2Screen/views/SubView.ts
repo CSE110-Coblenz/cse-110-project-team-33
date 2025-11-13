@@ -12,8 +12,6 @@ import Konva from "konva";
 
 
  export interface SubView {
-    /* Used for pushing/popping subviews */
-    private parentView: SubView;
     /* Get SubView group */
     getGroup(): Konva.Group;
     /* Show the SubView */
