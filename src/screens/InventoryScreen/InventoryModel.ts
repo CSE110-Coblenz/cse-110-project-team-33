@@ -1,24 +1,13 @@
-import { LocalStorageManager } from "../../GameStateManager.ts";
-import { PlayerManager } from "../../GameStateManager.ts";
+import { PlayerDataManager } from "../../GameStateManager.ts";
 
 export class InventoryModel {
-    private localStorageManager: LocalStorageManager;
-    private playerManager: PlayerManager;
-    
-    private playerId: string | null;
+    private playerManager: PlayerDataManager;
     private inventory: string[];
 
     constructor() {
-        this.localStorageManager = new LocalStorageManager();
-        this.playerManager = new PlayerManager();
-        
-        this.playerId = this.playerManager.getCurrentPlayerId();
+        this.playerManager = new PlayerDataManager();
 
-        if (this.playerId !== null) {
-            this.inventory = this.localStorageManager.loadPlayerInventory(this.playerId);
-        } else {
-            this.inventory = [];
-        }
+        this.inventory = this.playerManager.loadPlayerInventory();
     }
 
     public getInventory(): string[] {
