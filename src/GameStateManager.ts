@@ -1,5 +1,5 @@
 import Konva from "konva";
-import type { ScreenSwitcher, Screen, PlayersData, PlayerData } from "./types.ts";
+import type { ScreenSwitcher, Screen, PlayerData } from "./types.ts";
 import { MenuController } from "./screens/MenuScreen/MenuController.ts";
 // import { SettingsController } from "./screens/SettingsScreen/SettingsController";
 import { InventoryController } from "./screens/InventoryScreen/InventoryController.ts";
@@ -136,88 +136,46 @@ class App implements ScreenSwitcher {
 	}
 }
 
-export class LocalStorageManager {
-	private playersData: PlayersData;
+export class PlayerDataManager {
+	private playerData: PlayerData | null;
 
 	constructor() {
-		this.playersData = LocalStorageUtils.loadPlayersData() || [];
+		this.playerData = LocalStorageUtils.loadPlayerData();
 	}
 
-	public addNewPlayer(name: string): PlayerData {
-        const newPlayer: PlayerData = {
-			id: crypto.randomUUID(),
-            name: name,
-            level: 1,
-            coins: 0,
-            inventory: []
-        };
-        this.playersData.push(newPlayer);
-        this.saveAll(); // Save the new player to storage
-        return newPlayer;
+    public updatePlayerLevel(updatedLevel: number): void {
+		if (this.playerData != null) {
+			this.playerData.level = updatedLevel;
+			this.savePlayerData();
+		}
     }
 
-    public updatePlayerLevel(playerId: string, updatedLevel: number): void {
-        const player = this.playersData.find(p => p.id === playerId);
-        if (player) {
-            player.level = updatedLevel;
-            this.saveAll(); // Save the modification to storage
-        }
+	public updatePlayerCoins(updatedCoins: number): void {
+		if (this.playerData != null) {
+			this.playerData.coins = updatedCoins;
+			this.savePlayerData();
+		}
     }
 
-	public updatePlayerCoins(playerId: string, updatedCoins: number): void {
-        const player = this.playersData.find(p => p.id === playerId);
-        if (player) {
-            player.coins = updatedCoins;
-            this.saveAll(); // Save the modification to storage
-        }
+	public loadPlayerInventory(): string[] {
+		if (this.playerData != null) {
+			this.playerData.inventory;
+		}
+        return [];
     }
 
-	public loadPlayerInventory(playerId: string): string[] {
-        const player = this.playersData.find(p => p.id === playerId);
-        if (player) {
-            return player.inventory
-        }
-		return []
+	public updatePlayerInventory(updatedInventory: string[]): void {
+        if (this.playerData != null) {
+			this.playerData.inventory = updatedInventory;
+			this.savePlayerData();
+		}
     }
 
-	public updatePlayerInventory(playerId: string, updatedInventory: string[]): void {
-        const player = this.playersData.find(p => p.id === playerId);
-        if (player) {
-            player.inventory = updatedInventory;
-            this.saveAll(); // Save the modification to storage
-        }
+    private savePlayerData(): void {
+		if (this.playerData != null) {
+        	LocalStorageUtils.savePlayerData(this.playerData);
+		}
     }
-
-    private saveAll(): void {
-        LocalStorageUtils.savePlayersData(this.playersData);
-    }
-}
-
-export class PlayerManager {
-	private players: PlayersData;
-    private currentPlayerId: string | null = null; // Stores the ID of the active player
-
-    constructor() {
-		this.players = LocalStorageUtils.loadPlayersData() || [];
-	}
-
-	public setActivePlayer(playerId: string): boolean {
-        const playerExists = this.players.some(p => p.id === playerId);
-        if (playerExists) {
-            this.currentPlayerId = playerId;
-            return true;
-        }
-        return false;
-    }
-    
-    public getCurrentPlayerId(): string | null {
-        return this.currentPlayerId;
-    }
-    
-    public getCurrentPlayer(): PlayerData | undefined {
-        return this.players.find(p => p.id === this.currentPlayerId);
-    }
-
 }
 
 // Initialize the application

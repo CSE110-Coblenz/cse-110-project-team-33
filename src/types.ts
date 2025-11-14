@@ -35,11 +35,7 @@ export interface ScreenSwitcher {
 }
 
 export interface PlayerData {
-	id: string;
-	name: string;
 	level: number;
 	coins: number;
 	inventory: string[];
 }
-
-export type PlayersData = PlayerData[];
