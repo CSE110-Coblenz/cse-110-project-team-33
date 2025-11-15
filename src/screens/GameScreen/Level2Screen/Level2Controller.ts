@@ -1,4 +1,3 @@
-
 import Konva from "konva";
 
 import { ScreenController } from "../../../types.ts";
@@ -13,13 +12,13 @@ import { SundialView } from "./views/SundialView.ts"
 export class Level2Controller extends ScreenController {
 
     private screenSwitcher: ScreenSwitcher;
-
+    
     /* Views */
     private levelView:  Level2View;
     private roomView:   RoomView;
     private sundial1View:   SundialView;
     
-    constructor(screenSwitcher: ScreenSwitcher): void {
+    constructor(screenSwitcher: ScreenSwitcher) {
         super();
         this.screenSwitcher = screenSwitcher;
 

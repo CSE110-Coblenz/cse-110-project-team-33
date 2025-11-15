@@ -1,5 +1,5 @@
 import Konva from "konva";
-import type { ScreenSwitcher, Screen, PlayerData } from "./types.ts";
+import type { ScreenSwitcher, Screen, PlayerData, InventoryItem } from "./types.ts";
 import { MenuController } from "./screens/MenuScreen/MenuController.ts";
 // import { SettingsController } from "./screens/SettingsScreen/SettingsController";
 import { InventoryController } from "./screens/InventoryScreen/InventoryController.ts";
@@ -76,8 +76,10 @@ class App implements ScreenSwitcher {
 
 		// Draw the layer (render everything to the canvas)
 		this.layer.draw();
-		this.menuController.getView().show();
-
+		
+		// Hide menu and show inventory
+		this.menuController.hide();
+		this.inventoryController.getView().show(); // CHANGE THIS TO YOUR SPECIFIC PAGE (!!!)
 	}
 
 	switchToScreen(screen: Screen): void {
@@ -157,14 +159,14 @@ export class PlayerDataManager {
 		}
     }
 
-	public loadPlayerInventory(): string[] {
+	public loadPlayerInventory(): InventoryItem[] {
 		if (this.playerData != null) {
-			this.playerData.inventory;
+			return this.playerData.inventory;
 		}
         return [];
     }
 
-	public updatePlayerInventory(updatedInventory: string[]): void {
+	public updatePlayerInventory(updatedInventory: InventoryItem[]): void {
         if (this.playerData != null) {
 			this.playerData.inventory = updatedInventory;
 			this.savePlayerData();

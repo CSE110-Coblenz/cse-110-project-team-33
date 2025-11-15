@@ -43,8 +43,6 @@ export class Level1Controller extends ScreenController {
         this.view.setOption3Text((this.option3).toString());
         
         this.setupClickListeners();
-
-        this.view.show();
     }
     
     private setupClickListeners(): void {

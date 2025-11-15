@@ -35,7 +35,7 @@
     }
     
     hide(): void {
-        this.group.visible(true);
+        this.group.visible(false);
         this.group.getLayer?.draw();
     }
     
