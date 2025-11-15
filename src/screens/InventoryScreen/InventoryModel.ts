@@ -9,7 +9,7 @@ export class InventoryModel {
     constructor() {
         this.playerManager = new PlayerDataManager();
         this.inventory = [];
-        // this.playerManager.loadPlayerInventory();
+        this.playerManager.loadPlayerInventory();
         this.currentIndex = 0;
     }
 
