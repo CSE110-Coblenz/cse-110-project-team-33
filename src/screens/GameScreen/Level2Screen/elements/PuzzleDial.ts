@@ -9,7 +9,7 @@
  */
 
 import Konva from "konva";
-import type { Element } from "./Element.ts";
+import type { Element } from "./Element";
 
 export class PuzzleDial implements Element {
 
@@ -37,7 +37,7 @@ export class PuzzleDial implements Element {
             x: this.xPos,
             y: this.yPos
         });
-        this.sundialSprite = new Konva.Image();
+        this.sundialSprite = new Konva.Image({image: undefined});
         Konva.Image.fromURL(this.getURL(), (img) => {
             this.sundialSprite.image(img.image());
             this.sundialSprite.id(id);
@@ -52,8 +52,8 @@ export class PuzzleDial implements Element {
         const gnomonWidth = this.getDefaultWidth() * (80/128);
         const gnomonHeight = this.getDefaultHeight() * (30/256);
         let shadowHeight = 64;
-        this.gnomonSprite = new Konva.Image();
-        this.gnomonShadow = new Konva.Image();
+        this.gnomonSprite = new Konva.Image({image: undefined});
+        this.gnomonShadow = new Konva.Image({image: undefined});
         Konva.Image.fromURL(this.getShadowURL(), (img) => {
             this.gnomonShadow.image(img.image());
             this.gnomonShadow.x(0);

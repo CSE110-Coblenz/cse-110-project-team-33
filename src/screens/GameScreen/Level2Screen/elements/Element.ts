@@ -12,13 +12,13 @@ import Konva from "konva";
 
 export interface Element {
     /* Return some object derived from Konva.Shape, for adding to screen */
-    abstract getElement(): Konva.Shape;
+    getElement(): Konva.Shape | Konva.Group;
     /* Method to get URL of an elements resource */
-    abstract getURL(): string;
+    getURL(): string;
     /* Get the non-unique name/ID of an element, for handling events by
      * target in subViews */
-    abstract getID(): string;
+    getID(): string;
     /* Methods to get default width/height of an Element */
-    abstract getDefaultWidth(): number;
-    abstract getDefaultHeight(): number;
+    getDefaultWidth(): number;
+    getDefaultHeight(): number;
 }
