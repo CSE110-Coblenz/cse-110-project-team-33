@@ -14,6 +14,7 @@ export type Screen =
     | { type: "level2" }
     | { type: "level3" }
     | { type: "level4" }
+	| { type: "minigame" }
 	| { type: "result"}
 	| { type: "exit"}
 	| { type: "load"};
