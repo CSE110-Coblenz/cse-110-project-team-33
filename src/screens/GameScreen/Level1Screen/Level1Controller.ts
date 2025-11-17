@@ -10,6 +10,7 @@ export class Level1Controller extends ScreenController {
     private view: Level1View;
     private problemType: number;
     private correctAnswerValue: number; // Store the actual answer
+    private isDragging: boolean;
     
     // The option values are still set up in the constructor below
     private option1: number;
@@ -22,11 +23,11 @@ export class Level1Controller extends ScreenController {
 
         this.model = new Level1Model();
         this.view = new Level1View();
+        this.isDragging = false;
 
         this.problemType = this.model.getProblemType();
         this.correctAnswerValue = this.model.getAnswer(); // Get the correct answer from the model
 
-        console.log(this.problemType);
         if (this.problemType == 1 || this.problemType == 2) {
             this.view.setProblemText("What is the length of the fallen pillar?");
         } else if (this.problemType == 3) {
@@ -41,22 +42,30 @@ export class Level1Controller extends ScreenController {
 
         this.option3 = this.model.getTOA();
         this.view.setOption3Text((this.option3).toString());
-        
+
+        this.initialize();
+    }
+
+    private async initialize(): Promise<void> {
+        await this.view.waitForLoadBackground();
         this.setupClickListeners();
+        this.setupMoveListeners();
     }
     
     private setupClickListeners(): void {
         const option1Node = this.view.getOption1TextNode();
         const option2Node = this.view.getOption2TextNode();
         const option3Node = this.view.getOption3TextNode();
+        const backpackNode = this.view.getBackpackNode();
 
         // Add a pointer cursor to indicate clickability
         this.addClickBehavior(option1Node, this.option1);
         this.addClickBehavior(option2Node, this.option2);
         this.addClickBehavior(option3Node, this.option3);
+        this.addClickBehavior(backpackNode);
     }
     
-    private addClickBehavior(node: Konva.Text, optionValue: number): void {
+    private addClickBehavior(node: any, optionValue?: number): void {
         node.on("mouseover", () => {
             document.body.style.cursor = "pointer";
         });
@@ -67,7 +76,9 @@ export class Level1Controller extends ScreenController {
         
         node.on("click", () => {
             // Check if the clicked option's value matches the correct answer
-            if (optionValue === this.correctAnswerValue) {
+            if (optionValue === undefined) {
+                this.screenSwitcher.switchToScreen({ type: "inventory" });
+            } else if (optionValue === this.correctAnswerValue) {
                 this.handleCorrectAnswer(node);
             } else {
                 this.handleWrongAnswer(node);
@@ -75,22 +86,19 @@ export class Level1Controller extends ScreenController {
         });
     }
 
-    private handleCorrectAnswer(node: Konva.Text): void {
-        node.text("Correct!"); // Change the text
-        node.fill("green"); // Change the color
-        this.model.setIsCompleted(true); // Mark the level as complete
+    private setupMoveListeners(): void {
+        const levelClueNode = this.view.getLevelClueNode();
+        const mgClueNode = this.view.getMGClueNode();
         
-        // Remove click handlers from all options to prevent further clicking
-        this.view.getOption1TextNode().off("click");
-        this.view.getOption2TextNode().off("click");
-        this.view.getOption3TextNode().off("click");
-        
-        this.view.getGroup().getLayer()?.draw(); // Redraw the stage
-        
+        this.addMoveBehavior(levelClueNode, "level");
+        this.addMoveBehavior(mgClueNode, "mg");
     }
-	
+    
+    private addMoveBehavior(node: any, action: string): void {
+        // TO DO !!
+    }
+
     private handleWrongAnswer(node: Konva.Text): void {
-        // Example: Flash red briefly, then reset the text
         const originalText = node.text();
         node.fill("red");
         this.view.getGroup().getLayer()?.draw();

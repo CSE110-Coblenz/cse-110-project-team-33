@@ -1,13 +1,15 @@
 import { InventoryModel } from "./InventoryModel.ts";
 import { InventoryView } from "./InventoryView.ts";
+import { PlayerDataManager } from "../../GameStateManager.ts";
 import { ScreenController } from "../../types.ts";
-import type { InventoryItem, ScreenSwitcher } from "../../types.ts";
+import type { InventoryItem, ScreenSwitcher, Screen} from "../../types.ts";
 import Konva from "konva";
 
 export class InventoryController extends ScreenController {
     private screenSwitcher: ScreenSwitcher;
     private model: InventoryModel;
     private view: InventoryView;
+    private level: Screen | null;
 
     constructor(screenSwitcher: ScreenSwitcher) {
         super();
@@ -15,6 +17,7 @@ export class InventoryController extends ScreenController {
         
         this.model = new InventoryModel();
         this.view = new InventoryView();
+        this.level = this.model.getLevel();
 
         // Initialize with Promise
         this.initialize();
@@ -54,15 +57,16 @@ export class InventoryController extends ScreenController {
     private setupClickListeners(): void {
         const prevButton = this.view.getPrevButton();
         const nextButton = this.view.getNextButton();
+        const backToLevel = this.view.getBackpack();
 
         this.addClickBehavior(prevButton, "prev");
         this.addClickBehavior(nextButton, "next");
+        this.addClickBehavior(backToLevel, "back");
     }
 
     private addClickBehavior(image: Konva.Image, action: string): void {
         image.on("mouseover", () => {
             document.body.style.cursor = "pointer";
-            console.log("mouseover");
         });
     
         image.on("mouseout", () => {
@@ -70,7 +74,11 @@ export class InventoryController extends ScreenController {
         });
             
         image.on("click", () => {
-            console.log("click:", action);
+            if (action == "back") {
+                if (this.level != null) {
+                    this.screenSwitcher.switchToScreen(this.level);
+                }
+            }
             if (action == "prev") {
                 this.prevItem();
             }

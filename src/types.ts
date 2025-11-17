@@ -133,7 +133,7 @@ export class InventoryItem {
 }
 
 export interface PlayerData {
-	level: number;
+	level: Screen;
 	coins: number;
 	inventory: InventoryItem[];
 }

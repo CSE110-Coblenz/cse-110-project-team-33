@@ -4,7 +4,7 @@ import { MenuController } from "./screens/MenuScreen/MenuController.ts";
 // import { SettingsController } from "./screens/SettingsScreen/SettingsController";
 import { InventoryController } from "./screens/InventoryScreen/InventoryController.ts";
 import { Level1Controller } from "./screens/GameScreen/Level1Screen/Level1Controller.ts";
-import { Level2Controller } from "./screens/GameScreen/Level2Screen/Level2Controller";
+// import { Level2Controller } from "./screens/GameScreen/Level2Screen/Level2Controller";
 // import { Level3Controller } from "./screens/GameScreen/Level3Screen/Level3Controller";
 // import { Level4Controller } from "./screens/GameScreen/Level4Screen/Level4Controller";
 // import { ResultsController } from "./screens/ResultsScreen/ResultsController";
@@ -21,7 +21,7 @@ class App implements ScreenSwitcher {
     // private settingsController: SettingsController;
 	private inventoryController: InventoryController;
 	private level1Controller: Level1Controller;
-	private level2Controller: Level2Controller;
+	// private level2Controller: Level2Controller;
     // private level3Controller: Level3Controller;
     // private level4Controller: Level4Controller;
     // private resultsController: ResultsController;
@@ -54,7 +54,7 @@ class App implements ScreenSwitcher {
 		// this.settingsController = new SettingsController(this);
 		this.inventoryController = new InventoryController(this);
         this.level1Controller = new Level1Controller(this);
-        this.level2Controller = new Level2Controller(this);
+        // this.level2Controller = new Level2Controller(this);
         // this.level3Controller = new Level3Controller(this);
         // this.level4Controller = new Level4Controller(this);
         // this.resultsController = new ResultsController(this);
@@ -67,7 +67,7 @@ class App implements ScreenSwitcher {
         // this.layer.add(this.settingsController.getView().getGroup());
 		this.layer.add(this.inventoryController.getView().getGroup());
 		this.layer.add(this.level1Controller.getView().getGroup());
-        this.layer.add(this.level2Controller.getView().getGroup());
+        // this.layer.add(this.level2Controller.getView().getGroup());
         // this.layer.add(this.level3Controller.getView().getGroup());
         // this.layer.add(this.level4Controller.getView().getGroup());
         // this.layer.add(this.resultsController.getView().getGroup());
@@ -88,7 +88,7 @@ class App implements ScreenSwitcher {
         // this.settingsController.hide();
 		this.inventoryController.hide();
 		this.level1Controller.hide();
-        this.level2Controller.hide();
+        // this.level2Controller.hide();
         // this.level3Controller.hide();
         // this.level4Controller.hide();
 		// this.resultsController.hide();
@@ -114,7 +114,7 @@ class App implements ScreenSwitcher {
 				break;
 
             case "level2":
-                this.level2Controller.show();
+                // this.level2Controller.show();
                 break;
 
             case "level3":
@@ -145,37 +145,47 @@ export class PlayerDataManager {
 		this.playerData = LocalStorageUtils.loadPlayerData();
 	}
 
-    public updateLevel(updatedLevel: number): void {
+	public getLevel(): Screen | null {
+		if (this.playerData != null) {
+			return this.playerData?.level;
+		} else {
+			return null;
+		}
+	}
+
+    public setLevel(updatedLevel: Screen): void {
 		if (this.playerData != null) {
 			this.playerData.level = updatedLevel;
-			this.savePlayerData();
+			LocalStorageUtils.savePlayerData(this.playerData);
 		}
     }
 
-	public updateCoins(updatedCoins: number): void {
+	public getCoins(): number | null {
+		if (this.playerData != null) {
+			return this.playerData?.coins;
+		} else {
+			return null;
+		}
+	}
+
+	public setCoins(updatedCoins: number): void {
 		if (this.playerData != null) {
 			this.playerData.coins = updatedCoins;
-			this.savePlayerData();
+			LocalStorageUtils.savePlayerData(this.playerData);
 		}
     }
 
-	public loadInventory(): InventoryItem[] {
+	public getInventory(): InventoryItem[] {
 		if (this.playerData != null) {
 			return this.playerData.inventory;
 		}
         return [];
     }
 
-	public updateInventory(updatedInventory: InventoryItem[]): void {
+	public setInventory(updatedInventory: InventoryItem[]): void {
         if (this.playerData != null) {
 			this.playerData.inventory = updatedInventory;
-			this.savePlayerData();
-		}
-    }
-
-    private savePlayerData(): void {
-		if (this.playerData != null) {
-        	LocalStorageUtils.savePlayerData(this.playerData);
+			LocalStorageUtils.savePlayerData(this.playerData);
 		}
     }
 }

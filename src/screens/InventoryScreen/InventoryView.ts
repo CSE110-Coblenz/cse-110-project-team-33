@@ -8,7 +8,9 @@ export class InventoryView {
     private inventory: InventoryItem[];
     private prevButton: Konva.Image;
     private nextButton: Konva.Image;
+    private backpack: Konva.Image;
     private buttonsCreated: boolean;
+    
 
     constructor() {
         this.group = new Konva.Group({ visible: false });
@@ -16,6 +18,7 @@ export class InventoryView {
         this.inventory = [];
         this.prevButton = new Konva.Image();
         this.nextButton = new Konva.Image();
+        this.backpack = new Konva.Image();
         this.buttonsCreated = false;
         
         // Add background
@@ -29,9 +32,10 @@ export class InventoryView {
         this.group.add(bg);
 
         Konva.Image.fromURL("/res/backpack.png", (image) => {
-            image.width(75).height(75);
-            image.x(10).y(10);
+            image.width(50).height(50);
+            image.x(5).y(5);
             this.group.add(image);
+            this.backpack = image;
             this.group.getLayer()?.draw();
         });
         
@@ -113,8 +117,8 @@ export class InventoryView {
             if (!this.buttonsCreated) {
                 const prevPromise = new Promise<void>((resolve) => {
                     Konva.Image.fromURL("/res/arrow.png", (image) => {
-                        image.width(50).height(50);
-                        image.x(10).y(STAGE_HEIGHT / 2 - 40);
+                        image.width(40).height(40);
+                        image.x(5).y(STAGE_HEIGHT / 2 - 40);
                         this.prevButton = image;
                         this.group.add(image);
                         this.group.getLayer()?.draw();
@@ -124,8 +128,8 @@ export class InventoryView {
 
                 const nextPromise = new Promise<void>((resolve) => {
                     Konva.Image.fromURL("/res/arrow.png", (image) => {
-                        image.width(50).height(50);
-                        image.x(STAGE_WIDTH - 10).y(STAGE_HEIGHT / 2 + 10);
+                        image.width(40).height(40);
+                        image.x(STAGE_WIDTH - 5).y(STAGE_HEIGHT / 2 + 10);
                         image.rotation(180);
                         this.nextButton = image;
                         this.group.add(image);
@@ -195,6 +199,10 @@ export class InventoryView {
 
     getNextButton(): Konva.Image {
         return this.nextButton;
+    }
+
+    getBackpack(): Konva.Image {
+        return this.backpack;
     }
 
     show(): void {

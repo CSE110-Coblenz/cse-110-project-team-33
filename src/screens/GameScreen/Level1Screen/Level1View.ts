@@ -10,92 +10,139 @@ export class Level1View implements View {
     private option1Text: Konva.Text;
     private option2Text: Konva.Text;
     private option3Text: Konva.Text;
+    private option1Button: Konva.Image;
+    private option2Button: Konva.Image;
+    private option3Button: Konva.Image;
+    
+    // Add these image properties
+    private pyramidImage: Konva.Image;
+    private doorImage: Konva.Image;
+    private pillar1Image: Konva.Image;
+    private pillar2Image: Konva.Image;
+    private groundImage: Konva.Image;
+    private backpack: Konva.Image;
+    private levelClue: Konva.Image;
+    private mgClue: Konva.Image;
 
     constructor() {
-		this.group = new Konva.Group({ visible: false });
+        this.group = new Konva.Group({ visible: false });
         this.backgroundGroup = new Konva.Group();
         this.textInputGroup = new Konva.Group();
         
-		const background = new Konva.Rect({
-			x: 0,
-			y: 0,
-			width: STAGE_WIDTH,
-			height: STAGE_HEIGHT,
-			fill: "#D6E8FF", // Sky blue
-		});
-		this.backgroundGroup.add(background);
+        // Initialize images
+        this.pyramidImage = new Konva.Image();
+        this.doorImage = new Konva.Image();
+        this.pillar1Image = new Konva.Image();
+        this.pillar2Image = new Konva.Image();
+        this.groundImage = new Konva.Image();
+        this.backpack = new Konva.Image();
+        this.levelClue = new Konva.Image();
+        this.mgClue = new Konva.Image();
+        this.option1Button = new Konva.Image();
+        this.option2Button = new Konva.Image();
+        this.option3Button = new Konva.Image();
 
-        Konva.Image.fromURL("/res/pyramid.png", (image) => {
-            image.width(STAGE_WIDTH).height(STAGE_HEIGHT / 2)
-			this.backgroundGroup.add(image);
-		});
 
-        Konva.Image.fromURL("/res/door.png", (image) => {
-            image.x(STAGE_WIDTH / 2 - 30).y(STAGE_HEIGHT / 2 - 125)
-            image.width(85).height(150)
-			this.backgroundGroup.add(image);
-		});
+        const background = new Konva.Rect({
+            x: 0,
+            y: 0,
+            width: STAGE_WIDTH,
+            height: STAGE_HEIGHT,
+            fill: "#D6E8FF",
+        });
+        this.backgroundGroup.add(background);
 
-        Konva.Image.fromURL("/res/pillar_1.png", (image) => {
-            image.x(STAGE_WIDTH / 2 - 105).y(STAGE_HEIGHT / 2 - 150);
-            image.height(150).width(75);
-			this.backgroundGroup.add(image);
-		});
+        this.loadBackground();
 
-        Konva.Image.fromURL("/res/pillar_2.png", (image) => {
-            image.x(STAGE_WIDTH / 2 - 30).y(STAGE_HEIGHT / 2 - 175)
-            image.height(175).width(150);
-			this.backgroundGroup.add(image);
-		});
-
-        Konva.Image.fromURL("/res/ground.png", (image) => {
-            image.x(0).y(STAGE_HEIGHT / 2)
-            image.height(STAGE_HEIGHT / 2).width(STAGE_WIDTH);
-			this.backgroundGroup.add(image);
-		});
-
-        this.problemText = new Konva.Text({ // NEW: Create and store the node
+        // Text
+        this.problemText = new Konva.Text({
             x: 25,
-            y: STAGE_HEIGHT - 200,
-            text: "", // Start with an empty string or placeholder
-            fontSize: 24,
-            fontFamily: "Arial",
+            y: STAGE_HEIGHT - 150,
+            text: "",
+            fontSize: 16,
+            fontFamily: "Press Start 2P",
             fill: "black",
         });
         this.textInputGroup.add(this.problemText);
 
-        this.option1Text = new Konva.Text({ // NEW: Create and store the node
-            x: STAGE_WIDTH / 2 - 200,
-            y: STAGE_HEIGHT - 100,
-            text: "1", // Start with an empty string or placeholder
-            fontSize: 24,
-            fontFamily: "Arial",
+        this.option1Text = new Konva.Text({
+            x: STAGE_WIDTH / 2 - 205,
+            y: STAGE_HEIGHT - 75,
+            text: "1",
+            fontSize: 16,
+            fontFamily: "Press Start 2P",
             fill: "black",
         });
         this.textInputGroup.add(this.option1Text);
 
-        this.option2Text = new Konva.Text({ // NEW: Create and store the node
-            x: STAGE_WIDTH / 2,
-            y: STAGE_HEIGHT - 100,
-            text: "2", // Start with an empty string or placeholder
-            fontSize: 24,
-            fontFamily: "Arial",
+        this.option2Text = new Konva.Text({
+            x: STAGE_WIDTH / 2 - 5,
+            y: STAGE_HEIGHT - 75,
+            text: "2",
+            fontSize: 16,
+            fontFamily: "Press Start 2P",
             fill: "black",
         });
         this.textInputGroup.add(this.option2Text);
 
-        this.option3Text = new Konva.Text({ // NEW: Create and store the node
+        this.option3Text = new Konva.Text({
             x: STAGE_WIDTH / 2 + 200,
-            y: STAGE_HEIGHT - 100,
-            text: "3", // Start with an empty string or placeholder
-            fontSize: 24,
-            fontFamily: "Arial",
+            y: STAGE_HEIGHT - 75,
+            text: "3",
+            fontSize: 16,
+            fontFamily: "Press Start 2P",
             fill: "black",
         });
         this.textInputGroup.add(this.option3Text);
 
         this.group.add(this.backgroundGroup);
         this.group.add(this.textInputGroup);
+    }
+
+    private async loadBackground(): Promise<void> {
+        try {
+            // Load all images in parallel since they don't need specific ordering
+            await this.loadImage("/res/pyramid.png", this.pyramidImage, STAGE_WIDTH, STAGE_HEIGHT / 2, 0, 0);
+            await this.loadImage("/res/door.png", this.doorImage, 85, 150, STAGE_WIDTH / 2 - 30, STAGE_HEIGHT / 2 - 125);
+            await Promise.all([
+                this.loadImage("/res/Pillar.png", this.pillar1Image, 100, 160, STAGE_WIDTH / 2 - 100, STAGE_HEIGHT / 2 - 150),
+                this.loadImage("/res/Pillar.png", this.pillar2Image, 100, 160, STAGE_WIDTH / 2 - 50, STAGE_HEIGHT / 2 - 120, -30),
+                this.loadImage("/res/ground.png", this.groundImage, STAGE_WIDTH, STAGE_HEIGHT / 2, 0, STAGE_HEIGHT / 2),
+                this.loadImage("/res/backpack.png", this.backpack, 50, 50, 5, 5),
+                this.loadImage("/res/pillar_outline.png", this.levelClue, 100, 100, STAGE_WIDTH / 2 - 250, STAGE_HEIGHT / 2 + 25),
+                this.loadImage("/res/Clue.png", this.mgClue, 100, 100, STAGE_WIDTH / 2 + 200, STAGE_HEIGHT / 2 + 25),
+                this.loadImage("/res/button.png", this.option1Button, 125, 75, 150, STAGE_HEIGHT - 105),
+                this.loadImage("/res/button.png", this.option2Button, 125, 75, STAGE_WIDTH / 2 - 50, STAGE_HEIGHT - 105),
+                this.loadImage("/res/button.png",this.option3Button, 125, 75, STAGE_WIDTH / 2 + 150, STAGE_HEIGHT - 105)
+            ]);
+            
+            this.group.getLayer()?.batchDraw();
+        } catch (error) {
+            console.error("Error loading background images:", error);
+        }
+    }
+
+    private loadImage(src: string, imageProperty: Konva.Image, width: number, height: number, x: number, y: number, r?: number): Promise<void> {
+        return new Promise((resolve, reject) => {
+            Konva.Image.fromURL(src, (image) => {
+                image.width(width);
+                image.height(height);
+                image.x(x);
+                image.y(y);
+                if (r !== undefined) {
+                    image.rotate(r);
+                }
+                    
+                Object.assign(imageProperty, image);
+                this.backgroundGroup.add(image);
+                
+                resolve();
+            }, reject)
+        });
+    }
+
+    waitForLoadBackground(): Promise<void> {
+        return this.loadBackground();
     }
 
     setProblemText(problemText: string) : void {
@@ -128,6 +175,18 @@ export class Level1View implements View {
 
     getOption3TextNode(): Konva.Text {
         return this.option3Text;
+    }
+
+    getBackpackNode(): Konva.Image {
+        return this.backpack;
+    }
+
+    getLevelClueNode(): Konva.Image {
+        return this.levelClue;
+    }
+
+    getMGClueNode(): Konva.Image {
+        return this.mgClue;
     }
     
     show(): void {
