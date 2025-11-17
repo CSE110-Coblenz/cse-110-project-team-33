@@ -24,6 +24,12 @@ export class Level1View implements View {
     private levelClue: Konva.Image;
     private mgClue: Konva.Image;
 
+    private levelClueX: number = STAGE_WIDTH / 2 - 250;
+    private levelClueY: number = STAGE_HEIGHT / 2 + 25;
+
+    private mgClueX: number = STAGE_WIDTH / 2 + 200;
+    private mgClueY: number = STAGE_HEIGHT / 2 + 25;
+
     constructor() {
         this.group = new Konva.Group({ visible: false });
         this.backgroundGroup = new Konva.Group();
@@ -51,8 +57,6 @@ export class Level1View implements View {
             fill: "#D6E8FF",
         });
         this.backgroundGroup.add(background);
-
-        this.loadBackground();
 
         // Text
         this.problemText = new Konva.Text({
@@ -101,24 +105,38 @@ export class Level1View implements View {
 
     private async loadBackground(): Promise<void> {
         try {
-            // Load all images in parallel since they don't need specific ordering
-            await this.loadImage("/res/pyramid.png", this.pyramidImage, STAGE_WIDTH, STAGE_HEIGHT / 2, 0, 0);
-            await this.loadImage("/res/door.png", this.doorImage, 85, 150, STAGE_WIDTH / 2 - 30, STAGE_HEIGHT / 2 - 125);
-            await Promise.all([
-                this.loadImage("/res/Pillar.png", this.pillar1Image, 100, 160, STAGE_WIDTH / 2 - 100, STAGE_HEIGHT / 2 - 150),
-                this.loadImage("/res/Pillar.png", this.pillar2Image, 100, 160, STAGE_WIDTH / 2 - 50, STAGE_HEIGHT / 2 - 120, -30),
-                this.loadImage("/res/ground.png", this.groundImage, STAGE_WIDTH, STAGE_HEIGHT / 2, 0, STAGE_HEIGHT / 2),
-                this.loadImage("/res/backpack.png", this.backpack, 50, 50, 5, 5),
+            this.pyramidImage = await this.loadImage("/res/pyramid.png", STAGE_WIDTH, STAGE_HEIGHT / 2, 0, 0);
+            this.doorImage = await this.loadImage("/res/door.png", 85, 150, STAGE_WIDTH / 2 - 30, STAGE_HEIGHT / 2 - 125);
+            
+            const [pillar1, pillar2, ground, backpack] = await Promise.all([
+                this.loadImage("/res/Pillar.png", 100, 160, STAGE_WIDTH / 2 - 100, STAGE_HEIGHT / 2 - 150),
+                this.loadImage("/res/Pillar.png", 100, 160, STAGE_WIDTH / 2 - 50, STAGE_HEIGHT / 2 - 120, -30),
+                this.loadImage("/res/ground.png", STAGE_WIDTH, STAGE_HEIGHT / 2, 0, STAGE_HEIGHT / 2),
+                this.loadImage("/res/backpack.png", 50, 50, 5, 5),
             ]);
-            await Promise.all([
-                this.loadImage("/res/pillar_outline.png", this.levelClue, 100, 100, STAGE_WIDTH / 2 - 250, STAGE_HEIGHT / 2 + 25),
-                this.loadImage("/res/Clue.png", this.mgClue, 100, 100, STAGE_WIDTH / 2 + 200, STAGE_HEIGHT / 2 + 25),
-            ])
-            await Promise.all([
-                this.loadImage("/res/button.png", this.option1Button, 125, 75, 150, STAGE_HEIGHT - 105),
-                this.loadImage("/res/button.png", this.option2Button, 125, 75, STAGE_WIDTH / 2 - 50, STAGE_HEIGHT - 105),
-                this.loadImage("/res/button.png",this.option3Button, 125, 75, STAGE_WIDTH / 2 + 150, STAGE_HEIGHT - 105)
+            
+            this.pillar1Image = pillar1;
+            this.pillar2Image = pillar2;
+            this.groundImage = ground;
+            this.backpack = backpack;
+            
+            const [levelClue, mgClue] = await Promise.all([
+                this.loadImage("/res/pillar_outline.png", 100, 100, this.levelClueX, this.levelClueY),
+                this.loadImage("/res/Clue.png", 100, 100, this.mgClueX, this.mgClueY),
             ]);
+            
+            this.levelClue = levelClue;
+            this.mgClue = mgClue;
+            
+            const [btn1, btn2, btn3] = await Promise.all([
+                this.loadImage("/res/button.png", 125, 75, 150, STAGE_HEIGHT - 105),
+                this.loadImage("/res/button.png", 125, 75, STAGE_WIDTH / 2 - 50, STAGE_HEIGHT - 105),
+                this.loadImage("/res/button.png", 125, 75, STAGE_WIDTH / 2 + 150, STAGE_HEIGHT - 105)
+            ]);
+            
+            this.option1Button = btn1;
+            this.option2Button = btn2;
+            this.option3Button = btn3;
 
             this.group.getLayer()?.batchDraw();
         } catch (error) {
@@ -126,24 +144,26 @@ export class Level1View implements View {
         }
     }
 
-    private loadImage(src: string, imageProperty: Konva.Image, width: number, height: number, x: number, y: number, r?: number): Promise<void> {
+    private loadImage(src: string, width: number, height: number, x: number, y: number, r?: number): Promise<Konva.Image> {
         return new Promise((resolve, reject) => {
             Konva.Image.fromURL(src, (image) => {
                 image.width(width);
                 image.height(height);
                 image.x(x);
                 image.y(y);
+                image.listening(true); // Enable events
+                
                 if (r !== undefined) {
                     image.rotate(r);
                 }
-                    
-                Object.assign(imageProperty, image);
-                this.backgroundGroup.add(image);
                 
-                resolve();
+                this.backgroundGroup.add(image);
+                resolve(image); // Return the actual image
             }, reject)
         });
     }
+
+    
 
     waitForLoadBackground(): Promise<void> {
         return this.loadBackground();
