@@ -4,6 +4,7 @@ import type { ScreenSwitcher, Screen, PlayersData, PlayerData } from "./types.ts
 import { MenuController } from "./screens/MenuScreen/MenuController.ts";
 // import { SettingsController } from "./screens/SettingsScreen/SettingsController";
 import { InventoryController } from "./screens/InventoryScreen/InventoryController.ts";
+import { IntroScreenController } from "./screens/GameScreen/IntroScreen/IntroScreenController.ts";
 import { Level1Controller } from "./screens/GameScreen/Level1Screen/Level1Controller.ts";
 import { Level2Controller } from "./screens/GameScreen/Level2Screen/Level2Controller";
 // import { Level3Controller } from "./screens/GameScreen/Level3Screen/Level3Controller";
