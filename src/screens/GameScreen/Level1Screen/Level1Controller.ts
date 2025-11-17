@@ -10,7 +10,6 @@ export class Level1Controller extends ScreenController {
     private view: Level1View;
     private problemType: number;
     private correctAnswerValue: number; // Store the actual answer
-    private isDragging: boolean;
     
     // The option values are still set up in the constructor below
     private option1: number;
@@ -23,7 +22,6 @@ export class Level1Controller extends ScreenController {
 
         this.model = new Level1Model();
         this.view = new Level1View();
-        this.isDragging = false;
 
         this.problemType = this.model.getProblemType();
         this.correctAnswerValue = this.model.getAnswer(); // Get the correct answer from the model
@@ -89,16 +87,31 @@ export class Level1Controller extends ScreenController {
     private setupMoveListeners(): void {
         const levelClueNode = this.view.getLevelClueNode();
         const mgClueNode = this.view.getMGClueNode();
-        
+
         this.addMoveBehavior(levelClueNode, "level");
         this.addMoveBehavior(mgClueNode, "mg");
     }
     
     private addMoveBehavior(node: any, action: string): void {
-        // TO DO !!
+        return;
+        // TO DO
     }
 
+    private handleCorrectAnswer(node: Konva.Text): void {
+        node.fill("green"); // Change the color
+        this.model.setIsCompleted(true); // Mark the level as complete
+        
+        // Remove click handlers from all options to prevent further clicking
+        this.view.getOption1TextNode().off("click");
+        this.view.getOption2TextNode().off("click");
+        this.view.getOption3TextNode().off("click");
+        
+        this.view.getGroup().getLayer()?.draw(); // Redraw the stage
+        
+    }
+	
     private handleWrongAnswer(node: Konva.Text): void {
+        // Example: Flash red briefly, then reset the text
         const originalText = node.text();
         node.fill("red");
         this.view.getGroup().getLayer()?.draw();

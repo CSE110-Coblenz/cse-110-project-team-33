@@ -109,13 +109,17 @@ export class Level1View implements View {
                 this.loadImage("/res/Pillar.png", this.pillar2Image, 100, 160, STAGE_WIDTH / 2 - 50, STAGE_HEIGHT / 2 - 120, -30),
                 this.loadImage("/res/ground.png", this.groundImage, STAGE_WIDTH, STAGE_HEIGHT / 2, 0, STAGE_HEIGHT / 2),
                 this.loadImage("/res/backpack.png", this.backpack, 50, 50, 5, 5),
+            ]);
+            await Promise.all([
                 this.loadImage("/res/pillar_outline.png", this.levelClue, 100, 100, STAGE_WIDTH / 2 - 250, STAGE_HEIGHT / 2 + 25),
                 this.loadImage("/res/Clue.png", this.mgClue, 100, 100, STAGE_WIDTH / 2 + 200, STAGE_HEIGHT / 2 + 25),
+            ])
+            await Promise.all([
                 this.loadImage("/res/button.png", this.option1Button, 125, 75, 150, STAGE_HEIGHT - 105),
                 this.loadImage("/res/button.png", this.option2Button, 125, 75, STAGE_WIDTH / 2 - 50, STAGE_HEIGHT - 105),
                 this.loadImage("/res/button.png",this.option3Button, 125, 75, STAGE_WIDTH / 2 + 150, STAGE_HEIGHT - 105)
             ]);
-            
+
             this.group.getLayer()?.batchDraw();
         } catch (error) {
             console.error("Error loading background images:", error);
