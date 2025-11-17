@@ -34,7 +34,11 @@ export class MiniGameController extends ScreenController {
 
         // Initialize model and view
         this.model = new MiniGameModel();
-        this.model.initTargets(this.targets1);
+        if(true){ //placeholder for checking level from player data
+            this.model.initTargets(this.targets1);
+        } else {
+            this.model.initTargets(this.targets2);
+        }
 
         this.view = new MiniGameView();
 
