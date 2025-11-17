@@ -9,7 +9,7 @@
  */
 
 import Konva from "konva";
-import type { Element } from "./Element.ts";
+import type { Element } from "./Element";
 
 export class Sundial implements Element {
 
@@ -28,7 +28,7 @@ export class Sundial implements Element {
         this.xPos = x;
         this.yPos = y;
         this.id = id;
-        this.sundialSprite = new Konva.Image();
+        this.sundialSprite = new Konva.Image({image: undefined});
         Konva.Image.fromURL(this.getURL(), (img) => {
             this.sundialSprite.image(img.image());
             this.sundialSprite.id(id);

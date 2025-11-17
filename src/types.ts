@@ -9,6 +9,7 @@ export interface View {
 export type Screen =
 	| { type: "menu" }
 	| { type: "settings"}
+	| { type: "intro" }
 	| { type: "inventory"}
 	| { type: "level1" }
     | { type: "level2" }
