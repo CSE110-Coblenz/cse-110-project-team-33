@@ -9,7 +9,7 @@
  */
 
 import Konva from "konva";
-import type { Element } from "./Element.ts";
+import type { Element } from "./Element";
 
 export class ReturnArrow implements Element {
 
@@ -30,7 +30,7 @@ export class ReturnArrow implements Element {
         this.xPos = x;
         this.yPos = y;
         this.id = id;
-        this.arrowSprite = new Konva.Image();
+        this.arrowSprite = new Konva.Image({image: undefined});
         Konva.Image.fromURL(this.getURL(), (img) => {
             this.arrowSprite.image(img.image());
             this.arrowSprite.id(id);

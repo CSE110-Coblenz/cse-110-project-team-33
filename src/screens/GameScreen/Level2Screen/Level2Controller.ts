@@ -1,17 +1,19 @@
-
-import Konva from "konva";
-
-import { ScreenController } from "../../../types.ts";
-import type { ScreenSwitcher } from "../../../types.ts";
-
-// import { Level2Model } from "./Level2Model.ts"
-import { Level2View } from "./Level2View.ts"
-import { RoomView } from "./views/RoomView.ts"
-import { SundialView } from "./views/SundialView.ts"
+/* File: Level2Controller.ts
+ * Author: Connor Larmer
+ * Created on: who even knows anymore
+ * 
+ * Summary: Level 2 controller class, not much else to say.
+ *
+ */
+ 
+import { ScreenController } from "../../../types";
+import type { ScreenSwitcher } from "../../../types";
+import { Level2View } from "./Level2View"
+import { RoomView } from "./views/RoomView"
+import { SundialView } from "./views/SundialView"
 
 
 export class Level2Controller extends ScreenController {
-
     private screenSwitcher: ScreenSwitcher;
 
     /* Views */
@@ -19,9 +21,10 @@ export class Level2Controller extends ScreenController {
     private roomView:   RoomView;
     private sundial1View:   SundialView;
     
-    constructor(screenSwitcher: ScreenSwitcher): void {
+    constructor(screenSwitcher: ScreenSwitcher) {
         super();
         this.screenSwitcher = screenSwitcher;
+        if(this.screenSwitcher) {/* NOP to shut TSC up */}
 
         this.levelView = new Level2View();
         this.roomView = new RoomView();
@@ -32,8 +35,7 @@ export class Level2Controller extends ScreenController {
         this.levelView.getGroup().listening(true);
         this.levelView.getGroup().on("click", (evt) => this.commonElementEventHandler(evt));
         
-        // this.roomView.show();
-        this.sundial1View.show();
+        this.roomView.show();
     }
 
     getView(): Level2View {
@@ -45,7 +47,7 @@ export class Level2Controller extends ScreenController {
      * the constructor. NOTE: This doesnt handle return arrows, that logic
      * is predefined in the ReturnArrow element and (sort of) implemented in
      * each subview, sue me if you don't like it. */
-    commonElementEventHandler(evt): void {
+    commonElementEventHandler(evt: any): void {
         const target = evt.target;
 
         //alert("[DEBUG] commonElementEventHandler :: " + target.id());

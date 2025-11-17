@@ -30,7 +30,7 @@ export class Overlay implements Element {
     constructor (url: string, id: string) {
         this.overlayURL = url;
         this.id = id;
-        this.overlay = new Konva.Image();
+        this.overlay = new Konva.Image({image: undefined});
         Konva.Image.fromURL(this.getURL(), (img) => {
             this.overlay.image(img.image());
             this.overlay.id(id);
