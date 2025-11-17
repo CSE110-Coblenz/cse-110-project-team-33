@@ -10,10 +10,10 @@ export class InventoryModel {
 
     constructor() {
         this.playerManager = new PlayerDataManager();
-        this.inventory = [new InventoryItem("crystal", "crystal.png", 150, 150), new InventoryItem("door", "door.png", 150, 150)];
-        // this.playerManager.getInventory();
+        this.inventory = [];
+        this.playerManager.getInventory(); // ADD TO INVENTORY
         this.currentIndex = 0;
-        this.level =  { type : "level1"}; // this.playerManager.getLevel();
+        this.level = this.playerManager.getLevel(); // { type : "level1"}; // your current level (!!)
     }
 
     public getLevel(): Screen | null {
