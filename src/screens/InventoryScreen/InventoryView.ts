@@ -27,6 +27,13 @@ export class InventoryView {
             fill: "#e3cba2",
         });
         this.group.add(bg);
+
+        Konva.Image.fromURL("/res/backpack.png", (image) => {
+            image.width(75).height(75);
+            image.x(10).y(10);
+            this.group.add(image);
+            this.group.getLayer()?.draw();
+        });
         
         // Add contentGroup once in constructor
         this.group.add(this.contentGroup);

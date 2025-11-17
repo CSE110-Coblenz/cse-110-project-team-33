@@ -79,7 +79,7 @@ class App implements ScreenSwitcher {
 		
 		// Hide menu and show inventory
 		this.menuController.hide();
-		this.inventoryController.getView().show(); // CHANGE THIS TO YOUR SPECIFIC PAGE (!!!)
+		this.level1Controller.getView().show(); // CHANGE THIS TO YOUR SPECIFIC PAGE (!!!)
 	}
 
 	switchToScreen(screen: Screen): void {
@@ -145,28 +145,28 @@ export class PlayerDataManager {
 		this.playerData = LocalStorageUtils.loadPlayerData();
 	}
 
-    public updatePlayerLevel(updatedLevel: number): void {
+    public updateLevel(updatedLevel: number): void {
 		if (this.playerData != null) {
 			this.playerData.level = updatedLevel;
 			this.savePlayerData();
 		}
     }
 
-	public updatePlayerCoins(updatedCoins: number): void {
+	public updateCoins(updatedCoins: number): void {
 		if (this.playerData != null) {
 			this.playerData.coins = updatedCoins;
 			this.savePlayerData();
 		}
     }
 
-	public loadPlayerInventory(): InventoryItem[] {
+	public loadInventory(): InventoryItem[] {
 		if (this.playerData != null) {
 			return this.playerData.inventory;
 		}
         return [];
     }
 
-	public updatePlayerInventory(updatedInventory: InventoryItem[]): void {
+	public updateInventory(updatedInventory: InventoryItem[]): void {
         if (this.playerData != null) {
 			this.playerData.inventory = updatedInventory;
 			this.savePlayerData();
