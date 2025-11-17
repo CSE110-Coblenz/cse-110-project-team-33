@@ -15,7 +15,7 @@ Sonia: Mini games converting radians to degrees/degrees to radians.
 What will I do?
 Cailey: Drag and drop from level to inventory.
 Connor: Start game initialize player data (level 1, 0 coins, empty inventory).
-Janeen: Load game UI and loading player data.
+Janeen: Level 3 UI and logic.
 Sonia: Mini game correct answer flow (updating coins, returning to level).
 
 Am I stuck?
