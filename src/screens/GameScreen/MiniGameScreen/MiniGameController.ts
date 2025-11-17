@@ -10,12 +10,20 @@ export class MiniGameController extends ScreenController {
     private model: MiniGameModel;
     private view: MiniGameView;
 
-    private targets: Target[] = [
+    private targets1: Target[] = [
         { label: "0°", angle: 0 },
         { label: "45°", angle: 45 },
         { label: "90°", angle: 90 },
         { label: "135°", angle: 135 },
         { label: "180°", angle: 180 },
+    ];
+
+    private targets2: Target[] = [
+        { label: "0 rad", angle: 0 },
+        { label: `${Math.PI / 4} rad`, angle: 45 },
+        { label: `${Math.PI / 2} rad`, angle: 90 },
+        { label: `${(3 * Math.PI) / 4} rad`, angle: 135 },
+        { label: `${Math.PI} rad`, angle: 180 },
     ];
     
 
@@ -26,7 +34,7 @@ export class MiniGameController extends ScreenController {
 
         // Initialize model and view
         this.model = new MiniGameModel();
-        this.model.initTargets(this.targets);
+        this.model.initTargets(this.targets1);
 
         this.view = new MiniGameView();
 
