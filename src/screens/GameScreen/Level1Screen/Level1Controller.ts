@@ -146,7 +146,7 @@ export class Level1Controller extends ScreenController {
             const pos = node.position();
             
             // Check if dropped in top-left corner (backpack area - 100x100 pixels)
-            if (pos.x <= 150 && pos.y <= 150) {
+            if (pos.x <= 50 && pos.y <= 50) {
                 if (action === "level") {
                     this.model.addToInventory({
                         name: "levelClue",
