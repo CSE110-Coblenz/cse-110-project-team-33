@@ -1,21 +1,17 @@
-/* File: Level2Controller.ts
- * Author: Connor Larmer
- * Created on: who even knows anymore
- * 
- * Summary: Level 2 controller class, not much else to say.
- *
- */
- 
-import { ScreenController } from "../../../types";
-import type { ScreenSwitcher } from "../../../types";
-import { Level2View } from "./Level2View"
-import { RoomView } from "./views/RoomView"
-import { SundialView } from "./views/SundialView"
+import Konva from "konva";
+
+import { ScreenController } from "../../../types.ts";
+import type { ScreenSwitcher } from "../../../types.ts";
+
+// import { Level2Model } from "./Level2Model.ts"
+import { Level2View } from "./Level2View.ts"
+import { RoomView } from "./views/RoomView.ts"
+import { SundialView } from "./views/SundialView.ts"
 
 
 export class Level2Controller extends ScreenController {
     private screenSwitcher: ScreenSwitcher;
-
+    
     /* Views */
     private levelView:  Level2View;
     private roomView:   RoomView;
