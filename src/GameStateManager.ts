@@ -13,7 +13,6 @@ import { LoadController } from "./screens/MenuScreen/LoadScreen/LoadController.t
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants";
 import { LocalStorageUtils } from "./LocalStorageUtils.ts";
 
-<<<<<<< HEAD
 import { PauseOverlay } from "./PauseOverlay.ts";
 /**
  * Main Application - Coordinates all screens
@@ -25,8 +24,6 @@ import { PauseOverlay } from "./PauseOverlay.ts";
  * Key concept: All screens are added to the same layer, but only one is
  * visible at a time. This is managed by the switchToScreen() method.
  */
-=======
->>>>>>> main
 class App implements ScreenSwitcher {
 	private stage: Konva.Stage;
 	private layer: Konva.Layer;
