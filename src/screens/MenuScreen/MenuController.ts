@@ -13,14 +13,38 @@ export class MenuController extends ScreenController {
 		super();
 		this.screenSwitcher = screenSwitcher;
 
-		this.view = new MenuView(() => this.handleClick());
+		this.view = new MenuView(
+			() => this.handleStartClick(),
+			() => this.handleLoadClick(),
+			() => this.handleExitClick()
+		  );
 	}
 
 	/**
 	 * Handle start button click
 	 */
 	private handleClick(): void {
-		this.screenSwitcher.switchToScreen({ type: "level1" }); // CHANGE THIS TO YOUR LEVEL
+		this.screenSwitcher.switchToScreen({ type: "inventory" }); // CHANGE THIS TO YOUR LEVEL
+	}
+	
+	private handleStartClick(): void {
+		this.screenSwitcher.switchToScreen({ type: "level1" }); 
+	}
+
+	/**
+	 * Handle start button click
+	 */
+	private handleLoadClick(): void {
+		this.screenSwitcher.switchToScreen({ type: "load" }); 
+		//how are we handling the loading for games?
+		// I can make a page for this 
+	}
+
+	/**
+	 * Handle start button click
+	 */
+	private handleExitClick(): void {
+		this.screenSwitcher.switchToScreen({ type: "exit" });
 	}
 
 	/**
