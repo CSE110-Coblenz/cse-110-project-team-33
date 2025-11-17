@@ -15,6 +15,17 @@ import { LoadController } from "./screens/MenuScreen/LoadScreen/LoadController.t
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants";
 import { LocalStorageUtils } from "./LocalStorageUtils.ts";
 
+import { PauseOverlay } from "./PauseOverlay.ts";
+/**
+ * Main Application - Coordinates all screens
+ *
+ * This class demonstrates screen management using Konva Groups.
+ * Each screen (Menu, Game, Results) has its own Konva.Group that can be
+ * shown or hidden independently.
+ *
+ * Key concept: All screens are added to the same layer, but only one is
+ * visible at a time. This is managed by the switchToScreen() method.
+ */
 class App implements ScreenSwitcher {
 	private stage: Konva.Stage;
 	private layer: Konva.Layer;
@@ -31,10 +42,12 @@ class App implements ScreenSwitcher {
 	private exitController: ExitController;
 	private loadController: LoadController;
 
+    private gamePauseOverlay: PauseOverlay;
+
 	constructor(container: string) {
 		// Initialize Konva stage (the main canvas)
 		this.stage = new Konva.Stage({
-			container,
+			container: container,
 			width: STAGE_WIDTH,
 			height: STAGE_HEIGHT,
 		});
@@ -43,6 +56,8 @@ class App implements ScreenSwitcher {
 		// Create a layer (screens will be added to this layer)
 		this.layer = new Konva.Layer();
 		this.stage.add(this.layer);
+		this.gamePauseOverlay = new PauseOverlay(this);
+
 
 		/* WORKAROUND: It seems that most browsers have some form of image
 		 * interpolation enabled, which blurs pixelated images as they are
@@ -79,17 +94,22 @@ class App implements ScreenSwitcher {
 		this.layer.add(this.exitController.getView().getGroup());
 		this.layer.add(this.loadController.getView().getGroup());
 
+        // Add the UI overlay last
+        this.layer.add(this.gamePauseOverlay.getGroup());
+        this.gamePauseOverlay.registerKeyEventListener(this.stage.container());
 		// Draw the layer (render everything to the canvas)
 		this.layer.draw();
 		this.menuController.getView().show();
+		this.gamePauseOverlay.setEnabled(false);
 
 		this.switchToScreen({type: "menu"});
 	}
 
 	switchToScreen(screen: Screen): void {
 		// Hide all screens first by setting their Groups to invisible
-		// this.menuController.hide();
+		this.menuController.hide();
 		this.introController.hide();
+		this.gamePauseOverlay.setEnabled(false);
         // this.settingsController.hide();
 		this.inventoryController.hide();
 		this.level1Controller.hide();
@@ -103,27 +123,34 @@ class App implements ScreenSwitcher {
 		switch (screen.type) {
 			case "menu":
 				this.menuController.show();
+		        this.gamePauseOverlay.setEnabled(false);
 				break;
             case "settings":
 				// this.settingsController.show();
 				break;
 			case "intro":
 			    this.introController.show();
+   		        this.gamePauseOverlay.setEnabled(false);
 			    break;
 			case "inventory":
 				this.inventoryController.show();
+		        this.gamePauseOverlay.setEnabled(false);
 				break;
 			case "level1":
 				this.level1Controller.show();
+		        this.gamePauseOverlay.setEnabled(true);
 				break;
             case "level2":
                 this.level2Controller.show();
+		        this.gamePauseOverlay.setEnabled(true);
                 break;
             case "level3":
                 // this.level3Controller.show();
+		        this.gamePauseOverlay.setEnabled(true);
                 break;
             case "level4":
                 // this.level4Controller.show();
+		        this.gamePauseOverlay.setEnabled(true);
                 break;
 			case "result":
 				// this.resultsController.show();
@@ -135,6 +162,7 @@ class App implements ScreenSwitcher {
 				this.loadController.show();
 				break;
 		}
+		this.gamePauseOverlay.renderOnTop();
 		this.layer.draw();
 	}
 }
