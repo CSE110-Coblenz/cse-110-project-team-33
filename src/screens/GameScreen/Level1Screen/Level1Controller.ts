@@ -102,10 +102,7 @@ export class Level1Controller extends ScreenController {
             this.view.getGroup().getLayer()?.draw();
         }, 500);
     }
-
-    /**
-     * Get the view group
-     */
+    
     getView(): Level1View {
         return this.view;
     }

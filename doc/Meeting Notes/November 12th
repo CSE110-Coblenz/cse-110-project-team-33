@@ -1,0 +1,24 @@
+Sprint 2 Meeting
+Wednesday, November 12th at 1 PM
+
+What did I do?
+Cailey: Inventory MVC access from level 1. Helping with debugging level 3.
+Connor: Start game button and intro sequence which leads to level 1.
+Janeen: Switching between different views for level 3. Room designs.
+Sonia: Code review for player data setup and inventory MVC.
+
+What will I do?
+Cailey: Adding more to inventory view. Changing player data to manage only one player.
+Connor: Clean up pause menu overlay and add menu button maybe.
+Janeen: Work on puzzle/trig logic for level 3. Work on load game.
+Sonia: Mini games UI and logic.
+
+Am I stuck?
+Cailey: No.
+Connor: No.
+Janeen: No.
+Sonia: .DS_Store is causing merge conflicts -> FIXED.
+
+Other Notes:
+- Load game will only handle one player.
+- Start game starts game from beginning for one player.
