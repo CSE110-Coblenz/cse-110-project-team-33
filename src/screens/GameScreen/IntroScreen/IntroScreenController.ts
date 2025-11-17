@@ -58,6 +58,7 @@ export class IntroScreenController extends ScreenController {
             return;
         }
         clearInterval(this.bgScrollTimer);
+        this.bgScrollTimer = null;
     }
 
     /* Handles text switching & loading level 2 */
@@ -73,9 +74,19 @@ export class IntroScreenController extends ScreenController {
         } else if(this.currentTextPage == 5) {
             /* Final behavior of button, switch screen */
             this.screenSwitcher.switchToScreen({type: "level1"});
+            this.reset();
         }
     }
 
+    reset(): void {
+        this.stopBackgroundScrollAnimation();
+        this.currentTextPage = 1;
+        this.bgScrollOffset = 0;
+        this.view.switchToPage(this.currentTextPage);
+        this.view.setButtonTextureToNext();
+        this.startBackgroundScrollAnimation();
+        
+    }
     getView(): IntroScreenView {
         return this.view;
     }

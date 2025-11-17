@@ -9,6 +9,7 @@
 
 import Konva from 'konva';
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts"
+import type { ScreenSwitcher } from "./types.ts"
 
 export class PauseOverlay {
 
@@ -16,12 +17,16 @@ export class PauseOverlay {
     private pauseButtonSprite: Konva.Image;
     private pausedOverlay: Konva.Rect;
     private state: boolean;
+    private screenSwitcher: ScreenSwitcher;
+    private resumeBtn: Konva.Rect;
+    private exitBtn: Konva.Rect;
 
     static get getPauseURL() { return "/res/pause_icon.png"; }
     static get cornerPadding() { return 16; }
     static get defaultSize() { return 32; }
     
-    constructor(): PauseOverlay {
+    constructor(screenSwitcher: ScreenSwitcher): PauseOverlay {
+        this.screenSwitcher = screenSwitcher;
         this.group = new Konva.Group();
         this.pauseButtonSprite = new Konva.Image();
         this.state = false;
@@ -51,10 +56,41 @@ export class PauseOverlay {
             opacity: 0.5,
             visible: false
         });
+
+        this.resumeBtn = new Konva.Rect({
+            x: STAGE_WIDTH/2,
+            y: STAGE_HEIGHT/2 - 128,
+            width: 128,
+            height: 64,
+            fill: "blue",
+            offsetX: 64,
+            visible: false
+        });
+
+        this.exitBtn = new Konva.Rect({
+            x: STAGE_WIDTH/2,
+            y: STAGE_HEIGHT/2,
+            width: 128,
+            height: 64,
+            fill: "red",
+            offsetX: 64,
+            visible: false
+        });
+
+        this.resumeBtn.on("click", () => {
+            this.togglePauseButton();
+        });
+
+        this.exitBtn.on("click", () => {
+            this.togglePauseButton();
+            this.screenSwitcher.switchToScreen({type: "menu"});
+        });
         
         this.pauseButtonSprite.on("click", () => this.togglePauseButton());
         this.group.add(this.pausedOverlay);
         this.group.add(this.pauseButtonSprite);
+        this.group.add(this.resumeBtn);
+        this.group.add(this.exitBtn);
         this.group.visible(true);
     }
 
@@ -62,10 +98,14 @@ export class PauseOverlay {
         if(this.state) {
             this.pauseButtonSprite.cropX(0);
             this.pausedOverlay.visible(false);
+            this.resumeBtn.visible(false);
+            this.exitBtn.visible(false);
             this.state = false;
         } else {
             this.pauseButtonSprite.cropX(16);
             this.pausedOverlay.visible(true);
+            this.resumeBtn.visible(true);
+            this.exitBtn.visible(true);
             this.state = true;
         }
     }
@@ -84,5 +124,17 @@ export class PauseOverlay {
     
     getGroup(): Konva.Group {
         return this.group;
+    }
+
+    setEnabled(state: boolean) {
+        this.group.visible(state);
+    }
+
+    getEnabled(): boolean {
+        return this.group.visible();
+    }
+
+    renderOnTop(): void {
+        this.group.moveToTop();
     }
 }

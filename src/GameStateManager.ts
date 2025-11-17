@@ -56,7 +56,7 @@ class App implements ScreenSwitcher {
 		// Create a layer (screens will be added to this layer)
 		this.layer = new Konva.Layer();
 		this.stage.add(this.layer);
-		this.gamePauseOverlay = new PauseOverlay();
+		this.gamePauseOverlay = new PauseOverlay(this);
 
 
 		/* WORKAROUND: It seems that most browsers have some form of image
@@ -100,14 +100,16 @@ class App implements ScreenSwitcher {
 		// Draw the layer (render everything to the canvas)
 		this.layer.draw();
 		this.menuController.getView().show();
+		this.gamePauseOverlay.setEnabled(false);
 
 		this.switchToScreen({type: "menu"});
 	}
 
 	switchToScreen(screen: Screen): void {
 		// Hide all screens first by setting their Groups to invisible
-		// this.menuController.hide();
+		this.menuController.hide();
 		this.introController.hide();
+		this.gamePauseOverlay.setEnabled(false);
         // this.settingsController.hide();
 		this.inventoryController.hide();
 		this.level1Controller.hide();
@@ -121,27 +123,34 @@ class App implements ScreenSwitcher {
 		switch (screen.type) {
 			case "menu":
 				this.menuController.show();
+		        this.gamePauseOverlay.setEnabled(false);
 				break;
             case "settings":
 				// this.settingsController.show();
 				break;
 			case "intro":
 			    this.introController.show();
+   		        this.gamePauseOverlay.setEnabled(false);
 			    break;
 			case "inventory":
 				this.inventoryController.show();
+		        this.gamePauseOverlay.setEnabled(false);
 				break;
 			case "level1":
 				this.level1Controller.show();
+		        this.gamePauseOverlay.setEnabled(true);
 				break;
             case "level2":
                 this.level2Controller.show();
+		        this.gamePauseOverlay.setEnabled(true);
                 break;
             case "level3":
                 // this.level3Controller.show();
+		        this.gamePauseOverlay.setEnabled(true);
                 break;
             case "level4":
                 // this.level4Controller.show();
+		        this.gamePauseOverlay.setEnabled(true);
                 break;
 			case "result":
 				// this.resultsController.show();
@@ -153,6 +162,7 @@ class App implements ScreenSwitcher {
 				this.loadController.show();
 				break;
 		}
+		this.gamePauseOverlay.renderOnTop();
 		this.layer.draw();
 	}
 }
