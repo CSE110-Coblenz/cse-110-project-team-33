@@ -4,19 +4,19 @@
 
 export class TrigUtil {
     randomOpposite(): number {
-        return Math.random() * (20 - 10) + 10;
+        return Math.floor(Math.random() * (20 - 10) + 10);
     }
 
     randomAdjacent(): number {
-        return Math.random() * (30 - 20) + 20;
+        return Math.floor(Math.random() * (30 - 20) + 20);
     }
 
     randomHypotenuse(): number {
-        return Math.random() * (40 - 30) + 30;
+        return Math.floor(Math.random() * (40 - 30) + 30);
     }
 
     randomAngle(): number {
-        return Math.random() * (85 - 45) + 45;
+        return Math.floor(Math.random() * (85 - 45) + 45);
     }
 
     // New helper function to convert degrees to radians

@@ -29,6 +29,8 @@ export class Level1Controller extends ScreenController {
         this.view = new Level1View();
         this.stage = this.screenSwitcher.getStage();
 
+        this.view.setCoins(this.model.getCoins());
+
         this.problemType = this.model.getProblemType();
         this.correctAnswerValue = this.model.getAnswer(); // Get the correct answer from the model
 
@@ -61,15 +63,17 @@ export class Level1Controller extends ScreenController {
         const option2Node = this.view.getOption2TextNode();
         const option3Node = this.view.getOption3TextNode();
         const backpackNode = this.view.getBackpackNode();
+        const doorNode = this.view.getDoor();
 
         // Add a pointer cursor to indicate clickability
-        this.addClickBehavior(option1Node, this.option1);
-        this.addClickBehavior(option2Node, this.option2);
-        this.addClickBehavior(option3Node, this.option3);
-        this.addClickBehavior(backpackNode);
+        this.addClickBehavior(option1Node, this.option1, "mc");
+        this.addClickBehavior(option2Node, this.option2, "mc");
+        this.addClickBehavior(option3Node, this.option3, "mc");
+        this.addClickBehavior(backpackNode, undefined, "backpack");
+        this.addClickBehavior(doorNode, undefined, "door");
     }
     
-    private addClickBehavior(node: any, optionValue?: number): void {
+    private addClickBehavior(node: any, optionValue?: number, action?: string): void {
         node.on("mouseover", () => {
             document.body.style.cursor = "pointer";
         });
@@ -80,12 +84,24 @@ export class Level1Controller extends ScreenController {
         
         node.on("click", () => {
             // Check if the clicked option's value matches the correct answer
-            if (optionValue === undefined) {
+            if (action == "backpack") {
                 this.screenSwitcher.switchToScreen({ type: "inventory" });
-            } else if (optionValue === this.correctAnswerValue) {
-                this.handleCorrectAnswer(node);
-            } else {
-                this.handleWrongAnswer(node);
+            }
+
+            if (action == "door") {
+                if (this.model.getSuccess() == true) {
+                    this.model.addToCoins(50);
+                    this.screenSwitcher.switchToScreen({ type: "level2" });
+                }
+            }
+            
+            if (action == "mc") {
+                if (optionValue === this.correctAnswerValue) {
+                    this.handleCorrectAnswer(node);
+                    this.view.animateMovePillar();
+                } else {
+                    this.handleWrongAnswer(node);
+                }
             }
         });
     }
@@ -148,12 +164,37 @@ export class Level1Controller extends ScreenController {
             // Check if dropped in top-left corner (backpack area - 100x100 pixels)
             if (pos.x <= 50 && pos.y <= 50) {
                 if (action === "level") {
-                    this.model.addToInventory({
+                    if (this.problemType == 1 || this.problemType == 2) {
+                        this.model.addToInventory({
                         name: "levelClue",
                         image: "pillar_outline.png",
                         width: 375,
                         height: 400,
-                    });
+                        text1: String(this.model.getAngle()),
+                        text1X: STAGE_WIDTH / 2 + 120,
+                        text1Y: STAGE_HEIGHT / 2 + 140,
+                        text2: String(this.model.getOpposite()),
+                        text2X: STAGE_WIDTH / 2 + 10,
+                        text2Y: STAGE_HEIGHT / 2 + 20,
+                        text3: String(this.model.getAdjacent()),
+                        text3X: STAGE_WIDTH / 2 + 100,
+                        text3Y: STAGE_HEIGHT / 2 + 180});
+                    } else {
+                        this.model.addToInventory({
+                        name: "levelClue",
+                        image: "pillar_outline.png",
+                        width: 375,
+                        height: 400,
+                        text1: String(this.model.getAngle()),
+                        text1X: STAGE_WIDTH / 2 + 120,
+                        text1Y: STAGE_HEIGHT / 2 + 140,
+                        text2: String(this.model.getOpposite()),
+                        text2X: STAGE_WIDTH / 2 + 10,
+                        text2Y: STAGE_HEIGHT / 2 + 20,
+                        text3: String(this.model.getHypotenuse()),
+                        text3X: STAGE_WIDTH / 2 + 120,
+                        text3Y: STAGE_HEIGHT / 2 + 10});
+                    }
                 } else if (action === "mg") {
                     this.model.addToInventory({
                         name: "mgClue",
@@ -178,6 +219,8 @@ export class Level1Controller extends ScreenController {
         this.view.getOption1TextNode().off("click");
         this.view.getOption2TextNode().off("click");
         this.view.getOption3TextNode().off("click");
+
+        this.model.setSuccess(true);
         
         this.view.getGroup().getLayer()?.draw(); // Redraw the stage
         

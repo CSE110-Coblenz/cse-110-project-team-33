@@ -97,22 +97,25 @@ export class InventoryView {
                 this.buttonsCreated = true;
             }
 
-            // Load the inventory item image
-            Konva.Image.fromURL("/res/" + inventoryItem.image, (image) => {
-                image.width(inventoryItem.width).height(inventoryItem.height);
-                image.x(STAGE_WIDTH / 2 - inventoryItem.width / 2).y(STAGE_HEIGHT / 2 - inventoryItem.height / 2);
-                this.contentGroup.add(image);
-                this.group.getLayer()?.draw();
+            // Load the inventory item image and wait for it
+            await new Promise<void>((resolve) => {
+                Konva.Image.fromURL("/res/" + inventoryItem.image, (image) => {
+                    image.width(inventoryItem.width).height(inventoryItem.height);
+                    image.x(STAGE_WIDTH / 2 - inventoryItem.width / 2).y(STAGE_HEIGHT / 2 - inventoryItem.height / 2);
+                    this.contentGroup.add(image);
+                    this.group.getLayer()?.draw();
+                    resolve();
+                });
             });
             
-            // Add text1 if it exists
+            // Now add text AFTER image has loaded - text will render on top
             if (inventoryItem.text1) {
                 const text1 = new Konva.Text({
                     x: inventoryItem.text1X || STAGE_WIDTH / 2,
                     y: inventoryItem.text1Y || STAGE_HEIGHT / 2,
                     text: inventoryItem.text1,
-                    fontSize: 24,
-                    fontFamily: "Arial",
+                    fontSize: 18,
+                    fontFamily: "Margarine",
                     fill: "#000",
                     align: "center",
                     offsetX: 100
@@ -120,14 +123,13 @@ export class InventoryView {
                 this.contentGroup.add(text1);
             }
             
-            // Add text2 if it exists
             if (inventoryItem.text2) {
                 const text2 = new Konva.Text({
                     x: inventoryItem.text2X || STAGE_WIDTH / 2,
                     y: inventoryItem.text2Y || STAGE_HEIGHT / 2,
                     text: inventoryItem.text2,
-                    fontSize: 24,
-                    fontFamily: "Arial",
+                    fontSize: 18,
+                    fontFamily: "Margarine",
                     fill: "#000",
                     align: "center",
                     offsetX: 100
@@ -135,14 +137,13 @@ export class InventoryView {
                 this.contentGroup.add(text2);
             }
             
-            // Add text3 if it exists
             if (inventoryItem.text3) {
                 const text3 = new Konva.Text({
                     x: inventoryItem.text3X || STAGE_WIDTH / 2,
                     y: inventoryItem.text3Y || STAGE_HEIGHT / 2,
                     text: inventoryItem.text3,
-                    fontSize: 24,
-                    fontFamily: "Arial",
+                    fontSize: 18,
+                    fontFamily: "Margarine",
                     fill: "#000",
                     align: "center",
                     offsetX: 100

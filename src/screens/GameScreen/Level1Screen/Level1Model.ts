@@ -21,12 +21,29 @@ export class Level1Model {
 
     private playerDataManager: PlayerDataManager;
     private inventory: InventoryItem[];
+    private coins: number | null;
+
+    private success: boolean;
 
     constructor(playerDataManager: PlayerDataManager) {
         this.playerDataManager = playerDataManager;
         this.playerDataManager.setLevel({type : "level1"});
         this.inventory = [];
+        if (playerDataManager.getCoins() != null) {
+            this.coins = playerDataManager.getCoins();
+        } else {
+            this.coins = 0;
+        }
         this.playerDataManager.clearInventory();
+        this.success = false;
+    }
+
+    setSuccess(success: boolean): void {
+        this.success = success;
+    }
+
+    getSuccess(): boolean {
+        return this.success;
     }
 
     getInventory(): InventoryItem[] {
@@ -38,6 +55,19 @@ export class Level1Model {
         console.log(this.inventory);
         this.playerDataManager.setInventory(this.inventory);
         console.log(this.playerDataManager.getInventory());
+    }
+
+    getCoins(): number {
+        if (this.coins != null) {
+            return this.coins;
+        }
+        return 0;
+    }
+
+    addToCoins(addedCoins: number) {
+        if (this.coins != null) {
+            this.playerDataManager.setCoins(this.coins + addedCoins);
+        }
     }
 
     getOpposite(): number {
