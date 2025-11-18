@@ -26,7 +26,6 @@ export class Level1Controller extends ScreenController {
         this.problemType = this.model.getProblemType();
         this.correctAnswerValue = this.model.getAnswer(); // Get the correct answer from the model
 
-        console.log(this.problemType);
         if (this.problemType == 1 || this.problemType == 2) {
             this.view.setProblemText("What is the length of the fallen pillar?");
         } else if (this.problemType == 3) {
@@ -41,24 +40,30 @@ export class Level1Controller extends ScreenController {
 
         this.option3 = this.model.getTOA();
         this.view.setOption3Text((this.option3).toString());
-        
-        this.setupClickListeners();
 
-        this.view.show();
+        this.initialize();
+    }
+
+    private async initialize(): Promise<void> {
+        await this.view.waitForLoadBackground();
+        this.setupClickListeners();
+        this.setupMoveListeners();
     }
     
     private setupClickListeners(): void {
         const option1Node = this.view.getOption1TextNode();
         const option2Node = this.view.getOption2TextNode();
         const option3Node = this.view.getOption3TextNode();
+        const backpackNode = this.view.getBackpackNode();
 
         // Add a pointer cursor to indicate clickability
         this.addClickBehavior(option1Node, this.option1);
         this.addClickBehavior(option2Node, this.option2);
         this.addClickBehavior(option3Node, this.option3);
+        this.addClickBehavior(backpackNode);
     }
     
-    private addClickBehavior(node: Konva.Text, optionValue: number): void {
+    private addClickBehavior(node: any, optionValue?: number): void {
         node.on("mouseover", () => {
             document.body.style.cursor = "pointer";
         });
@@ -69,7 +74,9 @@ export class Level1Controller extends ScreenController {
         
         node.on("click", () => {
             // Check if the clicked option's value matches the correct answer
-            if (optionValue === this.correctAnswerValue) {
+            if (optionValue === undefined) {
+                this.screenSwitcher.switchToScreen({ type: "inventory" });
+            } else if (optionValue === this.correctAnswerValue) {
                 this.handleCorrectAnswer(node);
             } else {
                 this.handleWrongAnswer(node);
@@ -77,8 +84,20 @@ export class Level1Controller extends ScreenController {
         });
     }
 
+    private setupMoveListeners(): void {
+        const levelClueNode = this.view.getLevelClueNode();
+        const mgClueNode = this.view.getMGClueNode();
+
+        this.addMoveBehavior(levelClueNode, "level");
+        this.addMoveBehavior(mgClueNode, "mg");
+    }
+    
+    private addMoveBehavior(node: any, action: string): void {
+        return;
+        // TO DO
+    }
+
     private handleCorrectAnswer(node: Konva.Text): void {
-        node.text("Correct!"); // Change the text
         node.fill("green"); // Change the color
         this.model.setIsCompleted(true); // Mark the level as complete
         

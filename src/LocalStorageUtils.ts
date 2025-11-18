@@ -1,20 +1,20 @@
-import type {PlayerData, PlayersData} from "./types.ts";
+import type {PlayerData} from "./types.ts";
 
 const STORAGE_KEY = 'playerData';
 
 export class LocalStorageUtils {
-    public static savePlayersData(playersData: PlayersData): void {
+    public static savePlayerData(playerData: PlayerData): void {
         try {
             // convert player data to json string
-            const jsonString = JSON.stringify(playersData);
+            const jsonString = JSON.stringify(playerData);
             localStorage.setItem(STORAGE_KEY, jsonString);
             console.log("All player data saved.");
         } catch (error) {
-            console.error("Error saving all player data: ", error);
+            console.error("Error saving player data: ", error);
         }
     }
 
-    public static loadPlayersData(): PlayersData | null {
+    public static loadPlayerData(): PlayerData | null {
         try {
             const jsonString = localStorage.getItem(STORAGE_KEY);
 
@@ -22,9 +22,9 @@ export class LocalStorageUtils {
                 return null;
             }
 
-            return JSON.parse(jsonString) as PlayersData;
+            return JSON.parse(jsonString) as PlayerData;
         } catch (error) {
-            console.error("Error loading state from localStorage: ",  error);
+            console.error("Error loading player data: ",  error);
             return null;
         }
     }

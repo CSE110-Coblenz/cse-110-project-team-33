@@ -1,0 +1,25 @@
+Sprint 3 Meeting
+Monday, November 17th
+
+Notes:
+- Created issues for sprint 3
+- Assigned issues to people
+- Assigned priority and weight to issues
+----------------------------------------------------------------------------
+What did I do?
+Cailey: Player data and inventory MVC.
+Connor: Completed start game UI and transition to level 1.
+Janeen: Design for buttons, levels, and small items.
+Sonia: Mini games converting radians to degrees/degrees to radians.
+
+What will I do?
+Cailey: Drag and drop from level to inventory.
+Connor: Start game initialize player data (level 1, 0 coins, empty inventory).
+Janeen: Level 3 UI and logic.
+Sonia: Mini game correct answer flow (updating coins, returning to level).
+
+Am I stuck?
+Cailey: No.
+Connor: No.
+Janeen: No.
+Sonia: No.
