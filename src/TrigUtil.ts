@@ -19,6 +19,10 @@ export class TrigUtil {
         return Math.floor(Math.random() * (85 - 45) + 45);
     }
 
+    randomDegree(): number {
+        return Math.floor(Math.random() * (0 - 360) + 360);
+    }
+
     // New helper function to convert degrees to radians
     private toRadians(degrees: number): number {
         return degrees * (Math.PI / 180);

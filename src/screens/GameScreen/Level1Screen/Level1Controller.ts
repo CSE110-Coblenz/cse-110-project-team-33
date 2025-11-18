@@ -3,6 +3,7 @@ import { Level1View } from "./Level1View.ts";
 import { ScreenController } from "../../../types.ts";
 import { PlayerDataManager } from "../../../GameStateManager.ts";
 import type { ScreenSwitcher, InventoryItem} from "../../../types.ts";
+import {TrigUtil} from "../../../TrigUtil.ts"
 import Konva from "konva";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
 
@@ -14,6 +15,7 @@ export class Level1Controller extends ScreenController {
     private problemType: number;
     private correctAnswerValue: number; // Store the actual answer
     private stage: Konva.Stage;
+    private trigUtil: TrigUtil;
     
     // The option values are still set up in the constructor below
     private option1: number;
@@ -30,7 +32,7 @@ export class Level1Controller extends ScreenController {
         this.stage = this.screenSwitcher.getStage();
 
         this.view.setCoins(this.model.getCoins());
-
+        this.trigUtil = new TrigUtil();
         this.problemType = this.model.getProblemType();
         this.correctAnswerValue = this.model.getAnswer(); // Get the correct answer from the model
 
@@ -200,8 +202,16 @@ export class Level1Controller extends ScreenController {
                         name: "mgClue",
                         image: "Clue.png",
                         width: 375,
-                        height: 400
-                    });
+                        height: 400,
+                        text1: String(this.trigUtil.randomDegree() + "º"),
+                        text1X: STAGE_WIDTH / 2 - 100,
+                        text1Y: STAGE_HEIGHT / 2,
+                        text2: String(this.trigUtil.randomDegree() + "º"),
+                        text2X: STAGE_WIDTH / 2,
+                        text2Y: STAGE_HEIGHT / 2,
+                        text3: String(this.trigUtil.randomDegree() + "º"),
+                        text3X: STAGE_WIDTH / 2 + 100,
+                        text3Y: STAGE_HEIGHT / 2});
                 }
                 
                 // Remove the node from the stage
