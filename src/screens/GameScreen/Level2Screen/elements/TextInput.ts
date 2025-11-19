@@ -7,8 +7,8 @@
  */
 
 import Konva from "konva";
-import type { Element } from "./Element.ts";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../../constants.ts";
+import type { Element } from "./Element";
+// import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../../constants";
 
 export class TextInput implements Element {
 
@@ -59,14 +59,14 @@ export class TextInput implements Element {
 
         this.group.on("click", () => {
             const textarea = document.createElement("textarea");
-            document.getElementsByClassName("container").appendChild(textarea);
+//            document.getElementsByClassName("container").appendChild(textarea);
 
             textarea.value = "AAA";
             textarea.style.position = 'absolute';
             textarea.style.top = this.xPos + "px";
             textarea.style.left = this.yPos + "px";
             textarea.style.width = this.getDefaultWidth() + "px";
-            textarea.style.height = this.getDefaultheight() + "px";
+            textarea.style.height = this.getDefaultHeight() + "px";
             textarea.style.fontSize = this.text.fontSize() + 'px';
             textarea.style.color = "red";
             textarea.focus();

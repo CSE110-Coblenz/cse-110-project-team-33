@@ -1,4 +1,5 @@
 import type { Group } from "konva/lib/Group";
+import Konva from "konva";
 
 export interface View {
 	getGroup(): Group;
@@ -9,11 +10,13 @@ export interface View {
 export type Screen =
 	| { type: "menu" }
 	| { type: "settings"}
+	| { type: "intro" }
 	| { type: "inventory"}
 	| { type: "level1" }
     | { type: "level2" }
     | { type: "level3" }
     | { type: "level4" }
+	| { type: "minigame" }
 	| { type: "result"}
 	| { type: "exit"}
 	| { type: "load"};
@@ -32,14 +35,27 @@ export abstract class ScreenController {
 
 export interface ScreenSwitcher {
 	switchToScreen(screen: Screen): void;
+    getStage(): Konva.Stage;
+}
+
+export interface InventoryItem {
+    name: string;
+    image: string;
+    width: number;
+    height: number;
+    text1?: string;
+    text2?: string;
+    text3?: string;
+    text1X?: number;
+    text1Y?: number;
+    text2X?: number;
+    text2Y?: number;
+    text3X?: number;
+    text3Y?: number;
 }
 
 export interface PlayerData {
-	id: string;
-	name: string;
-	level: number;
+	level: Screen;
 	coins: number;
-	inventory: string[];
+	inventory: InventoryItem[];
 }
-
-export type PlayersData = PlayerData[];
