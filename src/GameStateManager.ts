@@ -30,6 +30,8 @@ class App implements ScreenSwitcher {
 	private stage: Konva.Stage;
 	private layer: Konva.Layer;
 
+	private playerDataManager: PlayerDataManager;
+
     private menuController: MenuController;
     private introController: IntroScreenController;
     // private settingsController: SettingsController;
@@ -53,6 +55,7 @@ class App implements ScreenSwitcher {
 			height: STAGE_HEIGHT,
 		});
 
+		this.playerDataManager = new PlayerDataManager();
 
 		// Create a layer (screens will be added to this layer)
 		this.layer = new Konva.Layer();
@@ -71,9 +74,9 @@ class App implements ScreenSwitcher {
 		// Each controller manages a Model, View, and handles user interactions
         this.menuController = new MenuController(this);
 		// this.settingsController = new SettingsController(this);
-		this.inventoryController = new InventoryController(this);
-        this.level1Controller = new Level1Controller(this);
-        this.level2Controller = new Level2Controller(this);
+		this.inventoryController = new InventoryController(this, this.playerDataManager);
+        this.level1Controller = new Level1Controller(this, this.playerDataManager);
+        // this.level2Controller = new Level2Controller(this);
         this.introController = new IntroScreenController(this);
         // this.level3Controller = new Level3Controller(this);
         // this.level4Controller = new Level4Controller(this);
@@ -105,7 +108,7 @@ class App implements ScreenSwitcher {
 		this.menuController.getView().show();
 		this.gamePauseOverlay.setEnabled(false);
 
-		this.switchToScreen({type: "menu"});
+		this.switchToScreen({type: "level1"});
 	}
 
 	switchToScreen(screen: Screen): void {
@@ -145,8 +148,8 @@ class App implements ScreenSwitcher {
 		        this.gamePauseOverlay.setEnabled(true);
 				break;
             case "level2":
-                this.level2Controller.show();
-		        this.gamePauseOverlay.setEnabled(true);
+                // this.level2Controller.show();
+		        // this.gamePauseOverlay.setEnabled(true);
                 break;
             case "level3":
                 // this.level3Controller.show();
@@ -172,13 +175,32 @@ class App implements ScreenSwitcher {
 		this.gamePauseOverlay.renderOnTop();
 		this.layer.draw();
 	}
+
+	getStage(): Konva.Stage {
+		return this.stage;
+	}
 }
 
 export class PlayerDataManager {
 	private playerData: PlayerData | null;
 
 	constructor() {
-		this.playerData = LocalStorageUtils.loadPlayerData();
+		const loadedData = LocalStorageUtils.loadPlayerData();
+		
+		// If no data exists, create default player data
+		if (loadedData === null) {
+			console.log("No player data found, creating new player data");
+			this.playerData = {
+				level: { type: "level1" },
+				coins: 0,
+				inventory: []
+			};
+			// Save the initial data
+			LocalStorageUtils.savePlayerData(this.playerData);
+		} else {
+			console.log("Loaded existing player data:", loadedData);
+			this.playerData = loadedData;
+		}
 	}
 
 	public getLevel(): Screen | null {
@@ -222,6 +244,13 @@ export class PlayerDataManager {
         if (this.playerData != null) {
 			this.playerData.inventory = updatedInventory;
 			LocalStorageUtils.savePlayerData(this.playerData);
+		}
+    }
+
+	public clearInventory(): void {
+		if (this.playerData != null) {
+        	this.playerData.inventory = [];
+        	LocalStorageUtils.savePlayerData(this.playerData);
 		}
     }
 }

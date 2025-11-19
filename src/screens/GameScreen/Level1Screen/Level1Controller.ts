@@ -1,28 +1,38 @@
 import { Level1Model } from "./Level1Model.ts";
 import { Level1View } from "./Level1View.ts";
 import { ScreenController } from "../../../types.ts";
-import type { ScreenSwitcher } from "../../../types.ts";
+import { PlayerDataManager } from "../../../GameStateManager.ts";
+import type { ScreenSwitcher, InventoryItem} from "../../../types.ts";
+import {TrigUtil} from "../../../TrigUtil.ts"
 import Konva from "konva";
+import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
 
 export class Level1Controller extends ScreenController {
     private screenSwitcher: ScreenSwitcher;
+    private playerDataManager: PlayerDataManager;
     private model: Level1Model;
     private view: Level1View;
     private problemType: number;
     private correctAnswerValue: number; // Store the actual answer
+    private stage: Konva.Stage;
+    private trigUtil: TrigUtil;
     
     // The option values are still set up in the constructor below
     private option1: number;
     private option2: number;
     private option3: number;
 
-    constructor(screenSwitcher: ScreenSwitcher) {
+    constructor(screenSwitcher: ScreenSwitcher,  playerDataManager: PlayerDataManager) {
         super();
         this.screenSwitcher = screenSwitcher;
+        this.playerDataManager = playerDataManager;
 
-        this.model = new Level1Model();
+        this.model = new Level1Model(playerDataManager);
         this.view = new Level1View();
+        this.stage = this.screenSwitcher.getStage();
 
+        this.view.setCoins(this.model.getCoins());
+        this.trigUtil = new TrigUtil();
         this.problemType = this.model.getProblemType();
         this.correctAnswerValue = this.model.getAnswer(); // Get the correct answer from the model
 
@@ -55,15 +65,17 @@ export class Level1Controller extends ScreenController {
         const option2Node = this.view.getOption2TextNode();
         const option3Node = this.view.getOption3TextNode();
         const backpackNode = this.view.getBackpackNode();
+        const doorNode = this.view.getDoor();
 
         // Add a pointer cursor to indicate clickability
-        this.addClickBehavior(option1Node, this.option1);
-        this.addClickBehavior(option2Node, this.option2);
-        this.addClickBehavior(option3Node, this.option3);
-        this.addClickBehavior(backpackNode);
+        this.addClickBehavior(option1Node, this.option1, "mc");
+        this.addClickBehavior(option2Node, this.option2, "mc");
+        this.addClickBehavior(option3Node, this.option3, "mc");
+        this.addClickBehavior(backpackNode, undefined, "backpack");
+        this.addClickBehavior(doorNode, undefined, "door");
     }
     
-    private addClickBehavior(node: any, optionValue?: number): void {
+    private addClickBehavior(node: any, optionValue?: number, action?: string): void {
         node.on("mouseover", () => {
             document.body.style.cursor = "pointer";
         });
@@ -74,12 +86,24 @@ export class Level1Controller extends ScreenController {
         
         node.on("click", () => {
             // Check if the clicked option's value matches the correct answer
-            if (optionValue === undefined) {
+            if (action == "backpack") {
                 this.screenSwitcher.switchToScreen({ type: "inventory" });
-            } else if (optionValue === this.correctAnswerValue) {
-                this.handleCorrectAnswer(node);
-            } else {
-                this.handleWrongAnswer(node);
+            }
+
+            if (action == "door") {
+                if (this.model.getSuccess() == true) {
+                    this.model.addToCoins(50);
+                    this.screenSwitcher.switchToScreen({ type: "level2" });
+                }
+            }
+            
+            if (action == "mc") {
+                if (optionValue === this.correctAnswerValue) {
+                    this.handleCorrectAnswer(node);
+                    this.view.animateMovePillar();
+                } else {
+                    this.handleWrongAnswer(node);
+                }
             }
         });
     }
@@ -92,9 +116,109 @@ export class Level1Controller extends ScreenController {
         this.addMoveBehavior(mgClueNode, "mg");
     }
     
-    private addMoveBehavior(node: any, action: string): void {
-        return;
-        // TO DO
+    private addMoveBehavior(node: Konva.Image, action: string): void {
+        node.draggable(true);
+        
+        // Constrain dragging within stage boundaries
+        node.dragBoundFunc(function(pos) {
+            const nodeWidth = node.width();
+            const nodeHeight = node.height();
+            
+            // Calculate boundaries
+            const minX = 0;
+            const minY = 0;
+            const maxX = STAGE_WIDTH - nodeWidth;
+            const maxY = STAGE_HEIGHT - nodeHeight;
+            
+            // Constrain position
+            const newX = Math.max(minX, Math.min(pos.x, maxX));
+            const newY = Math.max(minY, Math.min(pos.y, maxY));
+            
+            return {
+                x: newX,
+                y: newY
+            };
+        });
+        
+        node.on("mouseover", () => {
+            document.body.style.cursor = "grab";
+        });
+        
+        node.on("mouseout", () => {
+            document.body.style.cursor = "default";
+        });
+        
+        node.on("dragstart", () => {
+            document.body.style.cursor = "grabbing";
+            console.log("drag start");
+        });
+        
+        node.on("dragmove", () => {
+            const pos = node.position();
+        });
+        
+        node.on("dragend", () => {
+            document.body.style.cursor = "grab";
+            console.log("drag end");
+            
+            const pos = node.position();
+            
+            // Check if dropped in top-left corner (backpack area - 100x100 pixels)
+            if (pos.x <= 50 && pos.y <= 50) {
+                if (action === "level") {
+                    if (this.problemType == 1 || this.problemType == 2) {
+                        this.model.addToInventory({
+                        name: "levelClue",
+                        image: "pillar_outline.png",
+                        width: 375,
+                        height: 400,
+                        text1: String(this.model.getAngle()),
+                        text1X: STAGE_WIDTH / 2 + 120,
+                        text1Y: STAGE_HEIGHT / 2 + 140,
+                        text2: String(this.model.getOpposite()),
+                        text2X: STAGE_WIDTH / 2 + 10,
+                        text2Y: STAGE_HEIGHT / 2 + 20,
+                        text3: String(this.model.getAdjacent()),
+                        text3X: STAGE_WIDTH / 2 + 100,
+                        text3Y: STAGE_HEIGHT / 2 + 180});
+                    } else {
+                        this.model.addToInventory({
+                        name: "levelClue",
+                        image: "pillar_outline.png",
+                        width: 375,
+                        height: 400,
+                        text1: String(this.model.getAngle()),
+                        text1X: STAGE_WIDTH / 2 + 120,
+                        text1Y: STAGE_HEIGHT / 2 + 140,
+                        text2: String(this.model.getOpposite()),
+                        text2X: STAGE_WIDTH / 2 + 10,
+                        text2Y: STAGE_HEIGHT / 2 + 20,
+                        text3: String(this.model.getHypotenuse()),
+                        text3X: STAGE_WIDTH / 2 + 120,
+                        text3Y: STAGE_HEIGHT / 2 + 10});
+                    }
+                } else if (action === "mg") {
+                    this.model.addToInventory({
+                        name: "mgClue",
+                        image: "Clue.png",
+                        width: 375,
+                        height: 400,
+                        text1: String(this.trigUtil.randomDegree() + "º"),
+                        text1X: STAGE_WIDTH / 2 - 100,
+                        text1Y: STAGE_HEIGHT / 2,
+                        text2: String(this.trigUtil.randomDegree() + "º"),
+                        text2X: STAGE_WIDTH / 2,
+                        text2Y: STAGE_HEIGHT / 2,
+                        text3: String(this.trigUtil.randomDegree() + "º"),
+                        text3X: STAGE_WIDTH / 2 + 100,
+                        text3Y: STAGE_HEIGHT / 2});
+                }
+                
+                // Remove the node from the stage
+                node.destroy();
+                node.getLayer()?.batchDraw();
+            }
+        });
     }
 
     private handleCorrectAnswer(node: Konva.Text): void {
@@ -105,6 +229,8 @@ export class Level1Controller extends ScreenController {
         this.view.getOption1TextNode().off("click");
         this.view.getOption2TextNode().off("click");
         this.view.getOption3TextNode().off("click");
+
+        this.model.setSuccess(true);
         
         this.view.getGroup().getLayer()?.draw(); // Redraw the stage
         
