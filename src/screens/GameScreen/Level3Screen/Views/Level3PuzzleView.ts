@@ -37,109 +37,7 @@ export class Level3PuzzleView {
         this.chosen = [0, 0, 0, 0, 0]; // image of selected rock
         //this.room = new Level3View;
 
-        // water background
-        Konva.Image.fromURL("/res/Water.png", (image) => {
-            image.width(STAGE_WIDTH), image.height(STAGE_HEIGHT);
-
-            //image.x(50), image.y(475);
-
-            this.water = image;
-            this.group.add(this.water);
-        });
-
-        Konva.Image.fromURL("/res/Rock.png", (image) => {
-            image.width(120), image.height(120);
-
-            image.x(170), image.y(425);
-
-            this.rock1 = image;
-            this.group.add(this.rock1);
-            this.group.draw; // makes sure rock displays
-        });
-
-        Konva.Image.fromURL("/res/Rock.png", (image) => {
-            image.width(120), image.height(120);
-
-            image.x(STAGE_WIDTH / 2 - 80), image.y(STAGE_HEIGHT / 2 - 50);
-
-            this.rock2 = image;
-            this.group.add(this.rock2);
-            this.group.draw; // makes sure rock displays
-        });
-
-        Konva.Image.fromURL("/res/Rock.png", (image) => {
-            image.width(120), image.height(120);
-
-            image.x(STAGE_WIDTH / 2 - 220), image.y(STAGE_HEIGHT / 2 - 240);
-
-            this.rock3 = image;
-            this.group.add(this.rock3);
-            this.group.draw; // makes sure rock displays
-        });
-
-        Konva.Image.fromURL("/res/Rock.png", (image) => {
-            image.width(120), image.height(120);
-
-            image.x(STAGE_WIDTH / 2 + 150), image.y(STAGE_HEIGHT / 2 - 180);
-
-            this.rock4 = image;
-            this.group.add(this.rock4);
-            this.group.draw; // makes sure rock displays
-        });
-
-        Konva.Image.fromURL("/res/Rock.png", (image) => {
-            image.width(120), image.height(120);
-
-            image.x(STAGE_WIDTH / 2 + 170), image.y(STAGE_HEIGHT / 2 + 80);
-
-            this.rock5 = image;
-            this.group.add(this.rock5);
-            this.group.draw; // makes sure rock displays
-        });
-
-        this.rock1.on('click', () => {
-            // change to selected img
-            // this.back.scale({ x: 1.1, y: 1.1 }); // Slightly enlarge the image
-            if(this.chosen[0] == 0){ // select and scale up
-                this.chosen[0] = 1;
-                this.rock1.scale({ x: 1.1, y: 1.1 });
-            }
-            else{ // already selected -> deselect and scale back down
-                this.chosen[0] = 0;
-                this.rock1.scale({ x: 1, y: 1 }); // Reset the image size
-            }
-        })
-
-        /*
-        // ** TESTING BACK BUTTON ** //
-        Konva.Image.fromURL("/res/Clue.png", (image) => {
-            //image.width(120), image.height(120);
-            image.offsetX(image.width() / 2), image.offsetY(image.height() / 2);
-            image.x(STAGE_WIDTH / 2), image.y(STAGE_HEIGHT / 2);
-
-            this.back = image;
-            this.group.add(this.back);
-            this.back.moveToTop();
-            this.group.getLayer()?.draw(); // makes sure rock displays
-        });
-        */
         this.loadBackground();
-
-        // "hide view"
-        this.back.on('click', () => {
-            //this.group.moveToBottom();
-            //this.group.getLayer()?.draw();
-        })
-
-        this.back.on('mouseover', () => {
-                this.back.scale({ x: 1.1, y: 1.1 }); // Slightly enlarge the image
-                this.back.getLayer()?.batchDraw();
-            });
-        this.back.on('mouseout', () => {
-                this.back.scale({ x: 1, y: 1 }); // Reset the image size
-                this.back.getLayer()?.batchDraw();
-        });
-
 
     } // end of constructor
     
@@ -153,35 +51,11 @@ export class Level3PuzzleView {
                 this.loadRock(this.rock2, STAGE_WIDTH / 2 - 80, STAGE_HEIGHT / 2 - 50, 1),
                 this.loadRock(this.rock3, STAGE_WIDTH / 2 - 220, STAGE_HEIGHT / 2 - 240, 2),
                 this.loadRock(this.rock4, STAGE_WIDTH / 2 + 150, STAGE_HEIGHT / 2 - 180, 3),
-                this.loadRock(this.rock5, STAGE_WIDTH / 2 + 170, STAGE_HEIGHT / 2 + 80, 4)
+                this.loadRock(this.rock5, STAGE_WIDTH / 2 + 170, STAGE_HEIGHT / 2 + 80, 4),
 
                 // add loadButton here
+                this.loadBack()
             ]);
-
-            this.back = new Konva.Rect({
-                x: 0,
-                y: 0,
-                width: 100,
-                height: 100,
-                fill: "red",
-            });
-            this.group.add(this.back);
-
-            // mouseover to show it's being hovered over to click
-            this.back.on('mouseover', () => {
-                this.back.scale({ x: 1.1, y: 1.1 }); // Slightly enlarge the image
-                this.back.getLayer()?.batchDraw();
-            });
-            this.back.on('mouseout', () => {
-                this.back.scale({ x: 1, y: 1 }); // Reset the image size
-                this.back.getLayer()?.batchDraw();
-            });
-
-            this.back.on('click', () => {
-                this.group.moveToBottom();
-                this.group.getLayer()?.draw();
-            })
-            this.group.add(this.back);
 
             this.group.getLayer()?.batchDraw();
 
@@ -231,6 +105,37 @@ export class Level3PuzzleView {
                 });
                 this.group.add(rock);
                 
+                resolve();
+            }, reject);
+        });
+    }
+
+    private async loadBack(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            Konva.Image.fromURL("/res/arrow.png", (image) => {
+                image.width(100);
+                image.height(100);
+                image.y(500);
+                this.back = image;
+                this.group.add(this.back);
+
+                // all click handlers
+                // mouseover to show it's being hovered over to click
+                this.back.on('mouseover', () => {
+                    this.back.scale({ x: 1.1, y: 1.1 }); // Slightly enlarge the image
+                    this.back.getLayer()?.batchDraw();
+                });
+                this.back.on('mouseout', () => {
+                    this.back.scale({ x: 1, y: 1 }); // Reset the image size
+                    this.back.getLayer()?.batchDraw();
+                });
+
+                this.back.on('click', () => {
+                    this.group.moveToBottom();
+                    this.group.getLayer()?.draw();
+                })
+                // this.group.add(this.back);
+
                 resolve();
             }, reject);
         });

@@ -1,5 +1,32 @@
+// import statements
+import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants";
+import type { InventoryItem } from "../../../types";
+import { PlayerDataManager } from "../../../GameStateManager";
+
 export class Level3Model {
+    // flag to denote if the level was successfully completed
     private isSuccessful: boolean = false;
+
+    // all player data related elements
+    private playerDataManager: PlayerDataManager;
+    private inventory: InventoryItem[];
+    private coins: number | null;
+
+    constructor(playerDataManager: PlayerDataManager){
+        // initialization of player data when opening level
+        this.playerDataManager = playerDataManager;
+        this.playerDataManager.setLevel({type: "level3"});
+        this.inventory = [];
+
+        // get values
+        if(playerDataManager.getCoins() != null){
+            this.coins = playerDataManager.getCoins();
+        }
+        else{
+            this.coins = 0;
+        }
+        this.isSuccessful = false;
+    }
 
     // set the flag to this puzzle as correct
     setIsSuccessful(isCorrect: boolean): void {
