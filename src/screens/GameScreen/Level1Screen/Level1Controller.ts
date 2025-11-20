@@ -173,33 +173,33 @@ export class Level1Controller extends ScreenController {
                     if (this.problemType == 1 || this.problemType == 2) {
                         this.model.addToInventory({
                         name: "levelClue",
-                        image: "inventory_clue.png",
+                        image: "pillar_outline.png",
                         width: 400,
                         height: 400,
-                        text1: String(this.model.getAngle()),
+                        text1: String(this.model.getAngle() + "º"),
                         text1X: STAGE_WIDTH / 2 + 120,
-                        text1Y: STAGE_HEIGHT / 2 + 105,
+                        text1Y: STAGE_HEIGHT / 2 + 110,
                         text2: String(this.model.getOpposite()),
-                        text2X: STAGE_WIDTH / 2 - 10,
+                        text2X: STAGE_WIDTH / 2 + 10,
                         text2Y: STAGE_HEIGHT / 2 + 10,
                         text3: String(this.model.getAdjacent()),
-                        text3X: STAGE_WIDTH / 2 + 90,
-                        text3Y: STAGE_HEIGHT / 2 + 155});
+                        text3X: STAGE_WIDTH / 2 + 100,
+                        text3Y: STAGE_HEIGHT / 2 + 160});
                     } else {
                         this.model.addToInventory({
                         name: "levelClue",
-                        image: "inventory_clue.png",
+                        image: "pillar_outline.png",
                         width: 400,
                         height: 400,
-                        text1: String(this.model.getAngle()),
+                        text1: String(this.model.getAngle() + "º"),
                         text1X: STAGE_WIDTH / 2 + 120,
-                        text1Y: STAGE_HEIGHT / 2 + 105,
+                        text1Y: STAGE_HEIGHT / 2 + 110,
                         text2: String(this.model.getOpposite()),
-                        text2X: STAGE_WIDTH / 2 - 10,
-                        text2Y: STAGE_HEIGHT / 2 + 20,
+                        text2X: STAGE_WIDTH / 2 + 10,
+                        text2Y: STAGE_HEIGHT / 2 + 10,
                         text3: String(this.model.getHypotenuse()),
-                        text3X: STAGE_WIDTH / 2 + 130,
-                        text3Y: STAGE_HEIGHT / 2});
+                        text3X: STAGE_WIDTH / 2 + 80,
+                        text3Y: STAGE_HEIGHT / 2 + 20});
                     }
                 } else if (action === "mg") {
                     this.model.addToInventory({
