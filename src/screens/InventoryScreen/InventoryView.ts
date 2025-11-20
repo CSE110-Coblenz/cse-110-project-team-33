@@ -11,7 +11,6 @@ export class InventoryView {
     private backpack: Konva.Image;
     private buttonsCreated: boolean;
     
-
     constructor() {
         this.group = new Konva.Group({ visible: false });
         this.contentGroup = new Konva.Group();
@@ -114,9 +113,10 @@ export class InventoryView {
                     x: inventoryItem.text1X || STAGE_WIDTH / 2,
                     y: inventoryItem.text1Y || STAGE_HEIGHT / 2,
                     text: inventoryItem.text1,
-                    fontSize: 18,
+                    fontSize: 24,
                     fontFamily: "Margarine",
-                    fill: "#000",
+                    fontStyle: "bold",
+                    fill: "#fff",
                     align: "center",
                     offsetX: 100
                 });
@@ -128,9 +128,10 @@ export class InventoryView {
                     x: inventoryItem.text2X || STAGE_WIDTH / 2,
                     y: inventoryItem.text2Y || STAGE_HEIGHT / 2,
                     text: inventoryItem.text2,
-                    fontSize: 18,
+                    fontSize: 24,
                     fontFamily: "Margarine",
-                    fill: "#000",
+                    fontStyle: "bold",
+                    fill: "#fff",
                     align: "center",
                     offsetX: 100
                 });
@@ -142,9 +143,10 @@ export class InventoryView {
                     x: inventoryItem.text3X || STAGE_WIDTH / 2,
                     y: inventoryItem.text3Y || STAGE_HEIGHT / 2,
                     text: inventoryItem.text3,
-                    fontSize: 18,
+                    fontSize: 24,
                     fontFamily: "Margarine",
-                    fill: "#000",
+                    fontStyle: "bold",
+                    fill: "#fff",
                     align: "center",
                     offsetX: 100
                 });

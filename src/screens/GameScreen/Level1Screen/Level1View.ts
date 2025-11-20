@@ -13,6 +13,7 @@ export class Level1View implements View {
     private option1Button: Konva.Image;
     private option2Button: Konva.Image;
     private option3Button: Konva.Image;
+    private crystal: Konva.Image;
     
     // Add these image properties
     private pyramidImage: Konva.Image;
@@ -26,11 +27,11 @@ export class Level1View implements View {
     private coinsText: Konva.Text;
     private coins: number;
 
-    private levelClueX: number = STAGE_WIDTH / 2 - 250;
-    private levelClueY: number = STAGE_HEIGHT / 2 + 25;
+    private levelClueX: number = STAGE_WIDTH / 2 - 275;
+    private levelClueY: number = STAGE_HEIGHT / 2;
 
-    private mgClueX: number = STAGE_WIDTH / 2 + 200;
-    private mgClueY: number = STAGE_HEIGHT / 2 + 25;
+    private mgClueX: number = STAGE_WIDTH - 100;
+    private mgClueY: number = STAGE_HEIGHT - 100;
 
     constructor() {
         this.group = new Konva.Group({ visible: false });
@@ -51,6 +52,7 @@ export class Level1View implements View {
         this.option3Button = new Konva.Image();
         this.coinsText = new Konva.Text();
         this.coins = 0
+        this.crystal = new Konva.Image();
 
         const background = new Konva.Rect({
             x: 0,
@@ -64,7 +66,7 @@ export class Level1View implements View {
         // Text
         this.problemText = new Konva.Text({
             x: 25,
-            y: STAGE_HEIGHT - 150,
+            y: STAGE_HEIGHT - 120,
             text: "",
             fontSize: 16,
             fontFamily: "Press Start 2P",
@@ -73,8 +75,8 @@ export class Level1View implements View {
         this.textInputGroup.add(this.problemText);
 
         this.option1Text = new Konva.Text({
-            x: STAGE_WIDTH / 2 - 205,
-            y: STAGE_HEIGHT - 75,
+            x: STAGE_WIDTH / 2 - 220,
+            y: STAGE_HEIGHT - 60,
             text: "1",
             fontSize: 16,
             fontFamily: "Press Start 2P",
@@ -83,8 +85,8 @@ export class Level1View implements View {
         this.textInputGroup.add(this.option1Text);
 
         this.option2Text = new Konva.Text({
-            x: STAGE_WIDTH / 2 - 5,
-            y: STAGE_HEIGHT - 75,
+            x: STAGE_WIDTH / 2 - 20,
+            y: STAGE_HEIGHT - 60,
             text: "2",
             fontSize: 16,
             fontFamily: "Press Start 2P",
@@ -94,7 +96,7 @@ export class Level1View implements View {
 
         this.option3Text = new Konva.Text({
             x: STAGE_WIDTH / 2 + 200,
-            y: STAGE_HEIGHT - 75,
+            y: STAGE_HEIGHT - 60,
             text: "3",
             fontSize: 16,
             fontFamily: "Press Start 2P",
@@ -103,14 +105,14 @@ export class Level1View implements View {
         this.textInputGroup.add(this.option3Text);
 
         this.coinsText = new Konva.Text({
-            x: 75,
+            x: 135,
             y: 20,
             text: String(this.coins),
             fontSize: 20,
             fontFamily: "Press Start 2P",
             fill: "black",
         });
-        console.log(String(this.coins));
+        console.log("here" + String(this.coins));
         this.textInputGroup.add(this.coinsText);
 
         this.group.add(this.backgroundGroup);
@@ -119,42 +121,44 @@ export class Level1View implements View {
 
     private async loadBackground(): Promise<void> {
         try {
-            this.pyramidImage = await this.loadImage("/res/pyramid.png", STAGE_WIDTH, STAGE_HEIGHT / 2, 0, 0);
-            this.doorImage = await this.loadImage("/res/door.png", 85, 150, STAGE_WIDTH / 2 - 30, STAGE_HEIGHT / 2 - 125);
+            this.pyramidImage = await this.loadImage("/res/level_1_background.png", STAGE_WIDTH, STAGE_HEIGHT, 0, 0);
+            this.doorImage = await this.loadImage("/res/level_1_door.png", 150, 200, STAGE_WIDTH / 2 - 75, STAGE_HEIGHT / 2 - 100);
             
-            const [ground, backpack] = await Promise.all([
-                this.loadImage("/res/ground.png", STAGE_WIDTH, STAGE_HEIGHT / 2, 0, STAGE_HEIGHT / 2),
+            const [backpack, crystal] = await Promise.all([
                 this.loadImage("/res/backpack.png", 50, 50, 5, 5),
-                this.loadImage("/res/Coins.png", 50, 50, 100, 5)
+                this.loadImage("/res/crystal.png", 40, 50, STAGE_WIDTH / 2 - 20, STAGE_HEIGHT / 2 - 60),
+                this.loadImage("/res/Coins.png", 50, 50, 75, 5)
             ]);
 
             const [pillar1, pillar2] = await Promise.all([
-                this.loadImage("/res/Pillar.png", 100, 160, STAGE_WIDTH / 2 - 100, STAGE_HEIGHT / 2 - 150),
-                this.loadImage("/res/Pillar.png", 100, 160, STAGE_WIDTH / 2 - 50, STAGE_HEIGHT / 2 - 120, -30),
+                this.loadImage("/res/Pillar.png", 130, 210, STAGE_WIDTH / 2 - 150, STAGE_HEIGHT / 2 - 105),
+                this.loadImage("/res/Pillar.png", 130, 210, STAGE_WIDTH / 2 - 90, STAGE_HEIGHT / 2 - 50, -35),
             ])
             
             this.pillar1Image = pillar1;
             this.pillar2Image = pillar2;
-            this.groundImage = ground;
             this.backpack = backpack;
+            this.crystal = crystal;
             
             const [levelClue, mgClue] = await Promise.all([
-                this.loadImage("/res/pillar_outline.png", 100, 100, this.levelClueX, this.levelClueY),
+                this.loadImage("/res/Clue.png", 100, 100, this.levelClueX, this.levelClueY),
                 this.loadImage("/res/Clue.png", 100, 100, this.mgClueX, this.mgClueY),
             ]);
             
             this.levelClue = levelClue;
             this.mgClue = mgClue;
             
+            /*
             const [btn1, btn2, btn3] = await Promise.all([
                 this.loadImage("/res/button.png", 125, 75, 150, STAGE_HEIGHT - 105),
                 this.loadImage("/res/button.png", 125, 75, STAGE_WIDTH / 2 - 50, STAGE_HEIGHT - 105),
                 this.loadImage("/res/button.png", 125, 75, STAGE_WIDTH / 2 + 150, STAGE_HEIGHT - 105)
             ]);
-            
+
             this.option1Button = btn1;
             this.option2Button = btn2;
             this.option3Button = btn3;
+            */
 
             this.group.getLayer()?.batchDraw();
         } catch (error) {
@@ -183,6 +187,8 @@ export class Level1View implements View {
 
     setCoins(coins: number) {
         this.coins = coins;
+        this.coinsText.text(String(this.coins));
+        this.group.getLayer()?.batchDraw();
     }
 
     waitForLoadBackground(): Promise<void> {
@@ -237,13 +243,17 @@ export class Level1View implements View {
         return this.doorImage;
     }
 
+    getCrystal(): Konva.Image {
+        return this.crystal;
+    }
+
     animateMovePillar(): Promise<void> {
         return new Promise((resolve) => {
             // Set the rotation point to bottom-right corner
             this.pillar2Image.offsetX(this.pillar2Image.width());
             this.pillar2Image.offsetY(this.pillar2Image.height());
-            this.pillar2Image.x(STAGE_WIDTH / 2 + 120);
-            this.pillar2Image.y(STAGE_HEIGHT / 2 - 10);
+            this.pillar2Image.x(STAGE_WIDTH / 2 + 145);
+            this.pillar2Image.y(STAGE_HEIGHT / 2 + 80);
             
             const anim = new Konva.Tween({
                 node: this.pillar2Image,
@@ -251,8 +261,8 @@ export class Level1View implements View {
                 rotation: 0, // Animate to upright position
                 easing: Konva.Easings.EaseInOut,
                 onFinish: () => {
-                    this.pillar2Image.x(STAGE_WIDTH / 2 + 120);
-                    this.pillar2Image.y(STAGE_HEIGHT / 2 + 10);
+                    this.pillar2Image.x(STAGE_WIDTH / 2 + 145);
+                    this.pillar2Image.y(STAGE_HEIGHT / 2 + 105);
                     resolve();
                 }
             });

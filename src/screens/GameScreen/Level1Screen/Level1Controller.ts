@@ -92,7 +92,6 @@ export class Level1Controller extends ScreenController {
 
             if (action == "door") {
                 if (this.model.getSuccess() == true) {
-                    this.model.addToCoins(50);
                     this.screenSwitcher.switchToScreen({ type: "level2" });
                 }
             }
@@ -100,7 +99,10 @@ export class Level1Controller extends ScreenController {
             if (action == "mc") {
                 if (optionValue === this.correctAnswerValue) {
                     this.handleCorrectAnswer(node);
+                    this.model.addToCoins(50);
+                    this.view.setCoins(this.model.getCoins())
                     this.view.animateMovePillar();
+                    
                 } else {
                     this.handleWrongAnswer(node);
                 }
@@ -111,9 +113,11 @@ export class Level1Controller extends ScreenController {
     private setupMoveListeners(): void {
         const levelClueNode = this.view.getLevelClueNode();
         const mgClueNode = this.view.getMGClueNode();
+        const crystalNode = this.view.getCrystal();
 
         this.addMoveBehavior(levelClueNode, "level");
         this.addMoveBehavior(mgClueNode, "mg");
+        this.addMoveBehavior(crystalNode, "crystal");
     }
     
     private addMoveBehavior(node: Konva.Image, action: string): void {
@@ -169,49 +173,60 @@ export class Level1Controller extends ScreenController {
                     if (this.problemType == 1 || this.problemType == 2) {
                         this.model.addToInventory({
                         name: "levelClue",
-                        image: "pillar_outline.png",
-                        width: 375,
+                        image: "inventory_clue.png",
+                        width: 400,
                         height: 400,
                         text1: String(this.model.getAngle()),
                         text1X: STAGE_WIDTH / 2 + 120,
-                        text1Y: STAGE_HEIGHT / 2 + 140,
+                        text1Y: STAGE_HEIGHT / 2 + 105,
                         text2: String(this.model.getOpposite()),
-                        text2X: STAGE_WIDTH / 2 + 10,
-                        text2Y: STAGE_HEIGHT / 2 + 20,
+                        text2X: STAGE_WIDTH / 2 - 10,
+                        text2Y: STAGE_HEIGHT / 2 + 10,
                         text3: String(this.model.getAdjacent()),
-                        text3X: STAGE_WIDTH / 2 + 100,
-                        text3Y: STAGE_HEIGHT / 2 + 180});
+                        text3X: STAGE_WIDTH / 2 + 90,
+                        text3Y: STAGE_HEIGHT / 2 + 155});
                     } else {
                         this.model.addToInventory({
                         name: "levelClue",
-                        image: "pillar_outline.png",
-                        width: 375,
+                        image: "inventory_clue.png",
+                        width: 400,
                         height: 400,
                         text1: String(this.model.getAngle()),
                         text1X: STAGE_WIDTH / 2 + 120,
-                        text1Y: STAGE_HEIGHT / 2 + 140,
+                        text1Y: STAGE_HEIGHT / 2 + 105,
                         text2: String(this.model.getOpposite()),
-                        text2X: STAGE_WIDTH / 2 + 10,
+                        text2X: STAGE_WIDTH / 2 - 10,
                         text2Y: STAGE_HEIGHT / 2 + 20,
                         text3: String(this.model.getHypotenuse()),
-                        text3X: STAGE_WIDTH / 2 + 120,
-                        text3Y: STAGE_HEIGHT / 2 + 10});
+                        text3X: STAGE_WIDTH / 2 + 130,
+                        text3Y: STAGE_HEIGHT / 2});
                     }
                 } else if (action === "mg") {
                     this.model.addToInventory({
                         name: "mgClue",
-                        image: "Clue.png",
-                        width: 375,
-                        height: 400,
+                        image: "inventory_paper.png",
+                        width: 500,
+                        height: 300,
                         text1: String(this.trigUtil.randomDegree() + "º"),
-                        text1X: STAGE_WIDTH / 2 - 100,
-                        text1Y: STAGE_HEIGHT / 2,
+                        text1X: STAGE_WIDTH / 2 - 50,
+                        text1Y: STAGE_HEIGHT / 2 - 10,
                         text2: String(this.trigUtil.randomDegree() + "º"),
-                        text2X: STAGE_WIDTH / 2,
-                        text2Y: STAGE_HEIGHT / 2,
+                        text2X: STAGE_WIDTH / 2 + 80,
+                        text2Y: STAGE_HEIGHT / 2 - 10,
                         text3: String(this.trigUtil.randomDegree() + "º"),
-                        text3X: STAGE_WIDTH / 2 + 100,
-                        text3Y: STAGE_HEIGHT / 2});
+                        text3X: STAGE_WIDTH / 2 + 200,
+                        text3Y: STAGE_HEIGHT / 2 - 10});
+                } else if (action == "crystal") {
+                    // Crystal added to inventory
+                    this.model.addToInventory({
+                        name: "crystal",
+                        image: "crystal.png",
+                        width: 300,
+                        height: 350,
+                        text1: this.trigUtil.randomTrigCoordinate(),
+                        text1X: STAGE_WIDTH / 2 + 20,
+                        text1Y: STAGE_HEIGHT / 2 - 10,
+                    });
                 }
                 
                 // Remove the node from the stage
