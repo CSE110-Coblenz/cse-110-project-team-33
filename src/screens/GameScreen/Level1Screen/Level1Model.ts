@@ -30,6 +30,7 @@ export class Level1Model {
         this.playerDataManager.setLevel({type : "level1"});
         this.inventory = [];
         if (playerDataManager.getCoins() != null) {
+            playerDataManager.setCoins(0);
             this.coins = playerDataManager.getCoins();
         } else {
             this.coins = 0;
@@ -65,6 +66,9 @@ export class Level1Model {
     }
 
     addToCoins(addedCoins: number) {
+        if (this.coins != null) {
+            this.coins += addedCoins;
+        }
         if (this.coins != null) {
             this.playerDataManager.setCoins(this.coins + addedCoins);
         }
