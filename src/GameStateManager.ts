@@ -83,7 +83,7 @@ class App implements ScreenSwitcher {
 		this.miniGameController = new MiniGameController(this);
         // this.resultsController = new ResultsController(this);
 		this.exitController = new ExitController(this);
-		this.loadController = new LoadController(this);
+		this.loadController = new LoadController(this, this.playerDataManager);
 
 		// Add all screen groups to the layer
 		// All screens exist simultaneously but only one is visible at a time
@@ -108,7 +108,7 @@ class App implements ScreenSwitcher {
 		this.menuController.getView().show();
 		this.gamePauseOverlay.setEnabled(false);
 
-		this.switchToScreen({type: "level1"});
+		this.switchToScreen({type: "menu"});
 	}
 
 	switchToScreen(screen: Screen): void {
