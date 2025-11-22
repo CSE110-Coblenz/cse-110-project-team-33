@@ -1,4 +1,4 @@
-import { TrigUtil } from "../../../TrigUtil";
+import { TrigUtil } from "../../../utilities/TrigUtil";
 
 export class Level1Model {
     private isCompleted: boolean = false;
