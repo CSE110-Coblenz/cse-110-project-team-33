@@ -1,4 +1,4 @@
-import { PlayerDataManager } from "../../GameStateManager.ts";
+import { PlayerDataManager } from "../../managers/GameStateManager.ts";
 import { InventoryItem } from "../../types.ts";
 
 export class InventoryModel {

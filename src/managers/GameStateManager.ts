@@ -1,16 +1,16 @@
 import Konva from "konva";
-import type { ScreenSwitcher, Screen, PlayerData, InventoryItem } from "./types.ts";
-import { MenuController } from "./screens/MenuScreen/MenuController.ts";
+import type { ScreenSwitcher, Screen, PlayerData, InventoryItem } from "../types.ts";
+import { MenuController } from "../screens/MenuScreen/MenuController.ts";
 // import { SettingsController } from "./screens/SettingsScreen/SettingsController";
-import { InventoryController } from "./screens/InventoryScreen/InventoryController.ts";
-import { Level1Controller } from "./screens/GameScreen/Level1Screen/Level1Controller.ts";
-import { Level2Controller } from "./screens/GameScreen/Level2Screen/Level2Controller";
+import { InventoryController } from "../screens/InventoryScreen/InventoryController.ts";
+import { Level1Controller } from "../screens/GameScreen/Level1Screen/Level1Controller.ts";
+import { Level2Controller } from "../screens/GameScreen/Level2Screen/Level2Controller.ts";
 // import { Level3Controller } from "./screens/GameScreen/Level3Screen/Level3Controller";
 // import { Level4Controller } from "./screens/GameScreen/Level4Screen/Level4Controller";
 // import { ResultsController } from "./screens/ResultsScreen/ResultsController";
-import { ExitController } from "./screens/MenuScreen/ExitScreen/ExitController.ts";
-import { LoadController } from "./screens/MenuScreen/LoadScreen/LoadController.ts";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants";
+import { ExitController } from "../screens/MenuScreen/ExitScreen/ExitController.ts";
+import { LoadController } from "../screens/MenuScreen/LoadScreen/LoadController.ts";
+import { STAGE_WIDTH, STAGE_HEIGHT } from "../constants.ts";
 import { LocalStorageUtils } from "./LocalStorageUtils.ts";
 
 class App implements ScreenSwitcher {
