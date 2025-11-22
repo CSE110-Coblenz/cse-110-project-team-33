@@ -10,14 +10,12 @@
  */
 
 import Konva from "konva";
-import type { Element } from "./Element.ts";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../../constants.ts";
+import type { Element } from "./Element";
+import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../../constants";
 
 export class Background implements Element {
 
     private bg: Konva.Image;
-    private xPos : number;
-    private yPos : number;
     private id: string;
     private backgroundURL: string;
 
@@ -35,7 +33,7 @@ export class Background implements Element {
     constructor (url: string, id: string) {
         this.backgroundURL = url;
         this.id = id;
-        this.bg = new Konva.Image();
+        this.bg = new Konva.Image({image: undefined});
         Konva.Image.fromURL(this.getURL(), (img) => {
             this.bg.image(img.image());
             this.bg.id(id);

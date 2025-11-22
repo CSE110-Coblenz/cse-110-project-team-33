@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { InventoryItem } from "../../types.ts";
+import type { InventoryItem } from "../../types.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants.ts";
 
 export class InventoryView {
@@ -8,7 +8,9 @@ export class InventoryView {
     private inventory: InventoryItem[];
     private prevButton: Konva.Image;
     private nextButton: Konva.Image;
+    private backpack: Konva.Image;
     private buttonsCreated: boolean;
+    
 
     constructor() {
         this.group = new Konva.Group({ visible: false });
@@ -16,6 +18,7 @@ export class InventoryView {
         this.inventory = [];
         this.prevButton = new Konva.Image();
         this.nextButton = new Konva.Image();
+        this.backpack = new Konva.Image();
         this.buttonsCreated = false;
         
         // Add background
@@ -27,6 +30,14 @@ export class InventoryView {
             fill: "#e3cba2",
         });
         this.group.add(bg);
+
+        Konva.Image.fromURL("/res/backpack.png", (image) => {
+            image.width(50).height(50);
+            image.x(5).y(5);
+            this.group.add(image);
+            this.backpack = image;
+            this.group.getLayer()?.draw();
+        });
         
         // Add contentGroup once in constructor
         this.group.add(this.contentGroup);
@@ -39,8 +50,6 @@ export class InventoryView {
     
     async renderInventory(currentIndex: number): Promise<void> {
         this.contentGroup.destroyChildren();
-        
-        var inventoryItem: InventoryItem = this.inventory[currentIndex];
 
         // If inventory is empty, show a message
         if (this.inventory.length === 0) {
@@ -48,66 +57,22 @@ export class InventoryView {
                 x: STAGE_WIDTH / 2,
                 y: STAGE_HEIGHT / 2,
                 text: "Inventory is empty",
-                fontSize: 24,
-                fontFamily: "Arial",
+                fontSize: 16,
+                fontFamily: "Press Start 2P",
                 fill: "#000",
                 align: "center",
-                offsetX: 100
+                offsetX: 150
             });
             this.contentGroup.add(emptyText);
-        } else if (this.inventory.length === 1) {
-            Konva.Image.fromURL("/res/" + inventoryItem.getImage(), (image) => {
-                image.width(inventoryItem.getWidth()).height(inventoryItem.getHeight());
-                image.x(STAGE_WIDTH / 2 - inventoryItem.getWidth() / 2).y(STAGE_HEIGHT / 2 - inventoryItem.getHeight() / 2);
-                this.contentGroup.add(image);
-                this.group.getLayer()?.draw();
-            });
-            if (inventoryItem.getText1()) {
-                const text1 = new Konva.Text({
-                    x: inventoryItem.getText1X(),
-                    y: inventoryItem.getText1Y(),
-                    text: inventoryItem.getText1(),
-                    fontSize: 24,
-                    fontFamily: "Arial",
-                    fill: "#000",
-                    align: "center",
-                    offsetX: 100
-                });
-                this.contentGroup.add(text1);
-            }
-            if (inventoryItem.getText2()) {
-                const text2 = new Konva.Text({
-                    x: inventoryItem.getText2X(),
-                    y: inventoryItem.getText2Y(),
-                    text: inventoryItem.getText2(),
-                    fontSize: 24,
-                    fontFamily: "Arial",
-                    fill: "#000",
-                    align: "center",
-                    offsetX: 100
-                });
-                this.contentGroup.add(text2);
-            }
-            if (inventoryItem.getText3()) {
-                const text3 = new Konva.Text({
-                    x: inventoryItem.getText3X(),
-                    y: inventoryItem.getText3Y(),
-                    text: inventoryItem.getText3(),
-                    fontSize: 24,
-                    fontFamily: "Arial",
-                    fill: "#000",
-                    align: "center",
-                    offsetX: 100
-                });
-                this.contentGroup.add(text3);
-            }
         } else {
-            // Only create buttons once
-            if (!this.buttonsCreated) {
+            const inventoryItem: InventoryItem = this.inventory[currentIndex];
+            
+            // Only create navigation buttons if there are multiple items
+            if (this.inventory.length > 1 && !this.buttonsCreated) {
                 const prevPromise = new Promise<void>((resolve) => {
                     Konva.Image.fromURL("/res/arrow.png", (image) => {
-                        image.width(50).height(50);
-                        image.x(10).y(STAGE_HEIGHT / 2 - 40);
+                        image.width(40).height(40);
+                        image.x(5).y(STAGE_HEIGHT / 2 - 40);
                         this.prevButton = image;
                         this.group.add(image);
                         this.group.getLayer()?.draw();
@@ -117,8 +82,8 @@ export class InventoryView {
 
                 const nextPromise = new Promise<void>((resolve) => {
                     Konva.Image.fromURL("/res/arrow.png", (image) => {
-                        image.width(50).height(50);
-                        image.x(STAGE_WIDTH - 10).y(STAGE_HEIGHT / 2 + 10);
+                        image.width(40).height(40);
+                        image.x(STAGE_WIDTH - 5).y(STAGE_HEIGHT / 2 + 10);
                         image.rotation(180);
                         this.nextButton = image;
                         this.group.add(image);
@@ -132,45 +97,53 @@ export class InventoryView {
                 this.buttonsCreated = true;
             }
 
-            Konva.Image.fromURL("/res/" + inventoryItem.getImage(), (image) => {
-                image.width(inventoryItem.getWidth()).height(inventoryItem.getHeight());
-                image.x(STAGE_WIDTH / 2 - inventoryItem.getWidth() / 2).y(STAGE_HEIGHT / 2 - inventoryItem.getHeight() / 2);
-                this.contentGroup.add(image);
-                this.group.getLayer()?.draw();
+            // Load the inventory item image and wait for it
+            await new Promise<void>((resolve) => {
+                Konva.Image.fromURL("/res/" + inventoryItem.image, (image) => {
+                    image.width(inventoryItem.width).height(inventoryItem.height);
+                    image.x(STAGE_WIDTH / 2 - inventoryItem.width / 2).y(STAGE_HEIGHT / 2 - inventoryItem.height / 2);
+                    this.contentGroup.add(image);
+                    this.group.getLayer()?.draw();
+                    resolve();
+                });
             });
-            if (inventoryItem.getText1()) {
+            
+            // Now add text AFTER image has loaded - text will render on top
+            if (inventoryItem.text1) {
                 const text1 = new Konva.Text({
-                    x: inventoryItem.getText1X(),
-                    y: inventoryItem.getText1Y(),
-                    text: inventoryItem.getText1(),
-                    fontSize: 24,
-                    fontFamily: "Arial",
+                    x: inventoryItem.text1X || STAGE_WIDTH / 2,
+                    y: inventoryItem.text1Y || STAGE_HEIGHT / 2,
+                    text: inventoryItem.text1,
+                    fontSize: 18,
+                    fontFamily: "Margarine",
                     fill: "#000",
                     align: "center",
                     offsetX: 100
                 });
                 this.contentGroup.add(text1);
             }
-            if (inventoryItem.getText2()) {
+            
+            if (inventoryItem.text2) {
                 const text2 = new Konva.Text({
-                    x: inventoryItem.getText2X(),
-                    y: inventoryItem.getText2Y(),
-                    text: inventoryItem.getText2(),
-                    fontSize: 24,
-                    fontFamily: "Arial",
+                    x: inventoryItem.text2X || STAGE_WIDTH / 2,
+                    y: inventoryItem.text2Y || STAGE_HEIGHT / 2,
+                    text: inventoryItem.text2,
+                    fontSize: 18,
+                    fontFamily: "Margarine",
                     fill: "#000",
                     align: "center",
                     offsetX: 100
                 });
                 this.contentGroup.add(text2);
             }
-            if (inventoryItem.getText3()) {
+            
+            if (inventoryItem.text3) {
                 const text3 = new Konva.Text({
-                    x: inventoryItem.getText3X(),
-                    y: inventoryItem.getText3Y(),
-                    text: inventoryItem.getText3(),
-                    fontSize: 24,
-                    fontFamily: "Arial",
+                    x: inventoryItem.text3X || STAGE_WIDTH / 2,
+                    y: inventoryItem.text3Y || STAGE_HEIGHT / 2,
+                    text: inventoryItem.text3,
+                    fontSize: 18,
+                    fontFamily: "Margarine",
                     fill: "#000",
                     align: "center",
                     offsetX: 100
@@ -188,6 +161,10 @@ export class InventoryView {
 
     getNextButton(): Konva.Image {
         return this.nextButton;
+    }
+
+    getBackpack(): Konva.Image {
+        return this.backpack;
     }
 
     show(): void {

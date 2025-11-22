@@ -1,4 +1,6 @@
 import { TrigUtil } from "../../../utilities/TrigUtil";
+import type {  InventoryItem } from "../../../types.ts";
+import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
 
 export class Level1Model {
     private isCompleted: boolean = false;
@@ -15,6 +17,57 @@ export class Level1Model {
     private SOH: number = this.trig.SOH(this.angle, this.opposite) // find hyp
     private CAH: number = this.trig.CAH(this.angle, this.adjacent) // finds hyp
     private TOA: number = this.trig.TOA(this.angle, this.opposite) // finds adj
+
+    private playerDataManager: PlayerDataManager;
+    private inventory: InventoryItem[];
+    private coins: number | null;
+
+    private success: boolean;
+
+    constructor(playerDataManager: PlayerDataManager) {
+        this.playerDataManager = playerDataManager;
+        this.playerDataManager.setLevel({type : "level1"});
+        this.inventory = [];
+        if (playerDataManager.getCoins() != null) {
+            this.coins = playerDataManager.getCoins();
+        } else {
+            this.coins = 0;
+        }
+        this.playerDataManager.clearInventory();
+        this.success = false;
+    }
+
+    setSuccess(success: boolean): void {
+        this.success = success;
+    }
+
+    getSuccess(): boolean {
+        return this.success;
+    }
+
+    getInventory(): InventoryItem[] {
+        return this.inventory;
+    }
+
+    addToInventory(inventoryItem: InventoryItem): void {
+        this.inventory.push(inventoryItem);
+        console.log(this.inventory);
+        this.playerDataManager.setInventory(this.inventory);
+        console.log(this.playerDataManager.getInventory());
+    }
+
+    getCoins(): number {
+        if (this.coins != null) {
+            return this.coins;
+        }
+        return 0;
+    }
+
+    addToCoins(addedCoins: number) {
+        if (this.coins != null) {
+            this.playerDataManager.setCoins(this.coins + addedCoins);
+        }
+    }
 
     getOpposite(): number {
         return this.opposite;
@@ -66,6 +119,4 @@ export class Level1Model {
     getIsCompleted(): boolean {
         return this.isCompleted;
     }
-
-    
 }

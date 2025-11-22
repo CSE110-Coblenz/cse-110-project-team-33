@@ -10,7 +10,6 @@ import { SundialView } from "./views/SundialView.ts"
 
 
 export class Level2Controller extends ScreenController {
-
     private screenSwitcher: ScreenSwitcher;
     
     /* Views */
@@ -21,6 +20,7 @@ export class Level2Controller extends ScreenController {
     constructor(screenSwitcher: ScreenSwitcher) {
         super();
         this.screenSwitcher = screenSwitcher;
+        if(this.screenSwitcher) {/* NOP to shut TSC up */}
 
         this.levelView = new Level2View();
         this.roomView = new RoomView();
@@ -31,8 +31,7 @@ export class Level2Controller extends ScreenController {
         this.levelView.getGroup().listening(true);
         this.levelView.getGroup().on("click", (evt) => this.commonElementEventHandler(evt));
         
-        // this.roomView.show();
-        this.sundial1View.show();
+        this.roomView.show();
     }
 
     getView(): Level2View {
@@ -44,7 +43,7 @@ export class Level2Controller extends ScreenController {
      * the constructor. NOTE: This doesnt handle return arrows, that logic
      * is predefined in the ReturnArrow element and (sort of) implemented in
      * each subview, sue me if you don't like it. */
-    commonElementEventHandler(evt): void {
+    commonElementEventHandler(evt: any): void {
         const target = evt.target;
 
         //alert("[DEBUG] commonElementEventHandler :: " + target.id());

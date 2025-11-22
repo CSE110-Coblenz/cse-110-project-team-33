@@ -16,15 +16,15 @@ import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../../constants.ts";
 import type { SubView } from "./SubView.ts";
 
 export class SundialView implements SubView {
-
-    private parentView: SubView;
+    private parentView: SubView | null;
     private group: Konva.Group;
     private bg: Background;
     private overlay: Overlay;
     private dbArrow: ReturnArrow;
     private dial: PuzzleDial; 
     
-    constructor(): SundialView {
+    constructor() {
+        this.parentView = null;
         this.group = new Konva.Group();
         this.bg = new Background(Background.sundialBG, "SundialViewBG");
         this.overlay = new Overlay(Overlay.sundialOverlay, "SundialViewOverlay");
@@ -43,6 +43,7 @@ export class SundialView implements SubView {
         this.group.add(this.overlay.getElement());
         this.group.add(this.dbArrow.getElement());
 
+        this.hide();
     }
 
     getGroup(): Konva.Group {
@@ -66,6 +67,9 @@ export class SundialView implements SubView {
     }
 
     popFromScreen(): void {
+        if(this.parentView == null) {
+            return;
+        }
         this.hide();
         this.parentView.show();
     }

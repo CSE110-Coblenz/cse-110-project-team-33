@@ -18,8 +18,6 @@ export class Door implements Element {
     private yPos : number;
     private id: string;
 
-    private frame: number;
-
     getURL()            { return "/img/level2/debug_door_spritesheet.png"; }
     getID()             { return this.id; }
     getDefaultWidth()   { return 256; }
@@ -33,7 +31,7 @@ export class Door implements Element {
         this.yPos = y;
         this.id = id;
 
-        this.doorSprite = new Konva.Image();
+        this.doorSprite = new Konva.Image({image: undefined});
         Konva.Image.fromURL(this.getURL(), (img) => {
             this.doorSprite.x(this.xPos);
             this.doorSprite.y(this.yPos);
@@ -65,7 +63,7 @@ export class Door implements Element {
     /* Gross little method to animate the door opening */
     animDoorOpen(): void {
         let frameCount = 0;
-        let animTimer = null;
+        let animTimer: any = null;
         let animFunc = () => {
             this.setAnimFrame(frameCount);
             if(frameCount == 3) {
@@ -79,7 +77,7 @@ export class Door implements Element {
     /* Gross little method to animate the door closing */
     animDoorClose(): void {
         let frameCount = 3;
-        let animTimer = null;
+        let animTimer: any = null;
         let animFunc = () => {
             this.setAnimFrame(frameCount);
             if(frameCount == 0) {
