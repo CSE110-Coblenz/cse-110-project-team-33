@@ -2,7 +2,7 @@ import Konva from "konva";
 import { Level3Model } from "./Level3Model.ts";
 // import all the views
 import { Level3View } from "./Level3View.ts";
-import { Level3PuzzleView } from "./Views/Level3PuzzleView.ts";
+//import { Level3PuzzleView } from "./Views/Level3PuzzleView.ts";
 // import { HintView } from "./Views/HintView.ts";
 
 // add playerdata
@@ -21,7 +21,7 @@ export class Level3Controller extends ScreenController {
 
     // all the views
     private view: Level3View;
-    private puzzle_view: Level3PuzzleView;
+    //private puzzle_view: Level3PuzzleView;
 
     // constructor
     constructor(screenSwitcher: ScreenSwitcher, playerDataManager: PlayerDataManager) {
@@ -34,15 +34,15 @@ export class Level3Controller extends ScreenController {
 
         this.model = new Level3Model(playerDataManager);
         this.view = new Level3View();
-        this.puzzle_view = new Level3PuzzleView();
+        //this.puzzle_view = new Level3PuzzleView();
         
         //this.view.show(); 
-        //this.initialize();
+        this.initialize();
     }
 
     private async initialize(): Promise<void> {
         // show the room view for level 3 (level3View)
-        //await this.view.getloadBackground();
+        await this.view.getloadBackground();
         //this.group.add(this.view.getGroup());
         //this.view.getGroup().moveToBottom();
 
@@ -61,13 +61,16 @@ export class Level3Controller extends ScreenController {
      */
     private setUpInteractable(): void {
         // first get all of the images
-        const doorImg = this.view.getDoor();
-        //const waterImg = this.view.getWater();
-        const backpackImg = this.view.getBackpack();
-        //this.group.add(backpackImg);
+        const doorImg = this.view.getDoor(); // door into next level if the answer is correct
+        const backpackImg = this.view.getBackpack(); // click into the inventory
+        const waterImg = this.view.getWater(); // click into the puzzle view
+        const back_button = this.view.getBack();
 
-        this.handleInteractable(backpackImg, "backpack");
+        //this.handleInteractable(backpackImg, "backpack");
         this.handleInteractable(doorImg, "door");
+        this.handleInteractable(backpackImg, "backpack");
+        this.handleInteractable(waterImg, "puzzle");
+        this.handleInteractable(back_button, "prev_level");
     }
 
     /**
@@ -78,11 +81,9 @@ export class Level3Controller extends ScreenController {
         // change style of cursor to denote clickable elements
         node.on("mouseover", () => {
             document.body.style.cursor = "pointer";
-            node.getLayer()?.draw();
         });
         node.on("mouseout", () => {
             document.body.style.cursor = "default";
-            node.getLayer()?.draw();
         });
 
         node.on("click", () => {
@@ -90,93 +91,42 @@ export class Level3Controller extends ScreenController {
             if(action == "backpack"){
                 this.screenSwitcher.switchToScreen({type: "inventory"});
             } else if (action == "door") {
-                this.screenSwitcher.switchToScreen({type: "level1"});
+                /**
+                 * heck if the correct answer was input
+                 * 1. change door image
+                 * 2. add 50 coins
+                 * 3. move to next level
+                 */
+                //console.log(this.view.getStatus());
+                this.view.setStatus();
+
+                this.handleCorrectAnswer();
+
+                if(this.view.getStatus()){
+                    this.model.addCoins(50);
+                    this.screenSwitcher.switchToScreen({type: "level1"}); // should be level 4 in future
+                }
+                // else nothing happens
+            } else if (action == "puzzle") {
+                this.view.getWaterLayer();
+            } else if (action == "prev_level") {
+                this.screenSwitcher.switchToScreen({type: "level1"}); // should be level 2 in future
             }
         });
 
     } // end of handleInteractable function
 
-    /*
-    // handle the correct answer
-    private handleCorrectAnswer() {
-        
-    }
-    */
-
-    // be able to switch back to previous level
-    /**
-     * get the back arrow image
-     * add a click.on to switch to previous screen
-     */
-
-    // clickable icons: back arrow, door, bag
-    /*
-    private addClickBehavior(node: any, action?: string): void {
-        node.on("mouseover", () => {
-            document.body.style.cursor = "pointer";
-        });
-
-        node.on("mouseout", () => {
-            document.body.style.cursor = "default";
-        });
-        
-        node.on("click", () => {
-
-        });
-    }
-        */
-
-    // set up clicking into inventory and the door to leave
-    /*
-    private addClickBehavior(node: any, optionValue?: number, action?: string): void {
-        node.on("mouseover", () => {
-            document.body.style.cursor = "pointer";
-        });
-
-        node.on("mouseout", () => {
-            document.body.style.cursor = "default";
-        });
-        
-        node.on("click", () => {
-            // Check if the clicked option's value matches the correct answer
-            if (action == "backpack") {
-                this.screenSwitcher.switchToScreen({ type: "inventory" });
-            }
-
-            if (action == "door") {
-                if (this.model.getSuccess() == true) {
-                    this.model.addToCoins(50);
-                    this.screenSwitcher.switchToScreen({ type: "level3" }); // CHANGE THIS LATER
-                }
-            }
-            
-            if (action == "mc") {
-                if (optionValue === this.correctAnswerValue) {
-                    this.handleCorrectAnswer(node);
-                    this.view.animateMovePillar();
-                } else {
-                    this.handleWrongAnswer(node);
-                }
-            }
-        });
-    }
-    */
-
-    // if the door is clicked on -> check if the answer is correct -> if correct then add 50 coins and switch to level 4
-
-
-    // level 3 successful -> move into next room
-
-    /*
-            if (action == "door") {
-                if (this.model.getSuccessful()) {
-                    this.model.addToCoins(50);
-                    this.screenSwitcher.switchToScreen({ type: "level4" }); // level complete! move on to room 4
-                }
-    */
-
     // get the view group
     getView(): Level3View {
         return this.view;
     }
+
+    // check answer
+    handleCorrectAnswer(): void {
+        // set level to "complete"
+        this.model.setIsSuccessful(true);
+
+        this.view.getGroup().getLayer()?.draw(); // redraw the group
+    }
+
 }

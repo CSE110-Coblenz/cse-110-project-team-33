@@ -5,29 +5,27 @@ import type { View } from "../../../types.ts";
 import { Level3PuzzleView } from "./Views/Level3PuzzleView.ts";
 import { HintView } from "./Views/HintView.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
+import { Stage } from "konva/lib/Stage";
 
 export class Level3View implements View {
-    // groups for each
+    // group displays room for level 3
     private group: Konva.Group;
-    //private screenSwitcher: ScreenSwitcher;
-    //private room_group: Konva.Group;
-    //private puzzle_group: Konva.Group;
 
+    // every image that makes up the background
     private background: Konva.Image;
     private door: Konva.Image;
     private clue: Konva.Image;
     private water: Konva.Image;
     private puzzle: Level3PuzzleView;
-    private hint: HintView;
-    private back: Konva.Image;
-    private backpack: Konva.Image;
+    //private hint: HintView;
+    private back: Konva.Image; // back button (?)
+    private backpack: Konva.Image; // for inventory
+    private coins: Konva.Image; // coins
+    private status: boolean; // status of the puzzle
 
     constructor() {
         // initialize everything
         this.group = new Konva.Group({visible: false});
-        //this.screenSwitcher = new this.screenSwitcher;
-        //this.room_group = new Konva.Group({visible: false});
-        //this.puzzle_group = new Konva.Group({visible: false});
 
         // all images
         this.background = new Konva.Image();
@@ -36,9 +34,12 @@ export class Level3View implements View {
         this.water = new Konva.Image();
         this.back = new Konva.Image();
         this.backpack = new Konva.Image();
+        this.coins = new Konva.Image();
 
+        // OBSOLETE -> have ONLY instance of puzzle view be in the constructor (consistency)
         this.puzzle = new Level3PuzzleView();
-        this.hint = new HintView();
+        this.status = false; // this.puzzle.checkAnswer();
+        //this.hint = new HintView();
 
         // load the room background and all its elements
         this.loadBackground();
@@ -71,6 +72,30 @@ export class Level3View implements View {
     // functions
     private async loadBackground(): Promise<void> {
         try {
+            // beginning of adding all images to the group
+            this.background = await this.loadImage("/res/Level3_bg.png", STAGE_WIDTH, STAGE_HEIGHT, 0, 0); // room background
+            this.door = await this.loadImage("/res/locked_door.png", 150, 200, 325, 65); // door -> separate to click into next room
+
+            const [backpack, coins] = await Promise.all([
+                this.loadImage("/res/backpack.png", 50, 50, 5, 5),
+                this.loadImage("/res/Coins.png", 50, 50, 100, 5)
+            ]);
+
+            const [water, back_button] = await Promise.all([
+                this.loadImage("/res/Water_layer.png", STAGE_WIDTH, 150, 0, 300),
+                this.loadImage("/res/arrow.png", 100, 100, 0, 500)
+            ])
+
+            //this.water = await this.loadImage("/res/Water_layer.png", STAGE_WIDTH, 150, 0, 300);
+            //this.back = await this.loadImage("/res/arrow.png", 100, 100, 0, 500);
+
+            this.backpack = backpack;
+            this.coins = coins;
+            this.water = water;
+            this.back = back_button;
+
+            /*
+            // THIS WORKS -> PUT BACK IF THINGS ARENT WORKING
             await this.loadRoom();
     
             await Promise.all([
@@ -81,6 +106,7 @@ export class Level3View implements View {
                     this.loadBack(),
                     this.loadBackpack()
             ]);
+            */
     
             this.group.getLayer()?.batchDraw();
     
@@ -89,36 +115,7 @@ export class Level3View implements View {
         }
     }
 
-    // load background
-    private async loadRoom(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            Konva.Image.fromURL("/res/Level3_bg.png", (image) => {
-                image.width(STAGE_WIDTH);
-                image.height(STAGE_HEIGHT);
-
-                this.background = image;
-                this.group.add(this.background);
-                resolve();
-            }, reject);
-        });
-    }
-
-    // load door
-    private async loadDoor(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            Konva.Image.fromURL("/res/locked_door.png", (image) => {
-                image.width(150);
-                image.height(200);
-                image.x(325);
-                image.y(65);
-                image.listening(true);
-
-                this.door = image;
-                this.group.add(this.door);
-                resolve();
-            }, reject);
-        });
-    }
+    // beginning of old load image functions -> using only the general one now //
 
     // load water_layer
     private async loadWater(): Promise<void> {
@@ -173,68 +170,35 @@ export class Level3View implements View {
                 });
                 // handle clicking to the hint view
                 image.on('click', () => {
-                    this.group.add(this.hint.getGroup());
-                    this.hint.getGroup().moveToTop();
+                    //this.group.add(this.hint.getGroup());
+                    //this.hint.getGroup().moveToTop();
                 });
-                this.group.add(this.water);
+                this.group.add(this.clue);
 
                 resolve();
             }, reject);
         });
     }
+    // end of old load image functions -> using only the general one now //
 
-    // load backpack image
-     private async loadBackpack(): Promise<void> {
+    // general function to load in an image
+    private loadImage(src: string, width: number, height: number, x: number, y: number): Promise<Konva.Image> {
         return new Promise((resolve, reject) => {
-            Konva.Image.fromURL("/res/backpack.png", (image) => {
-                // dimensions
-                image.width(50);
-                image.height(50);
-                image.x(5);
-                image.y(5);
-                image.listening(true);
-
-                // set image and add to group
-                this.backpack = image;
-                this.group.add(this.backpack);
-
-                resolve();
-            }, reject);
-        });
-    }   
-
-    // load coins image
-
-    // load back button to return to level 2 (?)
-    private async loadBack(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            Konva.Image.fromURL("/res/arrow.png", (image) => {
-                image.width(100);
-                image.height(100);
-                image.y(500);
-                image.listening(true);
-                this.back = image;
-                this.group.add(this.back);
-
-                // all click handlers
-                // mouseover to show it's being hovered over to click
-                this.back.on('mouseover', () => {
-                    this.back.scale({ x: 1.1, y: 1.1 }); // Slightly enlarge the image
-                    this.back.getLayer()?.batchDraw();
-                });
-                this.back.on('mouseout', () => {
-                    this.back.scale({ x: 1, y: 1 }); // Reset the image size
-                    this.back.getLayer()?.batchDraw();
-                });
-                // this.group.add(this.back);
-
-                resolve();
-            }, reject);
+            Konva.Image.fromURL(src, (image) => {
+                image.width(width);
+                image.height(height);
+                image.x(x);
+                image.y(y);
+                image.listening(true); // Enable events
+                
+                // add to the background group
+                this.group.add(image);
+                resolve(image); // Return the actual image
+            }, reject)
         });
     }
 
     // getters for every clickable/interactable image
-
     // the door -> to click to next level
     getDoor(): Konva.Image {
         return this.door;
@@ -258,5 +222,17 @@ export class Level3View implements View {
     // load the background -> needed for controller to control the view
     getloadBackground(): Promise<void> {
         return this.loadBackground();
+    }
+
+    getWaterLayer(): Promise<void> {
+        return this.loadWater();
+    }
+
+    getStatus(): boolean {
+        return this.status;
+    }
+
+    setStatus(): void {
+        this.status = this.puzzle.checkAnswer();
     }
 }

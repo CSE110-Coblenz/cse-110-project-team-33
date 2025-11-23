@@ -14,11 +14,11 @@ export class Level3Model {
     private coins: number | null;
 
     // puzzle view -> to handle checking the correct answer
-    private puzzle: Level3PuzzleView;
+    //private puzzle: Level3PuzzleView;
 
     constructor(playerDataManager: PlayerDataManager){
         // puzzle view
-        this.puzzle = new Level3PuzzleView();
+        //this.puzzle = new Level3PuzzleView();
 
         // initialization of player data when opening level
         this.playerDataManager = playerDataManager;
@@ -32,10 +32,23 @@ export class Level3Model {
         else{
             this.coins = 0;
         }
-        this.isSuccessful = false;
+        this.isSuccessful = false; // change to false for testing
+    }
+    
+    // get coins
+    getCoins(): number {
+        if(this.coins != null){
+            return this.coins;
+        }
+        return 0;
     }
 
-    
+    // set (add to) coins
+    addCoins(added: number) {
+        if(this.coins != null){
+            this.playerDataManager.setCoins(this.coins + added);
+        }
+    }
 
     // set the flag to this puzzle as correct
     setIsSuccessful(isCorrect: boolean): void {

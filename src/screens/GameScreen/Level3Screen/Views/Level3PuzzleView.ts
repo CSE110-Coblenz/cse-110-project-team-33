@@ -1,7 +1,5 @@
 // import statements
 import Konva from "konva";
-//import { View } from "../../../../types.ts";
-//import type { ScreenSwitcher } from "../../../../types.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../../constants.ts";
 
 export class Level3PuzzleView {
@@ -16,10 +14,9 @@ export class Level3PuzzleView {
 
     private water: Konva.Image;
     private chosen: number[];
+    private back: Konva.Image;
 
-    private back: Konva.Rect;
-
-    //private room: Level3View;
+    private status: boolean;
 
     // constructor
     constructor() {
@@ -31,11 +28,11 @@ export class Level3PuzzleView {
         this.rock4 = new Konva.Image;
         this.rock5 = new Konva.Image;
 
-        this.back =  new Konva.Rect;
+        this.back =  new Konva.Image;
 
         this.water = new Konva.Image;
         this.chosen = [0, 0, 0, 0, 0]; // image of selected rock
-        //this.room = new Level3View;
+        this.status = false; // initially false
 
         this.loadBackground();
 
@@ -88,8 +85,7 @@ export class Level3PuzzleView {
                 image.x(x);
                 image.y(y);
                 image.listening(true);
-                //image.offsetX(image.width() / 2);
-                //image.offsetY(image.height() / 2);
+
                 rock = image;
                 this.group.add(rock);
 
@@ -152,9 +148,20 @@ export class Level3PuzzleView {
             }, reject);
         });
     }
-
     // end of promises for images
+    // check answer
+    checkAnswer(): boolean {
+        console.log(this.chosen);
 
+        if((this.chosen)[0] == 1){
+            if((this.chosen)[1] == 1){
+                if((this.chosen)[2] == 1){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     // functions
     /**
