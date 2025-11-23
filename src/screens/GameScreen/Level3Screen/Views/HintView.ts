@@ -18,7 +18,12 @@ export class HintView implements View {
         this.clue = new Konva.Image;
 
         // set the image of the clue
-
+        Konva.Image.fromURL("/res/level3Clue.png", (image) => {
+            image.width(STAGE_WIDTH);
+            image.height(STAGE_HEIGHT);
+            this.clue = image;
+            this.group.add(this.clue);
+        });
     }
 
     // functions

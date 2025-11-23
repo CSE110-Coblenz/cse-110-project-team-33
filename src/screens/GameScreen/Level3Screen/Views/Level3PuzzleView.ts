@@ -70,6 +70,7 @@ export class Level3PuzzleView {
             Konva.Image.fromURL("/res/Water.png", (image) => {
                 image.width(STAGE_WIDTH);
                 image.height(STAGE_HEIGHT);
+                image.listening(true);
                 this.water = image;
                 this.group.add(this.water);
                 resolve();
@@ -86,10 +87,18 @@ export class Level3PuzzleView {
                 image.height(120);
                 image.x(x);
                 image.y(y);
+                image.listening(true);
                 //image.offsetX(image.width() / 2);
                 //image.offsetY(image.height() / 2);
                 rock = image;
                 this.group.add(rock);
+
+                image.on('mouseover', () => {
+                    document.body.style.cursor = "pointer";
+                });
+                image.on('mouseout', () => {
+                    document.body.style.cursor = "default";
+                });
                 
                 // Add click handler
                 rock.on('click', () => {
@@ -116,16 +125,19 @@ export class Level3PuzzleView {
                 image.width(100);
                 image.height(100);
                 image.y(500);
+                image.listening(true);
                 this.back = image;
                 this.group.add(this.back);
 
                 // all click handlers
                 // mouseover to show it's being hovered over to click
                 this.back.on('mouseover', () => {
+                    document.body.style.cursor = "pointer";
                     this.back.scale({ x: 1.1, y: 1.1 }); // Slightly enlarge the image
                     this.back.getLayer()?.batchDraw();
                 });
                 this.back.on('mouseout', () => {
+                    document.body.style.cursor = "default";
                     this.back.scale({ x: 1, y: 1 }); // Reset the image size
                     this.back.getLayer()?.batchDraw();
                 });
@@ -173,5 +185,9 @@ export class Level3PuzzleView {
      */
     getChosen(): number[] {
         return this.chosen;
+    }
+
+    getloadBackground(): Promise<void> {
+        return this.loadBackground();
     }
 }
