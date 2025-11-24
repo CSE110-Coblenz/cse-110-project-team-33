@@ -16,6 +16,8 @@ export class Level2Controller extends ScreenController {
     private levelView:  Level2View;
     private roomView:   RoomView;
     private sundial1View:   SundialView;
+    private sundial2View:   SundialView;
+    private sundial3View:   SundialView;
     
     constructor(screenSwitcher: ScreenSwitcher) {
         super();
@@ -25,8 +27,12 @@ export class Level2Controller extends ScreenController {
         this.levelView = new Level2View();
         this.roomView = new RoomView();
         this.sundial1View = new SundialView();
+        this.sundial2View = new SundialView();
+        this.sundial3View = new SundialView();
         this.levelView.getGroup().add(this.roomView.getGroup());
         this.levelView.getGroup().add(this.sundial1View.getGroup());
+        this.levelView.getGroup().add(this.sundial2View.getGroup());
+        this.levelView.getGroup().add(this.sundial3View.getGroup());
 
         this.levelView.getGroup().listening(true);
         this.levelView.getGroup().on("click", (evt) => this.commonElementEventHandler(evt));
@@ -46,12 +52,18 @@ export class Level2Controller extends ScreenController {
     commonElementEventHandler(evt: any): void {
         const target = evt.target;
 
-        //alert("[DEBUG] commonElementEventHandler :: " + target.id());
+        // alert("[DEBUG] commonElementEventHandler :: " + target.id());
         
         /* Conditional based on object ID */
         switch(target.id()) {
             case "sundial1":
                 this.sundial1View.pushToScreen(this.roomView);
+                break;
+            case "sundial2":
+                this.sundial2View.pushToScreen(this.roomView);
+                break;
+            case "sundial3":
+                this.sundial3View.pushToScreen(this.roomView);
                 break;
         }
     }

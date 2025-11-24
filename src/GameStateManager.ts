@@ -5,9 +5,9 @@ import { MenuController } from "./screens/MenuScreen/MenuController.ts";
 import { InventoryController } from "./screens/InventoryScreen/InventoryController.ts";
 import { IntroScreenController } from "./screens/GameScreen/IntroScreen/IntroScreenController.ts";
 import { Level1Controller } from "./screens/GameScreen/Level1Screen/Level1Controller.ts";
-// import { Level2Controller } from "./screens/GameScreen/Level2Screen/Level2Controller";
-// import { Level3Controller } from "./screens/GameScreen/Level3Screen/Level3Controller";
-// import { Level4Controller } from "./screens/GameScreen/Level4Screen/Level4Controller";
+import { Level2Controller } from "./screens/GameScreen/Level2Screen/Level2Controller";
+import { Level3Controller } from "./screens/GameScreen/Level3Screen/Level3Controller";
+import { Level4Controller } from "./screens/GameScreen/Level4Screen/Level4Controller";
 // import { ResultsController } from "./screens/ResultsScreen/ResultsController";
 import { ExitController } from "./screens/MenuScreen/ExitScreen/ExitController.ts";
 import { LoadController } from "./screens/MenuScreen/LoadScreen/LoadController.ts";
@@ -37,9 +37,9 @@ class App implements ScreenSwitcher {
     // private settingsController: SettingsController;
 	private inventoryController: InventoryController;
 	private level1Controller: Level1Controller;
-	// private level2Controller: Level2Controller;
-    // private level3Controller: Level3Controller;
-    // private level4Controller: Level4Controller;
+	private level2Controller: Level2Controller;
+    private level3Controller: Level3Controller;
+    private level4Controller: Level4Controller;
 	private miniGameController: MiniGameController;
     // private resultsController: ResultsController;
 	private exitController: ExitController;
@@ -76,10 +76,10 @@ class App implements ScreenSwitcher {
 		// this.settingsController = new SettingsController(this);
 		this.inventoryController = new InventoryController(this, this.playerDataManager);
         this.level1Controller = new Level1Controller(this, this.playerDataManager);
-        // this.level2Controller = new Level2Controller(this);
+        this.level2Controller = new Level2Controller(this);
         this.introController = new IntroScreenController(this);
         // this.level3Controller = new Level3Controller(this);
-        // this.level4Controller = new Level4Controller(this);
+        // this.level4Controller = new Level4Controller(this, null);
 		this.miniGameController = new MiniGameController(this);
         // this.resultsController = new ResultsController(this);
 		this.exitController = new ExitController(this);
@@ -92,7 +92,7 @@ class App implements ScreenSwitcher {
         this.layer.add(this.introController.getView().getGroup());
 		this.layer.add(this.inventoryController.getView().getGroup());
 		this.layer.add(this.level1Controller.getView().getGroup());
-        // this.layer.add(this.level2Controller.getView().getGroup());
+        this.layer.add(this.level2Controller.getView().getGroup());
         // this.layer.add(this.level3Controller.getView().getGroup());
         // this.layer.add(this.level4Controller.getView().getGroup());
 		this.layer.add(this.miniGameController.getView().getGroup());
@@ -105,10 +105,10 @@ class App implements ScreenSwitcher {
         this.gamePauseOverlay.registerKeyEventListener(this.stage.container());
 		// Draw the layer (render everything to the canvas)
 		this.layer.draw();
-		this.menuController.getView().show();
-		this.gamePauseOverlay.setEnabled(false);
+		// this.menuController.getView().show();
+		// this.gamePauseOverlay.setEnabled(false);
 
-		this.switchToScreen({type: "level1"});
+		this.switchToScreen({type: "level2"});
 	}
 
 	switchToScreen(screen: Screen): void {
@@ -119,7 +119,7 @@ class App implements ScreenSwitcher {
         // this.settingsController.hide();
 		this.inventoryController.hide();
 		this.level1Controller.hide();
-        // this.level2Controller.hide();
+        this.level2Controller.hide();
         // this.level3Controller.hide();
         // this.level4Controller.hide();
 		this.miniGameController.hide();
@@ -148,8 +148,8 @@ class App implements ScreenSwitcher {
 		        this.gamePauseOverlay.setEnabled(true);
 				break;
             case "level2":
-                // this.level2Controller.show();
-		        // this.gamePauseOverlay.setEnabled(true);
+                this.level2Controller.show();
+		        this.gamePauseOverlay.setEnabled(true);
                 break;
             case "level3":
                 // this.level3Controller.show();
