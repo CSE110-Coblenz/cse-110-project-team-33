@@ -11,13 +11,22 @@ export class Level4Controller extends ScreenController {
     private view: Level4View;
 
 
-    constructor(screenSwitcher: ScreenSwitcher, targets: Target[]) {
+    private targets: Target[] = [
+        { label: "0°", angle: 0 },
+        { label: "45°", angle: 45 },
+        { label: "90°", angle: 90 },
+        { label: "135°", angle: 135 },
+        { label: "180°", angle: 180 },
+    ];
+
+
+    constructor(screenSwitcher: ScreenSwitcher) {
         super();
         this.screenSwitcher = screenSwitcher;
 
         // Initialize model and view
         this.model = new Level4Model();
-        this.model.initTargets(targets);
+        this.model.initTargets(this.targets);
 
         this.view = new Level4View();
 
