@@ -108,7 +108,7 @@ class App implements ScreenSwitcher {
 		this.menuController.getView().show();
 		this.gamePauseOverlay.setEnabled(false);
 
-		this.switchToScreen({type: "level1"});
+		this.switchToScreen({type: "level4"});
 	}
 
 	switchToScreen(screen: Screen): void {
