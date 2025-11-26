@@ -78,7 +78,7 @@ class App implements ScreenSwitcher {
         this.level1Controller = new Level1Controller(this, this.playerDataManager);
         this.level2Controller = new Level2Controller(this);
         this.introController = new IntroScreenController(this);
-        // this.level3Controller = new Level3Controller(this);
+        this.level3Controller = new Level3Controller(this);
         // this.level4Controller = new Level4Controller(this, null);
 		this.miniGameController = new MiniGameController(this);
         // this.resultsController = new ResultsController(this);
@@ -93,7 +93,7 @@ class App implements ScreenSwitcher {
 		this.layer.add(this.inventoryController.getView().getGroup());
 		this.layer.add(this.level1Controller.getView().getGroup());
         this.layer.add(this.level2Controller.getView().getGroup());
-        // this.layer.add(this.level3Controller.getView().getGroup());
+        this.layer.add(this.level3Controller.getView().getGroup());
         // this.layer.add(this.level4Controller.getView().getGroup());
 		this.layer.add(this.miniGameController.getView().getGroup());
         // this.layer.add(this.resultsController.getView().getGroup());
@@ -120,7 +120,7 @@ class App implements ScreenSwitcher {
 		this.inventoryController.hide();
 		this.level1Controller.hide();
         this.level2Controller.hide();
-        // this.level3Controller.hide();
+        this.level3Controller.hide();
         // this.level4Controller.hide();
 		this.miniGameController.hide();
 		// this.resultsController.hide();
@@ -152,7 +152,7 @@ class App implements ScreenSwitcher {
 		        this.gamePauseOverlay.setEnabled(true);
                 break;
             case "level3":
-                // this.level3Controller.show();
+                this.level3Controller.show();
 		        this.gamePauseOverlay.setEnabled(true);
                 break;
             case "level4":
