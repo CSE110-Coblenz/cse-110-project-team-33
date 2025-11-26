@@ -11,6 +11,10 @@ import type Element from "Element"
 export class InfoTray implements Element {
     private group: Konva.Group;
     private bg: Konva.Image;
+    private labelA: Konva.Text;
+    private labelB: Konva.Text;
+    private labelC: Konva.Text;
+    private labelT: Konva.Text;
 
     private isOpen: boolean;
     private isAnim: boolean;
@@ -53,23 +57,58 @@ export class InfoTray implements Element {
             this.toggleTray();
         });
 
-/*
-        this.digit = new Konva.Text({
-            text: this.value,
-            align: "center",
-            fontSize: 10,
+        this.labelA = new Konva.Text({
+            text: "A:  4.20 in",
+            align: "left",
+            fontSize: 6,
             fontFamily: "Press Start 2P",
-            fill: "#fae800",
+            fill: "black",
             x: 8,
-            y: 16,
+            y: 36,
             height: 10,
-            width: 10,
-            offsetX: 5,
-            offsetY: 5            
+            width: 80,
         });
-*/
+
+        this.labelB = new Konva.Text({
+            text: "B: 12.00 in",
+            align: "left",
+            fontSize: 6,
+            fontFamily: "Press Start 2P",
+            fill: "black",
+            x: 8,
+            y: 36+12,
+            height: 10,
+            width: 80,
+        });
+        this.labelC = new Konva.Text({
+            text: "C: 12.71 in",
+            align: "left",
+            fontSize: 6,
+            fontFamily: "Press Start 2P",
+            fill: "black",
+            x: 8,
+            y: 36 + 12*2,
+            height: 10,
+            width: 80,
+        });
+
+        this.labelT = new Konva.Text({
+            text: "T: 19.3 deg",
+            align: "left",
+            fontSize: 6,
+            fontFamily: "Press Start 2P",
+            fill: "black",
+            x: 8,
+            y: 36 + 12*3,
+            height: 10,
+            width: 80,
+        });
 
         this.group.add(this.bg);
+        this.group.add(this.labelA);
+        this.group.add(this.labelB);
+        this.group.add(this.labelC);
+        this.group.add(this.labelT);
     }
 
 
