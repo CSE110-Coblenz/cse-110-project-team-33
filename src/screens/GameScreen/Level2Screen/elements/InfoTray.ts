@@ -19,6 +19,11 @@ export class InfoTray implements Element {
     private isOpen: boolean;
     private isAnim: boolean;
 
+    private valA: number;
+    private valB: number;
+    private valC: number;
+    private valT: number;
+
     closedOffset()  { return 96- 16; }
     openOffset()    { return 0; }
     animStep()      { return 10; }
@@ -33,13 +38,17 @@ export class InfoTray implements Element {
     constructor(x: number, y: number, id: string) {
         this.isAnim = false;
         this.isOpen = false;
+        this.valA = 0;
+        this.valB = 0;
+        this.valC = 0;
+        this.valT = 0;
         this.group = new Konva.Group({
             x: x, y: y,
             offsetX: 96/2,
             offsetY: this.closedOffset(),
             scaleX: 4,
             scaleY: 4,
-            id: id
+            id: id,
         });
         this.bg = new Konva.Image({image: undefined});
 
@@ -58,7 +67,7 @@ export class InfoTray implements Element {
         });
 
         this.labelA = new Konva.Text({
-            text: "A:  4.20 in",
+            text: "A:  " + this.valA.toFixed(2) + " in",
             align: "left",
             fontSize: 6,
             fontFamily: "Press Start 2P",
@@ -70,7 +79,7 @@ export class InfoTray implements Element {
         });
 
         this.labelB = new Konva.Text({
-            text: "B: 12.00 in",
+            text: "B:  " + this.valB.toFixed(2) + " in",
             align: "left",
             fontSize: 6,
             fontFamily: "Press Start 2P",
@@ -81,7 +90,7 @@ export class InfoTray implements Element {
             width: 80,
         });
         this.labelC = new Konva.Text({
-            text: "C: 12.71 in",
+            text: "C:  " + this.valC.toFixed(2) + " in",
             align: "left",
             fontSize: 6,
             fontFamily: "Press Start 2P",
@@ -93,7 +102,7 @@ export class InfoTray implements Element {
         });
 
         this.labelT = new Konva.Text({
-            text: "T: 19.3 deg",
+            text: "θ:  " + this.valT.toFixed(1) + " deg",
             align: "left",
             fontSize: 6,
             fontFamily: "Press Start 2P",
@@ -112,6 +121,23 @@ export class InfoTray implements Element {
     }
 
 
+	setA(val: number) {
+		this.valA = val;
+		this.labelA.text("A:  " + this.valA.toFixed(2) + " in");
+	}
+	setB(val: number) {
+		this.valB = val;
+		this.labelB.text("B:  " + this.valB.toFixed(2) + " in");
+	}
+	setC(val: number) {
+		this.valC = val;
+		this.labelC.text("C:  " + this.valC.toFixed(2) + " in");
+	}
+	setT(val: number) {
+		this.valT = val;
+		this.labelT.text("θ:  " + this.valT.toFixed(2) + " deg");
+	}
+
     toggleTray() {
         if(this.isAnim) {
             return;
@@ -123,8 +149,6 @@ export class InfoTray implements Element {
             target = this.closedOffset();
             step = this.animStep();
         }
-
-
 
         this.isAnim = true;
         let animTimer: any = null;

@@ -26,17 +26,15 @@ export class RoomView implements SubView {
     private sundial1: Sundial;
     private sundial2: Sundial;
     private sundial3: Sundial;
-    private dbArrow: ReturnArrow;
+
+    private isDoorOpen: boolean;
 
     constructor(){
         this.parentView = null;
+        this.isDoorOpen = false;
         this.group = new Konva.Group();
         this.bg = new Background(Background.debugBG, "RoomViewBG");
         this.overlay = new Overlay(Overlay.debugOverlay, "RoomViewOverlay");
-
-        this.dbArrow = new ReturnArrow(
-            STAGE_WIDTH*0.01, STAGE_HEIGHT*0.88,
-            () => {alert("cbclicked");}, "dbArrow");
 
         let centerX = STAGE_WIDTH/2;
         let centerY = STAGE_HEIGHT/2;
@@ -52,7 +50,20 @@ export class RoomView implements SubView {
         this.group.add(this.sundial2.getElement());
         this.group.add(this.sundial3.getElement());
         this.group.add(this.overlay.getElement());
-        this.group.add(this.dbArrow.getElement());
+
+		/* This code makes the cursor into a pointer over the door when it
+		 * is opened. It technically has to do with visuals, so its in the
+		 * view. */
+        this.door.getElement().on("mouseover", () => {
+        	if(this.isDoorOpen) {
+				this.group.getStage().container().style.cursor = "pointer";
+        	} else {
+				this.group.getStage().container().style.cursor = "default";        		
+        	}
+        });
+        this.door.getElement().on("mouseout", () => {
+        	this.group.getStage().container().style.cursor = "default";
+        });
 
         this.hide();
     }
@@ -60,10 +71,23 @@ export class RoomView implements SubView {
     getGroup(): Konva.Group {
         return this.group;
     }
+
+	getDoorState() {
+		return this.isDoorOpen;
+	}
+    setDoorState(state: boolean) {
+    	this.isDoorOpen = state;
+    }
     
     show(): void {
         this.group.visible(true);
         // this.group.getLayer?.draw();
+        /* Update door animation */
+        if(this.isDoorOpen) {
+        	this.door.animDoorOpen();
+        } else {
+        	this.door.animDoorClose();
+        }        
     }
     
     hide(): void {

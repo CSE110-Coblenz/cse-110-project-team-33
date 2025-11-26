@@ -17,17 +17,21 @@ class DigitDisplay {
     private digit: Konva.Text;
 
     private value: number;
-    private maxVal: number
+    private maxVal: number;
 
-    constructor(x: number, y: number, maxVal: number) {
+    private parent: any;
+
+    constructor(x: number, y: number, maxVal: number, id, parent: any) {
         this.value = 0;
+        this.parent = parent;
         this.maxVal = maxVal;
         this.group = new Konva.Group({
             x: x, y: y,
             scaleX: 4,
             scaleY: 4,
             offsetX: 8,
-            offsetY: 16
+            offsetY: 16,
+            id : id
         });
         this.incBtn = new Konva.Image({image: undefined});
         this.decBtn = new Konva.Image({image: undefined});
@@ -78,14 +82,22 @@ class DigitDisplay {
 
 
         this.incBtn.on("click", () => {
+			let oldVal = this.value;
             this.value = (this.value + 1) % (this.maxVal+1);
+            if(this.parent.getRawValue() > this.parent.getMaxValue()) {
+            	this.value = oldVal;
+            }
             this.digit.text(this.value);
         });
 
        this.decBtn.on("click", () => {
+       		let oldVal = this.value;
             this.value = (this.value - 1) % (this.maxVal+1);
             if(this.value < 0) {
                 this.value = this.maxVal;
+            }
+            if(this.parent.getRawValue() > this.parent.getMaxValue()) {
+            	this.value = oldVal;
             }
             this.digit.text(this.value);
         });
@@ -114,12 +126,13 @@ export class NumericInput implements Element {
     getDefaultWidth()   { return 232; }
     getDefaultHeight()  { return 144; }
 
-    constructor(x : number, y : number, id: string, maxVal: number) {
+    constructor(x : number, y : number, maxVal: number, id: string) {
     this.maxVal = maxVal;
         this.group = new Konva.Group({
             x: x, y: y,
             offsetX: this.getDefaultWidth()/2,
-            offsetY: this.getDefaultHeight()
+            offsetY: this.getDefaultHeight(),
+            id: id
         });
 
         const bg = new Konva.Rect({
@@ -128,6 +141,7 @@ export class NumericInput implements Element {
             width: this.getDefaultWidth(),
             height: this.getDefaultHeight(),
             fill: "red",
+            id: id
         });
 
         this.bg = new Konva.Image({image: undefined});
@@ -141,20 +155,34 @@ export class NumericInput implements Element {
 
 
         this.group.add(this.bg);
-        this.d1 = new DigitDisplay(40 ,  this.getDefaultHeight() / 2, 9);
-        this.d2 = new DigitDisplay(120 , this.getDefaultHeight() / 2, 9);
-        this.d3 = new DigitDisplay(192 , this.getDefaultHeight() / 2, 9);
+        this.d1 = new DigitDisplay(40 ,  this.getDefaultHeight() / 2, 9, id, this);
+        this.d2 = new DigitDisplay(120 , this.getDefaultHeight() / 2, 9, id, this);
+        this.d3 = new DigitDisplay(192 , this.getDefaultHeight() / 2, 9, id, this);
         this.group.add(this.d1.getElement());
         this.group.add(this.d2.getElement());
         this.group.add(this.d3.getElement());
     
     }
-
-    getValue() {
+	getRawValue() {
         let val = 0;
         val += this.d1.getValue();
         val += this.d2.getValue()/10;
         val += this.d3.getValue()/100;
         return val;
+    }
+
+    getValue() {
+    	const val = this.getRawValue();
+    	if(val > this.getMaxValue()) {
+    		return this.getMaxValue()
+    	}
+    	if(val < 0) {
+    		return 0;
+    	}
+    	return val;
+    }
+
+    getMaxValue() {
+    	return this.maxVal;
     }
 }

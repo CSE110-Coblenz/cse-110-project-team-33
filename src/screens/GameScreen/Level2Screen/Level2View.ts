@@ -12,28 +12,36 @@
  * main screen switcher.
  */
 
- import Konva from "konva";
- import type { View } from "../../../types";
+import Konva from "konva";
+import type { View } from "../../../types";
+import {TextAlert } from "./elements/TextAlert";
 
+export class Level2View implements View {
 
- export class Level2View implements View {
+	private group: Konva.Group;
+	private alert: TextAlert;
 
-    private group: Konva.Group;
+	constructor() {
+	    this.group = new Konva.Group({visible: false});
+	    this.alert = new TextAlert("level2_textAlert");
+	    this.group.add(this.alert.getElement());
+	}
 
-    constructor() {
-        this.group = new Konva.Group({visible: false});
-    }
+	triggerAlert(text: string) {
+		this.alert.getElement().moveToTop();
+		this.alert.triggerAlert(text);
+	}
 
-    getGroup(): Konva.Group {
-        return this.group;
-    }
-    
-    show(): void {
-        this.group.visible(true);
-    }
-    
-    hide(): void {
-        this.group.visible(false);
-    }
-    
- }
+	getGroup(): Konva.Group {
+	    return this.group;
+	}
+
+	show(): void {
+	    this.group.visible(true);
+	}
+
+	hide(): void {
+	    this.group.visible(false);
+	}
+   
+}
