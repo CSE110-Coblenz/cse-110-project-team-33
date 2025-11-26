@@ -5,12 +5,14 @@
  */
 
 
+import type { PlayerDataManager } from "../../../managers/GameStateManager";
 import { ScreenController } from "../../../types";
 import type { ScreenSwitcher } from "../../../types";
 import { IntroScreenView } from "./IntroScreenView";
 
 export class IntroScreenController extends ScreenController {
     private screenSwitcher: ScreenSwitcher;
+    private playerDataManager: PlayerDataManager;
 
     private view: IntroScreenView;
 
@@ -22,9 +24,10 @@ export class IntroScreenController extends ScreenController {
     /* Text page stuff */
     private currentTextPage: number;
 
-    constructor(screenSwitcher: ScreenSwitcher) {
+    constructor(screenSwitcher: ScreenSwitcher, playerDataManager: PlayerDataManager) {
         super();
         this.screenSwitcher = screenSwitcher;
+        this.playerDataManager = playerDataManager;
 
         this.view = new IntroScreenView();
 
@@ -44,6 +47,8 @@ export class IntroScreenController extends ScreenController {
         this.view.getButton().on("click", () => this.buttonCallback());
         this.startBackgroundScrollAnimation();
 
+        this.playerDataManager.setLevel({type: "level1"});
+        this.playerDataManager.setInventory([]);
     }
 
     startBackgroundScrollAnimation() {
