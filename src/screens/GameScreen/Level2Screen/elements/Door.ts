@@ -49,14 +49,6 @@ export class Door implements Element {
                 height:46
             });
         });
-/*
-        this.doorSprite.on("mouseenter", () => {
-                this.animDoorOpen();
-        });
-        this.doorSprite.on("mouseleave", () => {
-                this.animDoorClose();
-        });
-*/
     }
 
     setAnimFrame(frame: number): void {

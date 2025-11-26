@@ -117,6 +117,14 @@ export class Level2Controller extends ScreenController {
 				} else {
 					this.levelView.triggerAlert("This door is locked!");
 				}
+				break;
+			case "RoomViewClue":
+				this.levelView.triggerAlert("A Clue: " + 
+					this.model.getSundialTargetTheta(1).toFixed(2) + "°, " +
+					this.model.getSundialTargetTheta(2).toFixed(2) + "°, " +
+					this.model.getSundialTargetTheta(3).toFixed(2) + "°, "
+				);
+				break;
         }
 
         /* Convenient place to check if the level is solved, since it will occur after every

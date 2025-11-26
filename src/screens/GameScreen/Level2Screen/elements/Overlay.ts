@@ -19,7 +19,7 @@ export class Overlay implements Element {
 
     /* Static getters to actual background URLS */
     static get debugOverlay()    { return "/img/level2/debug_bg2_overlay.png"; }
-    static get sundialOverlay()    { return "/img/level2/debug_bg_overlay.png"; }
+    static get sundialOverlay()    { return "/img/level2/sundial_view_overlay.png"; }
 
     getURL()            { return this.overlayURL; }
     getID()             { return this.id; }

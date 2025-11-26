@@ -30,7 +30,7 @@ export class TextAlert implements Element {
             align: "center",
             fontSize: 24,
             fontFamily: "Press Start 2P",
-            fill: "yellow",
+            fill: "brown",
             x: STAGE_WIDTH/2,
             y: STAGE_HEIGHT/2,
             height: 24,
@@ -50,10 +50,10 @@ export class TextAlert implements Element {
 
 		let animStage = 0;
 		let floatUpCount = 0;
-		let floatUpGoal = 20;
+		let floatUpGoal = 50;
 		let fadeStep = 0.05;
 		let fadeIn = 0;
-		let fadeOut = 1;
+		let fadeOut = 5;
 		/* fade in */
 	    this.active = true;
         let animTimer: any = null;
@@ -66,7 +66,7 @@ export class TextAlert implements Element {
             
             if(floatUpCount < floatUpGoal) {
             	floatUpCount += 1;
-            	this.alert.y(this.alert.y() - 5);
+            	this.alert.y(this.alert.y() - 1);
             } else if(fadeOut > fadeStep) {
             	fadeOut -= fadeStep;
            		this.alert.opacity(fadeOut);

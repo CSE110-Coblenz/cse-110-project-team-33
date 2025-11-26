@@ -9,6 +9,7 @@
 
 import Konva from "konva";
 import { Sundial } from "../elements/Sundial";
+import { Clue } from "../elements/Clue";
 import { Door } from "../elements/Door";
 import { Background } from "../elements/Background";
 import { Overlay } from "../elements/Overlay";
@@ -27,6 +28,8 @@ export class RoomView implements SubView {
     private sundial2: Sundial;
     private sundial3: Sundial;
 
+	private clue: Clue;
+	
     private isDoorOpen: boolean;
 
     constructor(){
@@ -43,6 +46,7 @@ export class RoomView implements SubView {
         this.sundial2 = new Sundial( centerX      , centerY, "sundial2");
         this.sundial3 = new Sundial( centerX + 128, centerY, "sundial3");
 
+		this.clue = new Clue(STAGE_WIDTH/2,STAGE_HEIGHT/2 + 96, "RoomViewClue");
         /* The order matters here for composition reasons(?) */
         this.group.add(this.bg.getElement());
         this.group.add(this.door.getElement());
@@ -50,7 +54,8 @@ export class RoomView implements SubView {
         this.group.add(this.sundial2.getElement());
         this.group.add(this.sundial3.getElement());
         this.group.add(this.overlay.getElement());
-
+		this.group.add(this.clue.getElement());
+		
 		/* This code makes the cursor into a pointer over the door when it
 		 * is opened. It technically has to do with visuals, so its in the
 		 * view. */
@@ -62,6 +67,14 @@ export class RoomView implements SubView {
         	}
         });
         this.door.getElement().on("mouseout", () => {
+        	this.group.getStage().container().style.cursor = "default";
+        });
+
+
+        this.clue.getElement().on("mouseover", () => {
+			this.group.getStage().container().style.cursor = "pointer";
+        });
+        this.clue.getElement().on("mouseout", () => {
         	this.group.getStage().container().style.cursor = "default";
         });
 
