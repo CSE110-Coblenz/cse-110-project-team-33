@@ -94,7 +94,7 @@ export class IntroScreenView implements View {
         this.group = new Konva.Group({visible: false});
 
         this.bg = new Konva.Image({image: undefined});
-        Konva.Image.fromURL("/res/img/intro/bg.png", (img) => {
+        Konva.Image.fromURL("/res/img/intro/intro_bg.png", (img) => {
             this.bg.image(img.image());
             this.bg.x(0);
             this.bg.y(0);

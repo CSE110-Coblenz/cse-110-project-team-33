@@ -1,8 +1,6 @@
 // import statements
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants";
 import type { InventoryItem } from "../../../types";
 import { PlayerDataManager } from "../../../GameStateManager";
-import { Level3PuzzleView } from "./Views/Level3PuzzleView";
 
 export class Level3Model {
     // flag to denote if the level was successfully completed
@@ -13,17 +11,11 @@ export class Level3Model {
     private inventory: InventoryItem[];
     private coins: number | null;
 
-    // puzzle view -> to handle checking the correct answer
-    //private puzzle: Level3PuzzleView;
-
     constructor(playerDataManager: PlayerDataManager){
-        // puzzle view
-        //this.puzzle = new Level3PuzzleView();
-
         // initialization of player data when opening level
-        this.playerDataManager = playerDataManager;
+        this.playerDataManager = playerDataManager; 
         this.playerDataManager.setLevel({type: "level3"});
-        this.inventory = [];
+        this.inventory = this.playerDataManager.getInventory();
 
         // get values
         if(playerDataManager.getCoins() != null){
@@ -35,6 +27,7 @@ export class Level3Model {
         this.isSuccessful = false; // change to false for testing
     }
     
+    // ** inventory related functions ** //
     // get coins
     getCoins(): number {
         if(this.coins != null){
@@ -48,6 +41,14 @@ export class Level3Model {
         if(this.coins != null){
             this.playerDataManager.setCoins(this.coins + added);
         }
+    }
+
+    // add something into the inventory
+    addToInventory(inventoryItem: InventoryItem): void {
+        this.inventory.push(inventoryItem);
+        console.log(this.inventory);
+        this.playerDataManager.setInventory(this.inventory);
+        console.log(this.playerDataManager.getInventory());
     }
 
     // set the flag to this puzzle as correct
