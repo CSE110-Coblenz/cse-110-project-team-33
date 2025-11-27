@@ -11,13 +11,22 @@ export class Level4Controller extends ScreenController {
     private view: Level4View;
 
 
-    constructor(screenSwitcher: ScreenSwitcher, targets: Target[]) {
+    private targets: Target[] = [
+        { label: "(1, 0)", angle: 0 },
+        { label: "(√2/2, √2/2)", angle: 45 },
+        { label: "(0, 1)", angle: 90 },
+        { label: "(-√2/2, √2/2)", angle: 135 },
+        { label: "(-1, 0)", angle: 180 },
+    ];
+
+
+    constructor(screenSwitcher: ScreenSwitcher) {
         super();
         this.screenSwitcher = screenSwitcher;
 
         // Initialize model and view
         this.model = new Level4Model();
-        this.model.initTargets(targets);
+        this.model.initTargets(this.targets);
 
         this.view = new Level4View();
 
@@ -32,7 +41,7 @@ export class Level4Controller extends ScreenController {
             // Initial label positions (below the circle)
             const labelNode = this.view.createDraggableLabel(
                 item.label,
-                this.model.centerX - 50 + i * 60,
+                this.model.centerX - 150 + i * 60,
                 this.model.centerY + this.model.radius + 50
             );
 
