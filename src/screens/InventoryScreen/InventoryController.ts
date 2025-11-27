@@ -1,6 +1,6 @@
 import { InventoryModel } from "./InventoryModel.ts";
 import { InventoryView } from "./InventoryView.ts";
-import { PlayerDataManager } from "../../GameStateManager.ts";
+import { PlayerDataManager } from "../../managers/GameStateManager.ts";
 import { ScreenController } from "../../types.ts";
 import type { ScreenSwitcher} from "../../types.ts";
 
