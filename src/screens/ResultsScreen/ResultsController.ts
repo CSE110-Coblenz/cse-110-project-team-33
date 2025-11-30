@@ -14,6 +14,7 @@ import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants.ts";
 export class ResultsController extends ScreenController {
     private view: ResultsView;
     private screenSwitcher: ScreenSwitcher;
+    private playerData: PlayerDataManager;
 
     // win game sound effect (maybe?)
     private win_sound: HTMLAudioElement;
@@ -24,6 +25,7 @@ export class ResultsController extends ScreenController {
     constructor(screenSwitcher: ScreenSwitcher, playerDataManager: PlayerDataManager) {
         super();
         this.screenSwitcher = screenSwitcher;
+        this.playerData = playerDataManager;
         // initialize results views
         this.view = new ResultsView(playerDataManager);
         this.button = new Konva.Image();
@@ -72,6 +74,8 @@ export class ResultsController extends ScreenController {
 
         node.on('click', () => {
             if(action == "crystal"){
+                // give player 500 coins
+
                 console.log("game complete!");
                 this.win_sound.play();
 

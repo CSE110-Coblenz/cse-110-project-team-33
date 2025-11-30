@@ -27,6 +27,7 @@ export class Level3View implements View {
     private backpack: Konva.Image; // for inventory
     private coins: Konva.Image; // coins
     private coins_text: Konva.Text;
+    private crystal: Konva.Image;
     private status: boolean; // status of the puzzle
 
     // player data to display updated values
@@ -53,6 +54,7 @@ export class Level3View implements View {
         this.backpack = new Konva.Image();
         this.coins = new Konva.Image();
         this.coins_text = new Konva.Text();
+        this.crystal = new Konva.Image();
 
         // level 3 -> level 3 puzzle (access from level 3 since no other level needs level 3's puzzle info)
         this.puzzle = new Level3PuzzleView();
@@ -114,7 +116,9 @@ export class Level3View implements View {
                 this.loadImage("/res/Coins.png", 50, 50, 60, 5)
             ])
 
-            this.clue = await this.loadImage("/res/Clue.png", 100, 100, 150, 475);
+            // clue and the crystal
+            this.crystal = await this.loadImage("/res/crystal.png", 30, 40, 600, 475);
+            this.clue = await this.loadImage("/res/paper.png", 80, 70, 150, 475);
 
             // asign images to the object's variables
             this.backpack = backpack;
@@ -173,6 +177,10 @@ export class Level3View implements View {
 
     getClue(): Konva.Image {
         return this.clue;
+    }
+
+    getCrystal(): Konva.Image {
+        return this.crystal;
     }
 
     // load the background -> needed for controller to control the view

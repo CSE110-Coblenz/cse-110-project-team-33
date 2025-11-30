@@ -53,6 +53,9 @@ export class ResultsView implements View {
             this.crystal = crystal;
             this.backpack = backpack;
             this.coins = coins;
+
+            // add buttons (testing for now)
+            this.exit_button = await this.loadImage("/res/exit.png", 300, 120, STAGE_WIDTH / 2 - 50, STAGE_HEIGHT - 105),
     
             this.group.getLayer()?.batchDraw();
             } catch (error) {

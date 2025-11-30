@@ -24,6 +24,7 @@ export class Level3Model {
         else{
             this.coins = 0;
         }
+
         this.isSuccessful = false; // change to false for testing
     }
     
@@ -41,6 +42,11 @@ export class Level3Model {
         if(this.coins != null){
             this.playerDataManager.setCoins(150);
         }
+    }
+
+    // get inventory
+    getInventory(): InventoryItem[] {
+        return this.inventory;
     }
 
     // add something into the inventory

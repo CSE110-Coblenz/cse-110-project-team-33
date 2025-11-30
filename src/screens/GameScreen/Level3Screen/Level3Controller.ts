@@ -10,6 +10,7 @@ import { PlayerDataManager } from "../../../GameStateManager.ts";
 import { ScreenController } from "../../../types.ts";
 import type { ScreenSwitcher } from "../../../types.ts";
 import { InventoryController } from "../../InventoryScreen/InventoryController.ts";
+import { TrigUtil } from "../../../TrigUtil.ts";
 
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
 
@@ -18,6 +19,7 @@ export class Level3Controller extends ScreenController {
     private screenSwitcher: ScreenSwitcher;
     private model: Level3Model;
     private playerDataManager: PlayerDataManager;
+    private crystalTrig: TrigUtil;
 
     // all the views
     private view: Level3View;
@@ -29,6 +31,7 @@ export class Level3Controller extends ScreenController {
         // initialize all elements
         this.screenSwitcher = screenSwitcher;
         this.playerDataManager = playerDataManager;
+        this.crystalTrig = new TrigUtil(); // needed for the crystal
         this.group = new Konva.Group({visible: true});
 
         this.model = new Level3Model(playerDataManager);
@@ -62,6 +65,7 @@ export class Level3Controller extends ScreenController {
         const waterImg = this.view.getWater(); // click into the puzzle view
         const back_button = this.view.getBack();
         const clue = this.view.getClue();
+        const crystal = this.view.getCrystal();
 
         //this.handleInteractable(backpackImg, "backpack");
         this.handleInteractable(doorImg, "door");
@@ -69,6 +73,7 @@ export class Level3Controller extends ScreenController {
         this.handleInteractable(waterImg, "puzzle");
         this.handleInteractable(back_button, "prev_level");
         this.addMoveBehavior(clue, "clue");
+        this.addMoveBehavior(crystal, "crystal");
     }
 
     /**
@@ -117,9 +122,9 @@ export class Level3Controller extends ScreenController {
                 this.view.triggerAlert("I have to find the right path...");
             } else if (action == "prev_level") {
                 // change the player's level to the previous level since you're going back
-                this.playerDataManager.setLevel({type: "level2"}); // should be level 2 in future
+                this.playerDataManager.setLevel({type: "level3"}); // should be level 2 in future
                 // switch to the previous level screen
-                this.screenSwitcher.switchToScreen({type: "level4"}); // should be level 4 in future
+                this.screenSwitcher.switchToScreen({type: "level1"}); // should be level 4 in future
             }
         });
 
@@ -151,7 +156,7 @@ export class Level3Controller extends ScreenController {
         });
         
         node.on("mouseover", () => {
-            this.view.triggerAlert("This might be a clue!");
+            // this.view.triggerAlert("This might be a clue!");
             document.body.style.cursor = "grab";
         });
         
@@ -176,13 +181,22 @@ export class Level3Controller extends ScreenController {
             const pos = node.position();
 
             if (pos.x <= 50 && pos.y <= 50){
-                // add the node into the inventory
-                this.model.addToInventory({
-                    name: "clue",
-                    image: "level3clue.png",
-                    width: 700,
-                    height: 525
-                });
+                // add the node into the inventory depending on identifier
+                if(action == "clue") {
+                    this.model.addToInventory({
+                        name: "clue",
+                        image: "level3clue.png",
+                        width: 700,
+                        height: 525
+                    });
+                } else if (action == "crystal") {
+                    this.model.addToInventory({
+                        name: "crystal",
+                        image: "crystal.png",
+                        width: 300,
+                        height: 350,
+                    })
+                }
 
                 // Remove the node from the stage
                 node.destroy();
