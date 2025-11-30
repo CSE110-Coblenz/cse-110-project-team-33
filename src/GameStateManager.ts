@@ -7,8 +7,8 @@ import { IntroScreenController } from "./screens/GameScreen/IntroScreen/IntroScr
 import { Level1Controller } from "./screens/GameScreen/Level1Screen/Level1Controller.ts";
 import { Level2Controller } from "./screens/GameScreen/Level2Screen/Level2Controller";
 import { Level3Controller } from "./screens/GameScreen/Level3Screen/Level3Controller";
-import { Level4Controller } from "./screens/GameScreen/Level4Screen/Level4Controller";
-// import { ResultsController } from "./screens/ResultsScreen/ResultsController";
+// import { Level4Controller } from "./screens/GameScreen/Level4Screen/Level4Controller";
+import { ResultsController } from "./screens/ResultsScreen/ResultsController";
 import { ExitController } from "./screens/MenuScreen/ExitScreen/ExitController.ts";
 import { LoadController } from "./screens/MenuScreen/LoadScreen/LoadController.ts";
 import { MiniGameController } from "./screens/GameScreen/MiniGameScreen/MiniGameController.ts";
@@ -41,7 +41,7 @@ class App implements ScreenSwitcher {
     private level3Controller: Level3Controller;
     //private level4Controller: Level4Controller;
 	private miniGameController: MiniGameController;
-    // private resultsController: ResultsController;
+    private resultsController: ResultsController;
 	private exitController: ExitController;
 	private loadController: LoadController;
 
@@ -81,7 +81,7 @@ class App implements ScreenSwitcher {
         this.level3Controller = new Level3Controller(this, this.playerDataManager);
         // this.level4Controller = new Level4Controller(this);
 		this.miniGameController = new MiniGameController(this);
-        // this.resultsController = new ResultsController(this);
+        this.resultsController = new ResultsController(this, this.playerDataManager);
 		this.exitController = new ExitController(this);
 		this.loadController = new LoadController(this);
 
@@ -96,7 +96,7 @@ class App implements ScreenSwitcher {
         this.layer.add(this.level3Controller.getView().getGroup());
         // this.layer.add(this.level4Controller.getView().getGroup());
 		this.layer.add(this.miniGameController.getView().getGroup());
-        // this.layer.add(this.resultsController.getView().getGroup());
+        this.layer.add(this.resultsController.getView().getGroup());
 		this.layer.add(this.exitController.getView().getGroup());
 		this.layer.add(this.loadController.getView().getGroup());
 
@@ -163,7 +163,7 @@ class App implements ScreenSwitcher {
 				this.miniGameController.show();
 				break;
 			case "result":
-				// this.resultsController.show();
+				this.resultsController.show();
 				break;
 			case "exit":
 				this.exitController.show();

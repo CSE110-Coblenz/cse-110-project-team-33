@@ -93,7 +93,7 @@ export class Level1Controller extends ScreenController {
             if (action == "door") {
                 if (this.model.getSuccess() == true) {
                     this.model.addToCoins(50);
-                    this.screenSwitcher.switchToScreen({ type: "level3" }); // CHANGE THIS TO LEVEL 2 LATER
+                    this.screenSwitcher.switchToScreen({ type: "level2" }); // CHANGE THIS TO LEVEL 2 LATER
                 }
             }
             

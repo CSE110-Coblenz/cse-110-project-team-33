@@ -13,7 +13,6 @@ import { InventoryController } from "../../InventoryScreen/InventoryController.t
 
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
 
-
 export class Level3Controller extends ScreenController {
     private group: Konva.Group;
     private screenSwitcher: ScreenSwitcher;
@@ -98,25 +97,29 @@ export class Level3Controller extends ScreenController {
                  * 3. move to next level
                  */
                 console.log("door was clicked from controller");
+
                 this.view.setStatus();
 
-                this.handleCorrectAnswer();
+                // this.handleCorrectAnswer();
 
                 if(this.view.getStatus()){
-                    this.model.addCoins(50);
-                    this.screenSwitcher.switchToScreen({type: "level4"}); // should be level 4 in future
+                    this.view.triggerAlert("I made it across!");
+                    this.playerDataManager.setCoins(150);
+                    this.screenSwitcher.switchToScreen({type: "result"}); // should be level 4 in future
+                }
+                else {
+                    this.view.triggerAlert("I'm not across yet...");
                 }
                 // else nothing happens
             } else if (action == "puzzle") {
                 // console.log("puzzle displaying");
-                //this.view.getWaterLayer();
+                this.view.switchToPuzzle();
+                this.view.triggerAlert("I have to find the right path...");
             } else if (action == "prev_level") {
                 // change the player's level to the previous level since you're going back
-                this.playerDataManager.setLevel({type: "level1"}); // should be level 2 in future
+                this.playerDataManager.setLevel({type: "level2"}); // should be level 2 in future
                 // switch to the previous level screen
-                this.screenSwitcher.switchToScreen({type: "level1"}); // should be level 2 in future
-            } else if (action == "clue") {
-                console.log("clue clicked from controller");
+                this.screenSwitcher.switchToScreen({type: "level4"}); // should be level 4 in future
             }
         });
 
@@ -148,6 +151,7 @@ export class Level3Controller extends ScreenController {
         });
         
         node.on("mouseover", () => {
+            this.view.triggerAlert("This might be a clue!");
             document.body.style.cursor = "grab";
         });
         
@@ -156,6 +160,7 @@ export class Level3Controller extends ScreenController {
         });
         
         node.on("dragstart", () => {
+            // this.view.triggerAlert("I think this is a clue!");
             document.body.style.cursor = "grabbing";
             console.log("drag start");
         });

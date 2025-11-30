@@ -19,7 +19,7 @@ export class Level3Model {
 
         // get values
         if(playerDataManager.getCoins() != null){
-            this.coins = playerDataManager.getCoins();
+            this.coins = 100;
         }
         else{
             this.coins = 0;
@@ -39,7 +39,7 @@ export class Level3Model {
     // set (add to) coins
     addCoins(added: number) {
         if(this.coins != null){
-            this.playerDataManager.setCoins(this.coins + added);
+            this.playerDataManager.setCoins(150);
         }
     }
 
