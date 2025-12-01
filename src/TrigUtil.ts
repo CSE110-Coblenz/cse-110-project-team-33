@@ -20,26 +20,6 @@ const trigCoordinates = [
   "  (√3/2, -1/2)",           // 330°
   "        (1, 0)"            // 360°
 ];
-
-const trigCoordinates = [
-  "        (1, 0)",           // 0°
-  "   (√3/2, 1/2)",           // 30°
-  "  (√2/2, √2/2)",           // 45°
-  "   (1/2, √3/2)",           // 60°
-  "        (0, 1)",           // 90°
-  "  (-1/2, √3/2)",           // 120°
-  " (-√2/2, √2/2)",          // 135°
-  "  (-√3/2, 1/2)",           // 150°
-  "       (-1, 0)",           // 180°
-  " (-√3/2, -1/2)",          // 210°
-  "(-√2/2, -√2/2)",         // 225°
-  " (-1/2, -√3/2)",          // 240°
-  "       (0, -1)",           // 270°
-  "  (1/2, -√3/2)",           // 300°
-  " (√2/2, -√2/2)",          // 315°
-  "  (√3/2, -1/2)",           // 330°
-  "        (1, 0)"            // 360°
-];
 export class TrigUtil {
     randomOpposite(): number {
         return Math.floor(Math.random() * (20 - 10) + 10);
@@ -59,11 +39,6 @@ export class TrigUtil {
 
     randomDegree(): number {
         return Math.floor(Math.random() * (360 - 1) + 1);
-    }
-
-    randomTrigCoordinate(): string {
-        var randomIndex = Math.floor(Math.random() * (16 - 0) + 0);
-        return trigCoordinates[randomIndex];
     }
 
     randomTrigCoordinate(): string {
