@@ -9,14 +9,6 @@ export class TextPopUp implements Element{
     private text: string;
     private status: boolean;
 
-    /*
-    private floatUpCount: number;
-    private floatUpGoal: number;
-    private fadeStep: number;
-    private fadeIn: number;
-    private fadeOut: number;
-    */
-
     // return the alert
     getElement(): Konva.Shape | Konva.Group {
         return this.alert;
