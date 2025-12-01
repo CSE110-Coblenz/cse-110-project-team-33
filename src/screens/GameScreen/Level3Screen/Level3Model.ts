@@ -15,9 +15,11 @@ export class Level3Model {
         // initialization of player data when opening level
         this.playerDataManager = playerDataManager; 
         this.playerDataManager.setLevel({type: "level3"});
-        this.inventory = this.playerDataManager.getInventory();
 
-        // get values
+        // ** get player data
+        // inventory
+        this.inventory = this.playerDataManager.getInventory();
+        // coins
         if(playerDataManager.getCoins() != null){
             this.coins = this.playerDataManager.getCoins();
         }
@@ -25,7 +27,8 @@ export class Level3Model {
             this.coins = -1;
         }
 
-        this.isSuccessful = false; // change to false for testing
+        // assume puzzle not solved initially
+        this.isSuccessful = false;
     }
     
     // ** inventory related functions ** //

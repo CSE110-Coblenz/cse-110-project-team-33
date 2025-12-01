@@ -107,7 +107,7 @@ export class ResultsController extends ScreenController {
         this.view.loadBag(String(this.playerData.getCoins()), "4");
 
         // wait x amount of time
-        await new Promise(resolve => setTimeout(resolve, 3000)); // Wait for 5 seconds
+        await new Promise(resolve => setTimeout(resolve, 8000)); // Wait for 5 seconds
 
         // displays coins earned then wait
         console.log("Action 2 started after 5 seconds.");

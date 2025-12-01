@@ -192,8 +192,9 @@ export class Level3View implements View {
         return this.status;
     }
 
-    setStatus(): void {
-        this.status = this.puzzle.checkAnswer();
+    isSolved(): boolean {
+        // this.status = this.puzzle.checkAnswer();
+        return this.puzzle.checkAnswer();
     }
 
     switchToPuzzle(): void {

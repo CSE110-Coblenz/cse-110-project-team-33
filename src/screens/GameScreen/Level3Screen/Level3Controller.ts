@@ -67,7 +67,7 @@ export class Level3Controller extends ScreenController {
         const clue = this.view.getClue();
         const crystal = this.view.getCrystal();
 
-        //this.handleInteractable(backpackImg, "backpack");
+        // add interactions to each image
         this.handleInteractable(doorImg, "door");
         this.handleInteractable(backpackImg, "backpack");
         this.handleInteractable(waterImg, "puzzle");
@@ -90,26 +90,23 @@ export class Level3Controller extends ScreenController {
         });
 
         node.on("click", () => {
-            // check with action was clicked on
-            if(action == "backpack"){
+            // check which action was clicked on
+            if(action == "backpack"){ // open inventory
                 console.log("backpack clicked from controller");
                 this.screenSwitcher.switchToScreen({type: "inventory"});
             } else if (action == "door") {
-                /**
-                 * heck if the correct answer was input
-                 * 1. change door image
-                 * 2. add 50 coins
-                 * 3. move to next level
-                 */
-                // console.log("door was clicked from controller");
-
                 console.log(this.model.getInventory());
 
-                this.view.setStatus();
-
-                // this.handleCorrectAnswer();
-
-                if(this.view.getStatus()){
+                /**
+                 * check if puzzle was solved
+                 * if solved:
+                 * - add 50 coins to inventory
+                 * - add crystal to inventory
+                 * - sallow to move on to next level
+                 * else:
+                 * - trigger alert implying puzzle not solved yet
+                 */
+                if(this.view.isSolved()){
                     this.view.triggerAlert("I made it across!");
                     this.playerDataManager.setCoins(150);
                     this.screenSwitcher.switchToScreen({type: "result"}); // should be level 4 in future
@@ -117,16 +114,14 @@ export class Level3Controller extends ScreenController {
                 else {
                     this.view.triggerAlert("I'm not across yet...");
                 }
-                // else nothing happens
-            } else if (action == "puzzle") {
+            } else if (action == "puzzle") { // display the level's puzzle
                 // console.log("puzzle displaying");
                 this.view.switchToPuzzle();
                 this.view.triggerAlert("I have to find the right path...");
-            } else if (action == "prev_level") {
-                // change the player's level to the previous level since you're going back
+            } else if (action == "prev_level") { // change the player's level to the previous level
                 this.playerDataManager.setLevel({type: "level3"}); // should be level 2 in future
                 // switch to the previous level screen
-                this.screenSwitcher.switchToScreen({type: "level1"}); // should be level 4 in future
+                this.screenSwitcher.switchToScreen({type: "level1"}); // should be level 2 in future
             }
         });
 
@@ -157,17 +152,16 @@ export class Level3Controller extends ScreenController {
             };
         });
         
+        // change cursor to signal if an object is interactable
         node.on("mouseover", () => {
-            // this.view.triggerAlert("This might be a clue!");
             document.body.style.cursor = "grab";
         });
-        
         node.on("mouseout", () => {
             document.body.style.cursor = "default";
         });
         
         node.on("dragstart", () => {
-            // this.view.triggerAlert("I think this is a clue!");
+            this.view.triggerAlert("I think this is a clue!");
             document.body.style.cursor = "grabbing";
             console.log("drag start");
         });
@@ -176,6 +170,7 @@ export class Level3Controller extends ScreenController {
             const pos = node.position();
         });
         
+        // check if when the cursor is let go, if the object is "over" the back to put it into the inventory
         node.on("dragend", () => {
             document.body.style.cursor = "grab";
             console.log("drag end");
@@ -184,14 +179,14 @@ export class Level3Controller extends ScreenController {
 
             if (pos.x <= 50 && pos.y <= 50){
                 // add the node into the inventory depending on identifier
-                if(action == "clue") {
+                if(action == "clue") { // adds clue visual to inventory
                     this.model.addToInventory({
                         name: "clue",
                         image: "level3clue.png",
                         width: 700,
                         height: 525
                     });
-                } else if (action == "crystal") {
+                } else if (action == "crystal") { // adds crystal visual to inventory
                     this.model.addToInventory({
                         name: "crystal",
                         image: "crystal.png",
@@ -216,13 +211,5 @@ export class Level3Controller extends ScreenController {
     // get the view group
     getView(): Level3View {
         return this.view;
-    }
-
-    // check answer
-    handleCorrectAnswer(): void {
-        // set level to "complete"
-        this.model.setIsSuccessful(true);
-
-        this.view.getGroup().getLayer()?.draw(); // redraw the group
     }
 }
