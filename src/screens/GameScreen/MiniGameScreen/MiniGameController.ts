@@ -53,7 +53,7 @@ export class MiniGameController extends ScreenController {
             // Initial label positions (below the circle)
             const labelNode = this.view.createDraggableLabel(
                 item.label,
-                this.model.centerX - 50 + i * 60,
+                this.model.centerX - 150 + i * 60,
                 this.model.centerY + this.model.radius + 50
             );
 
