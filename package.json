@@ -1,11 +1,12 @@
 {
   "dependencies": {
-    "konva": "^10.0.8"
+    "konva": "^10.0.12",
+    "node": "^20.19.6"
   },
   "devDependencies": {
     "jest": "^30.2.0",
     "typescript": "^5.9.3",
-    "vite": "^7.1.12"
+    "vite": "^7.2.4"
   },
   "scripts": {
     "dev": "vite",

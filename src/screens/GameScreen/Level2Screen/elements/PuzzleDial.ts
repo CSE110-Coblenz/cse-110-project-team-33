@@ -21,6 +21,10 @@ export class PuzzleDial implements Element {
     private yPos : number;
     private id: string;
 
+    private shadowHeight: number;
+    private shadowAnimActive: boolean;
+    private dialOffset: number;
+
     getURL()            { return "/img/level2/sundial_large.png"; }
     getGnomonURL()            { return "/img/level2/gnomon.png"; }
     getShadowURL()            { return "/img/level2/gnomon_shadow.png"; }
@@ -28,14 +32,24 @@ export class PuzzleDial implements Element {
     getDefaultWidth()   { return 512; }
     getDefaultHeight()  { return 512*2; }
     getElement()        { return this.group; }
+
+    getMinShadowHeight()    { return 0; }
+    getMaxShadowHeight()    { return 112; }
+
+    getMinSundialHeight()   {return -40; }
+    getMaxSundialHeight()   {return 20; }
     
-    constructor (x : number, y : number, id: string) {
+    constructor (x : number, y : number, id: string, startingHeight: number) {
+        this.shadowAnimActive = false;
+        this.shadowHeight = startingHeight;
+        this.dialOffset = -66;
         this.xPos = x;
         this.yPos = y;
         this.id = id;
         this.group = new Konva.Group({
             x: this.xPos,
-            y: this.yPos
+            y: this.yPos,
+            offsetY: this.dialOffset
         });
         this.sundialSprite = new Konva.Image({image: undefined});
         Konva.Image.fromURL(this.getURL(), (img) => {
@@ -51,7 +65,6 @@ export class PuzzleDial implements Element {
         /* Gross calculation to determine shadow width based on pixel ratios */
         const gnomonWidth = this.getDefaultWidth() * (80/128);
         const gnomonHeight = this.getDefaultHeight() * (30/256);
-        let shadowHeight = 64;
         this.gnomonSprite = new Konva.Image({image: undefined});
         this.gnomonShadow = new Konva.Image({image: undefined});
         Konva.Image.fromURL(this.getShadowURL(), (img) => {
@@ -60,7 +73,7 @@ export class PuzzleDial implements Element {
             this.gnomonShadow.y(0);
             this.gnomonShadow.id(this.id + "_shadow");
             this.gnomonShadow.width(gnomonWidth);
-            this.gnomonShadow.height(shadowHeight);
+            this.gnomonShadow.height(this.shadowHeight);
             this.gnomonShadow.offsetX(gnomonWidth/2);
             this.gnomonShadow.offsetY(this.getDefaultHeight() * (-30/256));
             this.gnomonShadow.opacity(0.5);
@@ -76,25 +89,75 @@ export class PuzzleDial implements Element {
             //this.gnomonSprite.offsetY(this.getDefaultHeight() * (-29/256));
         });
 
-        this.group.listening(true);
-        this.gnomonShadow.on("click", () => {
-            shadowHeight += 4;
-            this.gnomonShadow.height(shadowHeight);
-        });
-/*        this.shadow = new Konva.Image({
-            
-            x: 0,
-            y: 0,
-            offsetX: shadowWidth/2,
-            offsetY: -this.getDefaultHeight() * (29/256),
-            fill: "red",
-        });
-*/
+        /*
+        (pixels)
+        Shadow pixel max dimensions: 320 x 112
+        Shadow pixel min dimensions: 320 x 0
 
-
+        (inches)
+        Scaled min dim: 12 x 0
+        Scaled max dim: 12 x 4.2
+        */
+        this.setShadowHeight(this.shadowHeight);
         this.group.add(this.sundialSprite);
         this.group.add(this.gnomonShadow);
         this.group.add(this.gnomonSprite);
     }
 
+    setShadowHeight(height: number) {
+        // Disallow new height change until previous is done
+        if(this.shadowAnimActive) {
+            return;
+        }
+
+        // Calibrated to min: 0, max: 4.2 (inches)
+        let shadowPxHeight = Math.trunc(height * 26.67);
+        // Calibrated to min: -100, max: 20 (Y offset)
+        let dialPxOffset = Math.trunc(height*14) - 40;
+        // Check bounds + snap to max/min
+        if( shadowPxHeight > this.getMaxShadowHeight() ) {
+            shadowPxHeight = this.getMaxShadowHeight();
+        } else if(shadowPxHeight < this.getMinShadowHeight()) {
+            shadowPxHeight = this.getMinShadowHeight();
+        }
+        if( dialPxOffset > this.getMaxSundialHeight()) {
+            dialPxOffset = this.getMaxSundialHeight();
+        } else if( dialPxOffset < this.getMinSundialHeight()) {
+            dialPxOffset = this.getMinSundialHeight();
+        }
+
+
+        let dialDelta = Math.trunc(dialPxOffset - this.dialOffset);
+        let shadowDelta = Math.trunc(shadowPxHeight - this.shadowHeight);
+
+        let dialStep = 0;
+        let shadowStep = 0;
+
+        if(dialPxOffset > this.dialOffset) {
+            dialStep = dialDelta/shadowDelta;
+        } else if (dialPxOffset < this.dialOffset) {
+            dialStep = -1 * (dialDelta/shadowDelta);
+        }        
+        if(shadowPxHeight > this.shadowHeight) {
+            shadowStep = 1;
+        } else if (shadowPxHeight < this.shadowHeight) {
+            shadowStep = -1;
+        }
+
+        // Animate
+        this.shadowAnimActive = true;
+        let animTimer: any = null;
+        let animFunc = () => {
+            if(shadowPxHeight == this.shadowHeight) {
+                clearInterval(animTimer);
+                this.shadowAnimActive = false;
+                return;
+            }
+            this.shadowHeight += shadowStep;                
+            this.dialOffset += dialStep;
+            this.group.offsetY(this.dialOffset);
+            this.gnomonShadow.height(this.shadowHeight);
+        };
+        animTimer = setInterval(animFunc, 32);
+    }
 }
