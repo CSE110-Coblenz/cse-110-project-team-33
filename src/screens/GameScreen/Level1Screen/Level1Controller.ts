@@ -96,7 +96,7 @@ export class Level1Controller extends ScreenController {
             // Check if the clicked option's value matches the correct answer
             if (action == "mc") {
                 if (optionValue === this.correctAnswerValue) {
-                    this.handleCorrectAnswer(node);s
+                    this.handleCorrectAnswer(node);
                     this.view.animateMovePillar();
                     this.model.addToCoins(100);
                     this.view.setCoins(this.model.getCoins() + 100);
