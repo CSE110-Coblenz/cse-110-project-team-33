@@ -7,8 +7,8 @@ import { IntroScreenController } from "../screens/GameScreen/IntroScreen/IntroSc
 import { Level1Controller } from "../screens/GameScreen/Level1Screen/Level1Controller.ts";
 // import { Level2Controller } from "./screens/GameScreen/Level2Screen/Level2Controller";
 // import { Level3Controller } from "./screens/GameScreen/Level3Screen/Level3Controller";
-import { Level4Controller } from "./screens/GameScreen/Level4Screen/Level4Controller";
-// import { ResultsController } from "./screens/ResultsScreen/ResultsController";
+import { Level4Controller } from "../screens/GameScreen/Level4Screen/Level4Controller.ts";
+// import { ResultsController } from "../screens/ResultsScreen/ResultsController";
 import { ExitController } from "../screens/MenuScreen/ExitScreen/ExitController.ts";
 import { LoadController } from "../screens/MenuScreen/LoadScreen/LoadController.ts";
 import { MiniGameController } from "../screens/GameScreen/MiniGameScreen/MiniGameController.ts";
