@@ -1,0 +1,23 @@
+Sprint 3 Meeting
+Sunday, November 30th @ 7 PM
+
+Notes:
+- Sonia is traveling so is unable to make meeting.
+- Tomorrow or wednesday need to piece everything together.
+- Merged level 1 and level 4 pull requests so PULL before working.
+
+--------------------------------------------------------
+What did I do?
+Cailey: Completed load game and worked on integration testing.
+Connor: Code reviews and level 2.
+Janeen: Completed level 3 and worked on end game.
+
+What will I do?
+Cailey: Continue working on integration testing.
+Connor: Continue working on level 2 (connecting inventory). Pause game change visuals and save player state.
+Janeen: Continue working on inventory and end game.
+
+Am I stuck?
+Cailey: No.
+Connor: No.
+Janeen: Adding to inventory from level causing items from previous level to be removed.

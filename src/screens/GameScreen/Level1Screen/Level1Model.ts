@@ -1,51 +1,50 @@
-import { TrigUtil } from "../../../TrigUtil";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
+import { TrigUtil } from "../../../utilities/TrigUtil";
 import type {  InventoryItem } from "../../../types.ts";
-import { PlayerDataManager } from "../../../GameStateManager.ts";
+import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
 
 export class Level1Model {
-    private isCompleted: boolean = false;
-
-    private trig: TrigUtil = new TrigUtil;
-
-    private opposite: number = this.trig.randomOpposite();
-    private adjacent: number = this.trig.randomAdjacent();
-    private hypotenuse: number = this.trig.randomHypotenuse();
-    private angle: number = this.trig.randomAngle();
-
-    private problemType : number = Math.floor((Math.random() * 3) + 1);
-
-    private SOH: number = this.trig.SOH(this.angle, this.opposite) // find hyp
-    private CAH: number = this.trig.CAH(this.angle, this.adjacent) // finds hyp
-    private TOA: number = this.trig.TOA(this.angle, this.opposite) // finds adj
-
+    // Player Data
     private playerDataManager: PlayerDataManager;
     private inventory: InventoryItem[];
     private coins: number | null;
 
+    // Trig
+    private trig: TrigUtil = new TrigUtil;
+
+    private problemType: number = Math.floor((Math.random() * 3) + 1);
+
+    private angle: number = this.trig.randomAngle();
+    private opposite: number = this.trig.randomOpposite();
+    private adjacent: number = this.trig.randomAdjacent();
+    private hypotenuse: number = this.trig.randomHypotenuse();
+
+    private SOH: number = this.trig.SOH(this.angle, this.opposite) // Finds hyp
+    private CAH: number = this.trig.CAH(this.angle, this.adjacent) // Finds hyp
+    private TOA: number = this.trig.TOA(this.angle, this.opposite) // Finds adj
+    
+    // Success
     private success: boolean;
 
     constructor(playerDataManager: PlayerDataManager) {
+        // Player Data
         this.playerDataManager = playerDataManager;
         this.playerDataManager.setLevel({type : "level1"});
+        // this.inventory = this.playerDataManager.getInventory();
         this.inventory = [];
+        this.playerDataManager.clearInventory();
+
         if (playerDataManager.getCoins() != null) {
+            playerDataManager.setCoins(0);
             this.coins = playerDataManager.getCoins();
         } else {
-            this.coins = 0;
+            this.coins = -1;
         }
-        this.playerDataManager.clearInventory();
+
+        // Success
         this.success = false;
     }
 
-    setSuccess(success: boolean): void {
-        this.success = success;
-    }
-
-    getSuccess(): boolean {
-        return this.success;
-    }
-
+    // Player Data
     getInventory(): InventoryItem[] {
         return this.inventory;
     }
@@ -66,8 +65,20 @@ export class Level1Model {
 
     addToCoins(addedCoins: number) {
         if (this.coins != null) {
+            this.coins += addedCoins;
+        }
+        if (this.coins != null) {
             this.playerDataManager.setCoins(this.coins + addedCoins);
         }
+    }
+
+    // Trig
+    getProblemType(): number {
+        return this.problemType;
+    }
+
+    getAngle(): number {
+        return this.angle;
     }
 
     getOpposite(): number {
@@ -82,12 +93,16 @@ export class Level1Model {
         return this.hypotenuse;
     }
 
-    getAngle(): number {
-        return this.angle;
+    getSOH(): number {
+        return this.SOH;
     }
 
-    getProblemType(): number {
-        return this.problemType;
+    getCAH(): number {
+        return this.CAH;
+    }
+
+    getTOA(): number {
+        return this.TOA;
     }
 
     getAnswer(): number {
@@ -101,23 +116,12 @@ export class Level1Model {
         return -1;
     }
 
-    getSOH(): number {
-        return this.SOH;
+    // Success
+    setSuccess(success: boolean): void {
+        this.success = success;
     }
 
-    getCAH(): number {
-        return this.CAH;
-    }
-
-    getTOA(): number {
-        return this.TOA;
-    }
-
-    setIsCompleted(isCompleted: boolean): void {
-        this.isCompleted = isCompleted;
-    }
-
-    getIsCompleted(): boolean {
-        return this.isCompleted;
+    getSuccess(): boolean {
+        return this.success;
     }
 }

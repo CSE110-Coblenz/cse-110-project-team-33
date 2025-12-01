@@ -1,0 +1,27 @@
+Sprint 3 Meeting
+Wednesday, November 19th at 1 PM
+
+Notes:
+- Testing all next week.
+- Set up Jest for integration testing over the weekend.
+- Fully complete main menu -> start game, load game -> level 1 and then implement testing up and until level 1.
+- git pull origin main --no-rebase for current version of main in branch.
+- Is it feasible to finish coding by the end of the week? Sunday should be good.
+----------------------------------------------------------------------------
+What did I do?
+Cailey: Completed level 1 (dragging and dropping items into backpack/inventory, pillar animation with door to next level, and coins).
+Connor: Code reviews.
+Janeen: Designs for levels, just needs to finish level 2 "zoomed-in" view.
+Sonia: Code reviews. Fixing merge conflicts. Pulled all changes from sprint 2. Created branch for level 4 and mini games.
+
+What will I do?
+Cailey: Adding crystal to the inventory after completing level 1. Load game UI, loading player data, jumping to specific level.
+Connor: Level 2 functionality/testing.
+Janeen: Finish up on designs and then work on on level 3 code.
+Sonia: Work on level 4 (implementing designs and attaching text to crystals).
+
+Am I stuck?
+Cailey: No.
+Connor: No.
+Janeen: No.
+Sonia: No.
