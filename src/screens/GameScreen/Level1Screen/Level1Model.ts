@@ -51,7 +51,6 @@ export class Level1Model {
 
     addToInventory(inventoryItem: InventoryItem): void {
         this.inventory.push(inventoryItem);
-        console.log(this.inventory);
         this.playerDataManager.setInventory(this.inventory);
         console.log(this.playerDataManager.getInventory());
     }
