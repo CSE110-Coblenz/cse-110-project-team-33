@@ -2,7 +2,7 @@
 import Konva from "konva";
 
 // import player data
-import { PlayerDataManager } from "../../GameStateManager";
+import { PlayerDataManager } from "../../managers/GameStateManager";
 import type { InventoryItem } from "../../types";
 
 export class ResultsModel {

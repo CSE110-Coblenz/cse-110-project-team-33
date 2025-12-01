@@ -1,4 +1,4 @@
-import { PlayerDataManager } from "../../GameStateManager.ts";
+import { PlayerDataManager } from "../../managers/GameStateManager.ts";
 import type { InventoryItem } from "../../types.ts";
 import type { Screen } from "../../types.ts";
 

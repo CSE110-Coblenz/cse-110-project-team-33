@@ -1,6 +1,6 @@
-import { PlayerDataManager } from "../../../GameStateManager.ts";
-import { TrigUtil } from "../../../TrigUtil";
-import type { InventoryItem } from "../../../types.ts";
+import { TrigUtil } from "../../../utilities/TrigUtil";
+import type {  InventoryItem } from "../../../types.ts";
+import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
 
 export class Level1Model {
     // Player Data

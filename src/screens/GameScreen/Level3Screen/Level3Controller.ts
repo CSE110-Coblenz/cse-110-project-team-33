@@ -5,12 +5,12 @@ import { Level3Model } from "./Level3Model.ts";
 import { Level3View } from "./Level3View.ts";
 
 // add playerdata
-import { PlayerDataManager } from "../../../GameStateManager.ts";
+import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
 
 import { ScreenController } from "../../../types.ts";
 import type { ScreenSwitcher } from "../../../types.ts";
 import { InventoryController } from "../../InventoryScreen/InventoryController.ts";
-import { TrigUtil } from "../../../TrigUtil.ts";
+import { TrigUtil } from "../../../utilities/TrigUtil.ts";
 
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
 

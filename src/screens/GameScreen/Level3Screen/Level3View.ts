@@ -6,7 +6,7 @@ import type { View } from "../../../types.ts";
 import { Level3PuzzleView } from "./Views/Level3PuzzleView.ts";
 
 // import player data to display inventory and coins
-import { PlayerDataManager } from "../../../GameStateManager.ts";
+import { PlayerDataManager } from "../../../managers/GameStateManager";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
 
 // handle any text pop ups

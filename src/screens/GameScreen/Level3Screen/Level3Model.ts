@@ -1,6 +1,6 @@
 // import statements
 import type { InventoryItem } from "../../../types";
-import { PlayerDataManager } from "../../../GameStateManager";
+import { PlayerDataManager } from "../../../managers/GameStateManager";
 
 export class Level3Model {
     // flag to denote if the level was successfully completed

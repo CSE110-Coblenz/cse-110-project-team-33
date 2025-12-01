@@ -1,9 +1,9 @@
 import Konva from "konva";
 import { ScreenController } from "../../../types.ts";
-import { PlayerDataManager } from "../../../GameStateManager.ts";
+import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
 import { Level1Model } from "./Level1Model.ts";
 import { Level1View } from "./Level1View.ts";
-import { TrigUtil } from "../../../TrigUtil.ts"
+import { TrigUtil } from "../../../utilities/TrigUtil.ts"
 import type { ScreenSwitcher } from "../../../types.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
 

@@ -8,7 +8,7 @@ import { ResultsModel } from "./ResultsModel.ts";
 // handle screen switching && player data (to display results)
 import { ScreenController } from "../../types.ts";
 import type { ScreenSwitcher, InventoryItem, View } from "../../types.ts";
-import { PlayerDataManager } from "../../GameStateManager.ts";
+import { PlayerDataManager } from "../../managers/GameStateManager.ts";
 
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants.ts";
 
