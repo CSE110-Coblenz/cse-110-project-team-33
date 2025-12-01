@@ -99,7 +99,7 @@ export class Level1Controller extends ScreenController {
                     this.handleCorrectAnswer(node);
                     this.view.animateMovePillar();
                     this.model.addToCoins(100);
-                    this.view.setCoins(this.model.getCoins() + 100);
+                    this.view.setCoins(this.model.getCoins());
                 } else {
                     this.handleWrongAnswer(node);
                 }
