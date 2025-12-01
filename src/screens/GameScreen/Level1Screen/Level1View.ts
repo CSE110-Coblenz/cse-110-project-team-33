@@ -53,6 +53,7 @@ export class Level1View implements View {
         
         // Data
         this.coins = 0
+        this.crystal = new Konva.Image();
 
         // ------------------------------------------
         
