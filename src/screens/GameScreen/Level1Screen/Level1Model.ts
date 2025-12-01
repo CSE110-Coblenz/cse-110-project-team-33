@@ -65,10 +65,10 @@ export class Level1Model {
 
     addToCoins(addedCoins: number) {
         if (this.coins != null) {
-            this.coins += addedCoins;
+            this.playerDataManager.setCoins(this.coins + addedCoins);
         }
         if (this.coins != null) {
-            this.playerDataManager.setCoins(this.coins + addedCoins);
+            this.coins += addedCoins;
         }
     }
 
