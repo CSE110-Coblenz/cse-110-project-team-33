@@ -77,7 +77,7 @@ class App implements ScreenSwitcher {
 		this.inventoryController = new InventoryController(this, this.playerDataManager);
         this.level1Controller = new Level1Controller(this, this.playerDataManager);
         // this.level2Controller = new Level2Controller(this);
-        this.introController = new IntroScreenController(this);
+        this.introController = new IntroScreenController(this, this.playerDataManager);
         // this.level3Controller = new Level3Controller(this);
         this.level4Controller = new Level4Controller(this);
 		this.miniGameController = new MiniGameController(this);
