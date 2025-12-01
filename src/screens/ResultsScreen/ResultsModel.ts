@@ -34,4 +34,12 @@ export class ResultsModel {
         this.playerData.setInventory(this.inventory);
         console.log(this.playerData.getInventory());
     }
+
+    getCoins(): number | null {
+        return this.coins;
+    }
+
+    setCoins(): void {
+        this.playerData.setCoins(700);
+    }
 }

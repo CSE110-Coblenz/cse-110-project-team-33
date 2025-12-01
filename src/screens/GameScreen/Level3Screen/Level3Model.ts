@@ -19,10 +19,10 @@ export class Level3Model {
 
         // get values
         if(playerDataManager.getCoins() != null){
-            this.coins = 100;
+            this.coins = this.playerDataManager.getCoins();
         }
         else{
-            this.coins = 0;
+            this.coins = -1;
         }
 
         this.isSuccessful = false; // change to false for testing
@@ -46,15 +46,23 @@ export class Level3Model {
 
     // get inventory
     getInventory(): InventoryItem[] {
-        return this.inventory;
+        return this.playerDataManager.getInventory();
     }
 
     // add something into the inventory
     addToInventory(inventoryItem: InventoryItem): void {
+        // before pushing item
+        console.log("before push -- \n this.inventory: " + this.inventory);
+        console.log("this.playerDataManager.getInventory(): " + this.playerDataManager.getInventory() + "\n");
+
         this.inventory.push(inventoryItem);
-        console.log(this.inventory);
+        console.log("after push -- \n this.inventory: " + this.inventory + "\n");
+
+        // console.log("this.inventory: " + this.inventory);
         this.playerDataManager.setInventory(this.inventory);
-        console.log(this.playerDataManager.getInventory());
+
+        console.log("after push -- \n this.playerDataManager.getInventory(): " + this.playerDataManager.getInventory() + "\n");
+        // console.log(this.playerDataManager.getInventory());
     }
 
     // set the flag to this puzzle as correct

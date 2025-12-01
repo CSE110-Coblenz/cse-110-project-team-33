@@ -101,7 +101,9 @@ export class Level3Controller extends ScreenController {
                  * 2. add 50 coins
                  * 3. move to next level
                  */
-                console.log("door was clicked from controller");
+                // console.log("door was clicked from controller");
+
+                console.log(this.model.getInventory());
 
                 this.view.setStatus();
 
@@ -195,7 +197,10 @@ export class Level3Controller extends ScreenController {
                         image: "crystal.png",
                         width: 300,
                         height: 350,
-                    })
+                        text1: this.crystalTrig.randomTrigCoordinate(),
+                        text1X: STAGE_WIDTH / 2 + 20,
+                        text1Y: STAGE_HEIGHT / 2 - 10
+                    });
                 }
 
                 // Remove the node from the stage
