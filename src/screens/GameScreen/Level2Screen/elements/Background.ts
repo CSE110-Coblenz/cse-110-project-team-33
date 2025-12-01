@@ -22,7 +22,7 @@ export class Background implements Element {
     /* Static getters to actual background URLS */
     static get debugBG()    { return "/img/level2/debug_bg2.png"; }
     static get mainBG()     { return "/img/level2/debug_bg.png"; }
-    static get sundialBG()  { return "/img/level2/debug_bg.png"; }
+    static get sundialBG()  { return "/img/level2/sundial_view_bg.png"; }
 
     getURL()            { return this.backgroundURL; }
     getID()             { return this.id; }

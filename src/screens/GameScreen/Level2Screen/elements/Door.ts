@@ -18,6 +18,8 @@ export class Door implements Element {
     private yPos : number;
     private id: string;
 
+    private doorState: boolean;
+
     getURL()            { return "/img/level2/debug_door_spritesheet.png"; }
     getID()             { return this.id; }
     getDefaultWidth()   { return 256; }
@@ -30,7 +32,7 @@ export class Door implements Element {
         this.xPos = x;
         this.yPos = y;
         this.id = id;
-
+		this.doorState = false;
         this.doorSprite = new Konva.Image({image: undefined});
         Konva.Image.fromURL(this.getURL(), (img) => {
             this.doorSprite.x(this.xPos);
@@ -47,13 +49,6 @@ export class Door implements Element {
                 height:46
             });
         });
-
-        this.doorSprite.on("mouseenter", () => {
-                this.animDoorOpen();
-        });
-        this.doorSprite.on("mouseleave", () => {
-                this.animDoorClose();
-        });
     }
 
     setAnimFrame(frame: number): void {
@@ -62,6 +57,7 @@ export class Door implements Element {
 
     /* Gross little method to animate the door opening */
     animDoorOpen(): void {
+    	if(this.doorState == true) return;
         let frameCount = 0;
         let animTimer: any = null;
         let animFunc = () => {
@@ -72,10 +68,12 @@ export class Door implements Element {
             frameCount += 1;            
         };
         animTimer = setInterval(animFunc, 100);
+        this.doorState = true;
     }
 
     /* Gross little method to animate the door closing */
     animDoorClose(): void {
+    	if(this.doorState == false) return;
         let frameCount = 3;
         let animTimer: any = null;
         let animFunc = () => {
@@ -86,6 +84,7 @@ export class Door implements Element {
             frameCount -= 1;            
         };
         animTimer = setInterval(animFunc, 100);
+        this.doorState = false;
     }
 
 }
