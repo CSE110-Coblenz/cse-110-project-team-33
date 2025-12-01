@@ -1,6 +1,6 @@
 import { ScreenController } from "../../../types.ts";
 import type { ScreenSwitcher } from "../../../types.ts";
-import { PlayerDataManager } from "../../../GameStateManager.ts";
+import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
 import { LoadView } from "./LoadView.ts";
 
 /**

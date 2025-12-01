@@ -1,21 +1,21 @@
 import Konva from "konva";
-import type { ScreenSwitcher, Screen, PlayerData, InventoryItem } from "./types.ts";
-import { MenuController } from "./screens/MenuScreen/MenuController.ts";
+import type { ScreenSwitcher, Screen, PlayerData, InventoryItem } from "../types.ts";
+import { MenuController } from "../screens/MenuScreen/MenuController.ts";
 // import { SettingsController } from "./screens/SettingsScreen/SettingsController";
-import { InventoryController } from "./screens/InventoryScreen/InventoryController.ts";
-import { IntroScreenController } from "./screens/GameScreen/IntroScreen/IntroScreenController.ts";
-import { Level1Controller } from "./screens/GameScreen/Level1Screen/Level1Controller.ts";
+import { InventoryController } from "../screens/InventoryScreen/InventoryController.ts";
+import { IntroScreenController } from "../screens/GameScreen/IntroScreen/IntroScreenController.ts";
+import { Level1Controller } from "../screens/GameScreen/Level1Screen/Level1Controller.ts";
 // import { Level2Controller } from "./screens/GameScreen/Level2Screen/Level2Controller";
 // import { Level3Controller } from "./screens/GameScreen/Level3Screen/Level3Controller";
-import { Level4Controller } from "./screens/GameScreen/Level4Screen/Level4Controller";
-// import { ResultsController } from "./screens/ResultsScreen/ResultsController";
-import { ExitController } from "./screens/MenuScreen/ExitScreen/ExitController.ts";
-import { LoadController } from "./screens/MenuScreen/LoadScreen/LoadController.ts";
-import { MiniGameController } from "./screens/GameScreen/MiniGameScreen/MiniGameController.ts";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants";
-import { LocalStorageUtils } from "./LocalStorageUtils.ts";
+import { Level4Controller } from "../screens/GameScreen/Level4Screen/Level4Controller.ts";
+// import { ResultsController } from "../screens/ResultsScreen/ResultsController";
+import { ExitController } from "../screens/MenuScreen/ExitScreen/ExitController.ts";
+import { LoadController } from "../screens/MenuScreen/LoadScreen/LoadController.ts";
+import { MiniGameController } from "../screens/GameScreen/MiniGameScreen/MiniGameController.ts";
+import { STAGE_WIDTH, STAGE_HEIGHT } from "../constants.ts";
+import { LocalStorageUtils } from "../utilities/LocalStorageUtils.ts";
 
-import { PauseOverlay } from "./PauseOverlay.ts";
+import { PauseOverlay } from "../screens/PauseOverlay.ts";
 /**
  * Main Application - Coordinates all screens
  *
@@ -77,7 +77,7 @@ class App implements ScreenSwitcher {
 		this.inventoryController = new InventoryController(this, this.playerDataManager);
         this.level1Controller = new Level1Controller(this, this.playerDataManager);
         // this.level2Controller = new Level2Controller(this);
-        this.introController = new IntroScreenController(this);
+        this.introController = new IntroScreenController(this, this.playerDataManager);
         // this.level3Controller = new Level3Controller(this);
         this.level4Controller = new Level4Controller(this);
 		this.miniGameController = new MiniGameController(this);
