@@ -7,8 +7,6 @@ import type { ScreenSwitcher } from "../../types";
 export class ResultsView implements View {
     // ** variables ** //
     private group: Konva.Group;
-    private results_group: Konva.Group;
-    private text_group: Konva.Group;
     private screenSwithcer: ScreenSwitcher;
     
     // all images
@@ -31,10 +29,9 @@ export class ResultsView implements View {
     // constructor
     constructor(screenSwitcher: ScreenSwitcher) {
         this.group = new Konva.Group({visible: false});
-        this.results_group = new Konva.Group({visible: false});
-        this.text_group =  new Konva.Group({visible: false});
         this.screenSwithcer = screenSwitcher;
 
+        // all images for display
         this.bg = new Konva.Image();
         this.menu_button = new Konva.Image();
         this.exit_button = new Konva.Image();
@@ -42,6 +39,7 @@ export class ResultsView implements View {
         this.coins = new Konva.Image();
         this.crystal = new Konva.Image();
 
+        // audio
         this.win_sound = new Audio("/res/sounds/winner.wav");
         this.win_sound.volume = 0.2;
 
