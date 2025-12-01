@@ -116,7 +116,7 @@ export class InventoryView {
                     fontSize: 24,
                     fontFamily: "Margarine",
                     fontStyle: "bold",
-                    fill: "#fff",
+                    fill: "#000",
                     align: "center",
                     offsetX: 100
                 });
@@ -131,7 +131,7 @@ export class InventoryView {
                     fontSize: 24,
                     fontFamily: "Margarine",
                     fontStyle: "bold",
-                    fill: "#fff",
+                    fill: "#000",
                     align: "center",
                     offsetX: 100
                 });
@@ -146,7 +146,7 @@ export class InventoryView {
                     fontSize: 24,
                     fontFamily: "Margarine",
                     fontStyle: "bold",
-                    fill: "#fff",
+                    fill: "#000",
                     align: "center",
                     offsetX: 100
                 });

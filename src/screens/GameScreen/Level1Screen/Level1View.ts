@@ -3,66 +3,60 @@ import type { View } from "../../../types.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
 
 export class Level1View implements View {
+    // Groups
     private group: Konva.Group;
     private backgroundGroup: Konva.Group;
     private textInputGroup: Konva.Group;
+
+    // Images
+    private background: Konva.Image;
+    private door: Konva.Image;
+    private pillar1: Konva.Image;
+    private pillar2: Konva.Image;
+    private backpack: Konva.Image;
+    private levelClue: Konva.Image;
+    private mgClue: Konva.Image;
+    private crystal: Konva.Image;
+
+    // Text
+    private coinsText: Konva.Text;
     private problemText: Konva.Text;
     private option1Text: Konva.Text;
     private option2Text: Konva.Text;
     private option3Text: Konva.Text;
-    private option1Button: Konva.Image;
-    private option2Button: Konva.Image;
-    private option3Button: Konva.Image;
-    private crystal: Konva.Image;
-    
-    // Add these image properties
-    private pyramidImage: Konva.Image;
-    private doorImage: Konva.Image;
-    private pillar1Image: Konva.Image;
-    private pillar2Image: Konva.Image;
-    private groundImage: Konva.Image;
-    private backpack: Konva.Image;
-    private levelClue: Konva.Image;
-    private mgClue: Konva.Image;
-    private coinsText: Konva.Text;
+
+    // Data
     private coins: number;
 
-    private levelClueX: number = STAGE_WIDTH / 2 - 275;
-    private levelClueY: number = STAGE_HEIGHT / 2;
-
-    private mgClueX: number = STAGE_WIDTH - 100;
-    private mgClueY: number = STAGE_HEIGHT - 100;
-
     constructor() {
+        // Groups
         this.group = new Konva.Group({ visible: false });
         this.backgroundGroup = new Konva.Group();
         this.textInputGroup = new Konva.Group();
         
-        // Initialize images
-        this.pyramidImage = new Konva.Image();
-        this.doorImage = new Konva.Image();
-        this.pillar1Image = new Konva.Image();
-        this.pillar2Image = new Konva.Image();
-        this.groundImage = new Konva.Image();
+        // Images
+        this.background = new Konva.Image();
+        this.door = new Konva.Image();
         this.backpack = new Konva.Image();
+        this.pillar1 = new Konva.Image();
+        this.pillar2 = new Konva.Image();
         this.levelClue = new Konva.Image();
         this.mgClue = new Konva.Image();
-        this.option1Button = new Konva.Image();
-        this.option2Button = new Konva.Image();
-        this.option3Button = new Konva.Image();
+        this.crystal = new Konva.Image();
+
+        // Text
         this.coinsText = new Konva.Text();
+        this.problemText = new Konva.Text();
+        this.option1Text = new Konva.Text();
+        this.option2Text = new Konva.Text();
+        this.option3Text = new Konva.Text();
+        
+        // Data
         this.coins = 0
         this.crystal = new Konva.Image();
 
-        const background = new Konva.Rect({
-            x: 0,
-            y: 0,
-            width: STAGE_WIDTH,
-            height: STAGE_HEIGHT,
-            fill: "#D6E8FF",
-        });
-        this.backgroundGroup.add(background);
-
+        // ------------------------------------------
+        
         // Text
         this.problemText = new Konva.Text({
             x: 25,
@@ -112,7 +106,6 @@ export class Level1View implements View {
             fontFamily: "Press Start 2P",
             fill: "black",
         });
-        console.log("here" + String(this.coins));
         this.textInputGroup.add(this.coinsText);
 
         this.group.add(this.backgroundGroup);
@@ -121,8 +114,8 @@ export class Level1View implements View {
 
     private async loadBackground(): Promise<void> {
         try {
-            this.pyramidImage = await this.loadImage("/res/level_1_background.png", STAGE_WIDTH, STAGE_HEIGHT, 0, 0);
-            this.doorImage = await this.loadImage("/res/level_1_door.png", 150, 200, STAGE_WIDTH / 2 - 75, STAGE_HEIGHT / 2 - 100);
+            this.background = await this.loadImage("/res/level_1_background.png", STAGE_WIDTH, STAGE_HEIGHT, 0, 0);
+            this.door = await this.loadImage("/res/level_1_door.png", 150, 200, STAGE_WIDTH / 2 - 75, STAGE_HEIGHT / 2 - 100);
             
             const [backpack, crystal] = await Promise.all([
                 this.loadImage("/res/backpack.png", 50, 50, 5, 5),
@@ -130,35 +123,24 @@ export class Level1View implements View {
                 this.loadImage("/res/Coins.png", 50, 50, 75, 5)
             ]);
 
+            this.backpack = backpack;
+            this.crystal = crystal;
+
             const [pillar1, pillar2] = await Promise.all([
                 this.loadImage("/res/Pillar.png", 130, 210, STAGE_WIDTH / 2 - 150, STAGE_HEIGHT / 2 - 105),
                 this.loadImage("/res/Pillar.png", 130, 210, STAGE_WIDTH / 2 - 90, STAGE_HEIGHT / 2 - 50, -35),
             ])
             
-            this.pillar1Image = pillar1;
-            this.pillar2Image = pillar2;
-            this.backpack = backpack;
-            this.crystal = crystal;
+            this.pillar1 = pillar1;
+            this.pillar2 = pillar2;
             
             const [levelClue, mgClue] = await Promise.all([
-                this.loadImage("/res/Clue.png", 100, 100, this.levelClueX, this.levelClueY),
-                this.loadImage("/res/Clue.png", 100, 100, this.mgClueX, this.mgClueY),
+                this.loadImage("/res/Clue.png", 100, 100, STAGE_WIDTH / 2 - 275, STAGE_HEIGHT / 2),
+                this.loadImage("/res/Clue.png", 100, 100, STAGE_WIDTH - 100, STAGE_HEIGHT - 100),
             ]);
             
             this.levelClue = levelClue;
             this.mgClue = mgClue;
-            
-            /*
-            const [btn1, btn2, btn3] = await Promise.all([
-                this.loadImage("/res/button.png", 125, 75, 150, STAGE_HEIGHT - 105),
-                this.loadImage("/res/button.png", 125, 75, STAGE_WIDTH / 2 - 50, STAGE_HEIGHT - 105),
-                this.loadImage("/res/button.png", 125, 75, STAGE_WIDTH / 2 + 150, STAGE_HEIGHT - 105)
-            ]);
-
-            this.option1Button = btn1;
-            this.option2Button = btn2;
-            this.option3Button = btn3;
-            */
 
             this.group.getLayer()?.batchDraw();
         } catch (error) {
@@ -173,7 +155,7 @@ export class Level1View implements View {
                 image.height(height);
                 image.x(x);
                 image.y(y);
-                image.listening(true); // Enable events
+                // image.listening(true); // Enable events
                 
                 if (r !== undefined) {
                     image.rotate(r);
@@ -185,14 +167,14 @@ export class Level1View implements View {
         });
     }
 
+    waitForLoadBackground(): Promise<void> {
+        return this.loadBackground();
+    }
+
     setCoins(coins: number) {
         this.coins = coins;
         this.coinsText.text(String(this.coins));
         this.group.getLayer()?.batchDraw();
-    }
-
-    waitForLoadBackground(): Promise<void> {
-        return this.loadBackground();
     }
 
     setProblemText(problemText: string) : void {
@@ -215,6 +197,11 @@ export class Level1View implements View {
         this.group.getLayer()?.draw();
     }
 
+    // Nodes for click and move listeners
+    getBackpackNode(): Konva.Image {
+        return this.backpack;
+    }
+
     getOption1TextNode(): Konva.Text {
         return this.option1Text;
     }
@@ -227,8 +214,12 @@ export class Level1View implements View {
         return this.option3Text;
     }
 
-    getBackpackNode(): Konva.Image {
-        return this.backpack;
+    getDoorNode(): Konva.Image {
+        return this.door;
+    }
+
+    getCrystalNode(): Konva.Image {
+        return this.crystal;
     }
 
     getLevelClueNode(): Konva.Image {
@@ -239,31 +230,24 @@ export class Level1View implements View {
         return this.mgClue;
     }
 
-    getDoor(): Konva.Image {
-        return this.doorImage;
-    }
-
-    getCrystal(): Konva.Image {
-        return this.crystal;
-    }
-
     animateMovePillar(): Promise<void> {
         return new Promise((resolve) => {
             // Set the rotation point to bottom-right corner
-            this.pillar2Image.offsetX(this.pillar2Image.width());
-            this.pillar2Image.offsetY(this.pillar2Image.height());
-            this.pillar2Image.x(STAGE_WIDTH / 2 + 145);
-            this.pillar2Image.y(STAGE_HEIGHT / 2 + 80);
+            this.pillar2.offsetX(this.pillar2.width());
+            this.pillar2.offsetY(this.pillar2.height());
+            this.pillar2.x(STAGE_WIDTH / 2 + 145);
+            this.pillar2.y(STAGE_HEIGHT / 2 + 80);
             
+            // Konva.Tween animates properties of a Konva node smoothly over a set duration.
             const anim = new Konva.Tween({
-                node: this.pillar2Image,
+                node: this.pillar2,
                 duration: 2,
                 rotation: 0, // Animate to upright position
                 easing: Konva.Easings.EaseInOut,
                 onFinish: () => {
-                    this.pillar2Image.x(STAGE_WIDTH / 2 + 145);
-                    this.pillar2Image.y(STAGE_HEIGHT / 2 + 105);
-                    resolve();
+                    this.pillar2.x(STAGE_WIDTH / 2 + 145);
+                    this.pillar2.y(STAGE_HEIGHT / 2 + 105);
+                    resolve(); // Signals completion
                 }
             });
             anim.play();
