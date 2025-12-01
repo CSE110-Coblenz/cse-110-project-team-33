@@ -34,6 +34,7 @@ export class Level1Model {
         this.playerDataManager.clearInventory();
 
         if (playerDataManager.getCoins() != null) {
+            playerDataManager.setCoins(0);
             this.coins = playerDataManager.getCoins();
         } else {
             this.coins = -1;
