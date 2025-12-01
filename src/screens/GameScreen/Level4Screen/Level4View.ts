@@ -11,21 +11,17 @@ export class Level4View {
 
 
     constructor() {
-        this.group = new Konva.Group({ visible: false });
-
         this.layer = new Konva.Layer();
-        this.group = new Konva.Group();
+        this.group = new Konva.Group({ visible: false });
         this.layer.add(this.group);
 
         // background
-        const bg = new Konva.Rect({
-            x: 0,
-            y: 0,
-            width: STAGE_WIDTH,
-            height: STAGE_HEIGHT,
-            fill: "#87DEEB",
+        Konva.Image.fromURL("/res/level4background.png", (image) => {
+            this.group.add(image);
+            image.moveToBottom();
+            this.layer.draw();
         });
-        this.group.add(bg);
+        
     }
 
     getLayer(): Konva.Layer {
@@ -77,21 +73,35 @@ export class Level4View {
     }
 
 
-    createDraggableLabel(text: string, x: number, y: number): Konva.Text {
-        const label = new Konva.Text({
-            x,
-            y,
-            text,
-            fontSize: 20,
-            fill: "black",
-            draggable: true,
+    createDraggableLabel(text: string, x: number, y: number): Konva.Group {
+        const crystal = new Konva.Group({
+            x, 
+            y, 
+            draggable: true
         });
-        this.group.add(label);
-        return label;
+        const label = new Konva.Text({
+            text,
+            fontSize: 15,
+            fontFamily: 'Margarine',
+            fontStyle: 'bold',
+            fill: "black",
+            offsetX: 0, 
+            offsetY: 30
+        });
+        crystal.add(label);
+        Konva.Image.fromURL("/res/crystal.png", (image) => {
+            image.width(20);
+            image.height(30);
+            crystal.add(image);
+            this.layer.draw();
+        });
+        this.group.add(crystal);
+        return crystal;
     }
 
-    updateLabelColor(labelNode: Konva.Text, placed: boolean) {
-        labelNode.fill(placed ? "green" : "black");
+    updateLabelColor(labelNode: Konva.Group, placed: boolean) {
+        const label = labelNode.findOne("Text");
+        label.fill(placed ? "green" : "black");
         labelNode.draggable(placed ? false : true);
         this.layer.batchDraw();
     }
