@@ -3,7 +3,6 @@ import Konva from "konva";
 import { ScreenController } from "../../../types.ts";
 import type { ScreenSwitcher } from "../../../types.ts";
 
-// import { Level2Model } from "./Level2Model.ts"
 import { Level2View } from "./Level2View.ts"
 import { Level2Model } from "./Level2Model.ts"
 import { RoomView } from "./views/RoomView.ts"

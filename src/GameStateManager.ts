@@ -94,7 +94,7 @@ class App implements ScreenSwitcher {
 		this.layer.add(this.level1Controller.getView().getGroup());
         this.layer.add(this.level2Controller.getView().getGroup());
         this.layer.add(this.level3Controller.getView().getGroup());
-        // this.layer.add(this.level4Controller.getView().getGroup());
+        //this.layer.add(this.level4Controller.getView().getGroup());
 		this.layer.add(this.miniGameController.getView().getGroup());
         // this.layer.add(this.resultsController.getView().getGroup());
 		this.layer.add(this.exitController.getView().getGroup());
@@ -121,7 +121,7 @@ class App implements ScreenSwitcher {
 		this.level1Controller.hide();
         this.level2Controller.hide();
         this.level3Controller.hide();
-        // this.level4Controller.hide();
+        //this.level4Controller.hide();
 		this.miniGameController.hide();
 		// this.resultsController.hide();
 		this.exitController.hide();
@@ -156,7 +156,7 @@ class App implements ScreenSwitcher {
 		        this.gamePauseOverlay.setEnabled(true);
                 break;
             case "level4":
-                // this.level4Controller.show();
+                this.level4Controller.show();
 		        this.gamePauseOverlay.setEnabled(true);
                 break;
 			case "minigame":
