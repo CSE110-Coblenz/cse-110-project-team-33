@@ -12,6 +12,8 @@ import { Sundial } from "../elements/Sundial";
 import { Clue } from "../elements/Clue";
 import { Door } from "../elements/Door";
 import { Background } from "../elements/Background";
+import { Backpack } from "../elements/Backpack";
+import { Coins } from "../elements/Coins";
 import { Overlay } from "../elements/Overlay";
 import { ReturnArrow } from "../elements/ReturnArrow";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../../constants";
@@ -29,6 +31,8 @@ export class RoomView implements SubView {
     private sundial3: Sundial;
 
 	private clue: Clue;
+	private backpack: Backpack;
+	private coins: Coins;
 	
     private isDoorOpen: boolean;
 
@@ -47,6 +51,8 @@ export class RoomView implements SubView {
         this.sundial3 = new Sundial( centerX + 128, centerY, "sundial3");
 
 		this.clue = new Clue(STAGE_WIDTH/2,STAGE_HEIGHT/2 + 96, "RoomViewClue");
+		this.backpack = new Backpack("Level2_InventoryTrigger");
+		this.coins = new Coins("RoomViewCoinIcon");
         /* The order matters here for composition reasons(?) */
         this.group.add(this.bg.getElement());
         this.group.add(this.door.getElement());
@@ -54,6 +60,8 @@ export class RoomView implements SubView {
         this.group.add(this.sundial2.getElement());
         this.group.add(this.sundial3.getElement());
         this.group.add(this.overlay.getElement());
+        this.group.add(this.backpack.getElement());
+        this.group.add(this.coins.getElement());
 		this.group.add(this.clue.getElement());
 		
 		/* This code makes the cursor into a pointer over the door when it
@@ -70,19 +78,15 @@ export class RoomView implements SubView {
         	this.group.getStage().container().style.cursor = "default";
         });
 
-
-        this.clue.getElement().on("mouseover", () => {
-			this.group.getStage().container().style.cursor = "pointer";
-        });
-        this.clue.getElement().on("mouseout", () => {
-        	this.group.getStage().container().style.cursor = "default";
-        });
-
         this.hide();
     }
 
     getGroup(): Konva.Group {
         return this.group;
+    }
+
+    getClue() {
+        return this.clue;
     }
 
 	getDoorState() {
@@ -91,6 +95,11 @@ export class RoomView implements SubView {
     setDoorState(state: boolean) {
     	this.isDoorOpen = state;
     }
+
+    getCoinDisplay() {
+        return this.coins;
+    }
+
     
     show(): void {
         this.group.visible(true);

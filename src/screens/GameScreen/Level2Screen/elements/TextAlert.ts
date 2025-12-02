@@ -30,7 +30,7 @@ export class TextAlert implements Element {
             align: "center",
             fontSize: 24,
             fontFamily: "Press Start 2P",
-            fill: "brown",
+            fill: "black",
             x: STAGE_WIDTH/2,
             y: STAGE_HEIGHT/2,
             height: 24,

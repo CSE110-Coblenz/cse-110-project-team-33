@@ -39,6 +39,14 @@ export class Sundial implements Element {
             this.sundialSprite.offsetX(this.getDefaultWidth()/2);
             this.sundialSprite.offsetY(this.getDefaultHeight()/2);
         });
+
+        /* Default mouse interaction */
+        this.sundialSprite.on("mouseover", () => {
+			this.sundialSprite.getStage().container().style.cursor = "pointer";
+        });
+        this.sundialSprite.on("mouseout", () => {
+        	this.sundialSprite.getStage().container().style.cursor = "default";
+        });
     }
 
 }

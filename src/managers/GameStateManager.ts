@@ -150,14 +150,17 @@ class App implements ScreenSwitcher {
             case "level2":
                 this.level2Controller.show();
 		        this.gamePauseOverlay.setEnabled(true);
+		        this.playerDataManager.setLevel({type: "level2"});
                 break;
             case "level3":
                 this.level3Controller.show();
 		        this.gamePauseOverlay.setEnabled(true);
+		        this.playerDataManager.setLevel({type: "level3"});
                 break;
             case "level4":
                 this.level4Controller.show();
 		        this.gamePauseOverlay.setEnabled(true);
+		        this.playerDataManager.setLevel({type: "level4"});
                 break;
 			case "minigame":
 				this.miniGameController.show();
@@ -178,6 +181,10 @@ class App implements ScreenSwitcher {
 
 	getStage(): Konva.Stage {
 		return this.stage;
+	}
+
+	getPlayerDataManager(): PlayerDataManager {
+	    return this.playerDataManager;
 	}
 }
 
