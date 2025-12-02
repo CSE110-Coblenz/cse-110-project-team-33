@@ -42,8 +42,8 @@ export class RoomView implements SubView {
         this.parentView = null;
         this.isDoorOpen = false;
         this.group = new Konva.Group();
-        this.bg = new Background(Background.debugBG, "RoomViewBG");
-        this.overlay = new Overlay(Overlay.debugOverlay, "RoomViewOverlay");
+        this.bg = new Background(Background.mainBG, "RoomViewBG");
+        this.overlay = new Overlay(Overlay.mainOverlay, "RoomViewOverlay");
 
         let centerX = STAGE_WIDTH/2;
         let centerY = STAGE_HEIGHT/2;

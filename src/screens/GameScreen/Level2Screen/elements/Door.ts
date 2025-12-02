@@ -20,7 +20,7 @@ export class Door implements Element {
 
     private doorState: boolean;
 
-    getURL()            { return "/img/level2/debug_door_spritesheet.png"; }
+    getURL()            { return "/res/level2/debug_door_spritesheet.png"; }
     getID()             { return this.id; }
     getDefaultWidth()   { return 256; }
     getDefaultHeight()  { return 184; }

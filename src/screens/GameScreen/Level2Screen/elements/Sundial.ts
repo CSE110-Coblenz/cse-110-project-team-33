@@ -18,7 +18,7 @@ export class Sundial implements Element {
     private yPos : number;
     private id: string;
 
-    getURL()            { return "/img/level2/sundial_small2.png"; }
+    getURL()            { return "/res/level2/sundial_small3.png"; }
     getID()             { return this.id; }
     getDefaultWidth()   { return 96; }
     getDefaultHeight()  { return 96*2; }

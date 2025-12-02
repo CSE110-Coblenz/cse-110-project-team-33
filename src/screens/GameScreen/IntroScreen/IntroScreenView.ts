@@ -94,7 +94,7 @@ export class IntroScreenView implements View {
         this.group = new Konva.Group({visible: false});
 
         this.bg = new Konva.Image({image: undefined});
-        Konva.Image.fromURL("/res/img/intro/bg.png", (img) => {
+        Konva.Image.fromURL("/res/intro/bg.png", (img) => {
             this.bg.image(img.image());
             this.bg.x(0);
             this.bg.y(0);
@@ -107,14 +107,14 @@ export class IntroScreenView implements View {
             });
         });
 
-        this.page1 = new TextPage("/res/img/intro/text1.png");
-        this.page2 = new TextPage("/res/img/intro/text2.png");
-        this.page3 = new TextPage("/res/img/intro/text3.png");
-        this.page4 = new TextPage("/res/img/intro/text4.png");
+        this.page1 = new TextPage("/res/intro/text1.png");
+        this.page2 = new TextPage("/res/intro/text2.png");
+        this.page3 = new TextPage("/res/intro/text3.png");
+        this.page4 = new TextPage("/res/intro/text4.png");
 
         this.button = new Button(
-            "/res/img/intro/start.png", 
-            "/res/img/intro/next.png"
+            "/res/intro/start.png", 
+            "/res/intro/next.png"
         );
 
         /* Ordering matters */

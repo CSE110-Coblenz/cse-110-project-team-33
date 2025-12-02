@@ -25,9 +25,9 @@ export class PuzzleDial implements Element {
     private shadowAnimActive: boolean;
     private dialOffset: number;
 
-    getURL()            { return "/img/level2/sundial_large.png"; }
-    getGnomonURL()            { return "/img/level2/gnomon.png"; }
-    getShadowURL()            { return "/img/level2/gnomon_shadow.png"; }
+    getURL()            { return "/res/level2/sundial_large.png"; }
+    getGnomonURL()            { return "/res/level2/gnomon.png"; }
+    getShadowURL()            { return "/res/level2/gnomon_shadow.png"; }
     getID()             { return this.id; }
     getDefaultWidth()   { return 512; }
     getDefaultHeight()  { return 512*2; }

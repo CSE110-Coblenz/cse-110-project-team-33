@@ -29,7 +29,7 @@ export class InfoTray implements Element {
     animStep()      { return 10; }
 
     getElement()        { return this.group;}
-    getURL()            { return "img/level2/measure.png"; }
+    getURL()            { return "/res/level2/measure.png"; }
     getID()             { return this.id; }
     getDefaultWidth()   { return 96; }
     getDefaultHeight()  { return 96; }
