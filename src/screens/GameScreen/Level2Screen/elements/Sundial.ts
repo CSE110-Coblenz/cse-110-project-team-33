@@ -18,7 +18,7 @@ export class Sundial implements Element {
     private yPos : number;
     private id: string;
 
-    getURL()            { return "/img/level2/sundial_small2.png"; }
+    getURL()            { return "/res/level2/sundial_small3.png"; }
     getID()             { return this.id; }
     getDefaultWidth()   { return 96; }
     getDefaultHeight()  { return 96*2; }
@@ -39,6 +39,24 @@ export class Sundial implements Element {
             this.sundialSprite.offsetX(this.getDefaultWidth()/2);
             this.sundialSprite.offsetY(this.getDefaultHeight()/2);
         });
+
+        /* Default mouse interaction */
+        this.sundialSprite.on("mouseover", () => {
+			this.sundialSprite.getStage().container().style.cursor = "pointer";
+        });
+        this.sundialSprite.on("mouseout", () => {
+        	this.sundialSprite.getStage().container().style.cursor = "default";
+        });
+    }
+
+    /* Height between 0 - 4.2, scaled to pixel offest */
+    setHeight(val: number) {
+        if(val < 0) val = 0;
+        if(val > 4.2) val = 4.2;
+        val = val/4.2;
+        const scalar = 32;
+        const baseHeight = this.getDefaultHeight()/2 - scalar;
+        this.sundialSprite.offsetY(baseHeight + scalar*val);
     }
 
 }

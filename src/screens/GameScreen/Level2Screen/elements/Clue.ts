@@ -1,15 +1,13 @@
-/* File: Sundial.ts
+/* File: Clue.ts
  * Author: Connor Larmer 
- * Created on 2025-11-05 @ 2:05 PM
  *
- * Summary: Sundial element, to make drawing multiple sundials easier with
- * less repeated code. Also allows for each sundial to return a unique view
- * when clicked on, acting as an interactive element on the screen that triggers
- * a new subview.
+ * Draggable clue for level 2
+ *
  */
 
 import Konva from "konva";
 import type { Element } from "./Element";
+import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../../constants";
 
 export class Clue implements Element {
 
@@ -38,8 +36,43 @@ export class Clue implements Element {
             this.clueSprite.height(this.getDefaultHeight());
             this.clueSprite.offsetX(this.getDefaultWidth()/2);
             this.clueSprite.offsetY(this.getDefaultHeight()/2);
+            this.clueSprite.draggable(true);
         });
 
+        this.clueSprite.on("mouseover", () => {
+			this.clueSprite.getStage().container().style.cursor = "grab";
+        });
+        this.clueSprite.on("mouseout", () => {
+        	this.clueSprite.getStage().container().style.cursor = "default";
+        });
+        this.clueSprite.on("dragstart", () => {
+        	this.clueSprite.getStage().container().style.cursor = "grabbing";            
+        });
+        this.clueSprite.on("dragend", () => {
+        	this.clueSprite.getStage().container().style.cursor = "grab";            
+        });
     }
 
+    getInventoryItem(deg1: number, deg2: number, deg3: number) {
+
+        let degStr = "";
+        degStr += String(deg1.toFixed(2) + "º,  ");
+        degStr += String(deg2.toFixed(2) + "º,  ");
+        degStr += String(deg3.toFixed(2) + "º   ");
+        return {
+            name: "level2Clue",
+            image: "inventory_paper.png",
+            width: 500,
+            height: 300,
+            text1: "Puzzle 2: Sin, Cos, or Tan...",
+            text1X: STAGE_WIDTH / 2 - 80,
+            text1Y: STAGE_HEIGHT / 2 - 80,
+            text2: degStr,
+            text2X: STAGE_WIDTH / 2,
+            text2Y: STAGE_HEIGHT / 2 - 20,
+            text3: "With shadow's height make angles right!",
+            text3X: STAGE_WIDTH / 2 - 130,
+            text3Y: STAGE_HEIGHT / 2 + 40
+        };
+    }
 }

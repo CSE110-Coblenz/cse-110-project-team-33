@@ -18,7 +18,7 @@ export class ReturnArrow implements Element {
     private yPos : number;
     private id: string;
 
-    getURL()            { return "/img/level2/back_arrow.png"; }
+    getURL()            { return "/res/level2/back_arrow.png"; }
     getID()             { return this.id; }
     getDefaultWidth()   { return 64; }
     getDefaultHeight()  { return 64; }
