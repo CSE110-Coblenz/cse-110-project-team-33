@@ -111,6 +111,8 @@ export class InfoTray implements Element {
             y: 36 + 12*3,
             height: 10,
             width: 80,
+            /*HACK: Hide theta to make the puzzle harder */
+            visible: false
         });
 
         this.group.add(this.bg);
