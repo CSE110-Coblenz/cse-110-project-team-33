@@ -43,6 +43,10 @@ export class Level2Controller extends ScreenController {
         /* HACK: Check clue position for dragging into inventory */
         const clue = this.roomView.getClue();
         clue.getElement().on("dragend", () => this.clueDragHandler());    
+        const gem = this.roomView.getGem();
+        gem.getElement().on("dragend", () => this.gemDragHandler());  
+
+        this.roomView.getGem().disable(); 
         this.roomView.show();
     }
 
@@ -51,6 +55,14 @@ export class Level2Controller extends ScreenController {
          * selects level 2 */
         const coinDisplay = this.roomView.getCoinDisplay();
      	coinDisplay.updateDisplayCoins(this.model.getCoins());
+
+     	this.roomView.setSundialHeight(1, this.model.getSundialHeight(1));
+     	this.roomView.setSundialHeight(2, this.model.getSundialHeight(2));
+     	this.roomView.setSundialHeight(3, this.model.getSundialHeight(3));
+     	this.sundial1View.updateSundialShadow();
+     	this.sundial2View.updateSundialShadow();
+     	this.sundial3View.updateSundialShadow();
+
         return this.levelView;
     }
 
@@ -66,6 +78,17 @@ export class Level2Controller extends ScreenController {
                 this.model.getSundialTargetTheta(2),
                 this.model.getSundialTargetTheta(3)
             ));
+        }
+    }
+
+    gemDragHandler(): void {
+        const gem = this.roomView.getGem();
+        const xPos = gem.getElement().x();
+        const yPos = gem.getElement().y();
+        if( (xPos <= 64) && (yPos <= 64) ) {
+            /* Place clue in inventory */
+            gem.getElement().visible(false);
+            this.model.addToInventory(gem.getInventoryItem());
         }
     }
 
@@ -135,30 +158,26 @@ export class Level2Controller extends ScreenController {
 					this.levelView.triggerAlert("This door is locked!");
 				}
 				break;
-			case "RoomViewClue":
-//				this.levelView.triggerAlert("A Clue: " + 
-//					this.model.getSundialTargetTheta(1).toFixed(2) + "°, " +
-//					this.model.getSundialTargetTheta(2).toFixed(2) + "°, " +
-//					this.model.getSundialTargetTheta(3).toFixed(2) + "°"
-//				);
-				break;
 		    /* Defined in views/RoomView.ts */
 			case "Level2_InventoryTrigger":
 		        this.screenSwitcher.switchToScreen({type: "inventory"});    
 			    break;
 			
         }
-
         /* Convenient place to check if the level is solved, since it will occur 
          *after every user interaction. Unoptimized but neat. */
         if(this.model.checkSolution()) {
             this.roomView.setDoorState(true);
             this.levelView.triggerAlert("The gate has opened!");
+            this.roomView.getGem().enable(); 
             this.model.awardCoins();
         }
-
         /* Similar to above, update coin display at any click */
         const coinDisplay = this.roomView.getCoinDisplay();
      	coinDisplay.updateDisplayCoins(this.model.getCoins());
+     	/* Update tiny sundials */
+     	this.roomView.setSundialHeight(1, this.model.getSundialHeight(1));
+     	this.roomView.setSundialHeight(2, this.model.getSundialHeight(2));
+     	this.roomView.setSundialHeight(3, this.model.getSundialHeight(3));
     }
 }

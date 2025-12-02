@@ -62,9 +62,9 @@ export class Level2Model {
 			val = Math.floor(val * 100)/100;
 			return val;
 		}
-		this.sundial1CurrentHeight = getRandomInRange(this.maxSundialHeight());
-		this.sundial2CurrentHeight = getRandomInRange(this.maxSundialHeight());
-		this.sundial3CurrentHeight = getRandomInRange(this.maxSundialHeight());
+		this.sundial1CurrentHeight = 0;
+		this.sundial2CurrentHeight = 0;
+		this.sundial3CurrentHeight = 0;
 	}
 
 	generateTargetHeights() {

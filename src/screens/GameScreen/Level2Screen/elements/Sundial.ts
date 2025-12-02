@@ -49,4 +49,14 @@ export class Sundial implements Element {
         });
     }
 
+    /* Height between 0 - 4.2, scaled to pixel offest */
+    setHeight(val: number) {
+        if(val < 0) val = 0;
+        if(val > 4.2) val = 4.2;
+        val = val/4.2;
+        const scalar = 32;
+        const baseHeight = this.getDefaultHeight()/2 - scalar;
+        this.sundialSprite.offsetY(baseHeight + scalar*val);
+    }
+
 }

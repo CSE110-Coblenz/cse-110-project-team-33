@@ -14,6 +14,7 @@ import { Door } from "../elements/Door";
 import { Background } from "../elements/Background";
 import { Backpack } from "../elements/Backpack";
 import { Coins } from "../elements/Coins";
+import { Gem } from "../elements/Gem";
 import { Overlay } from "../elements/Overlay";
 import { ReturnArrow } from "../elements/ReturnArrow";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../../constants";
@@ -31,6 +32,7 @@ export class RoomView implements SubView {
     private sundial3: Sundial;
 
 	private clue: Clue;
+	private gem: Gem;
 	private backpack: Backpack;
 	private coins: Coins;
 	
@@ -51,6 +53,7 @@ export class RoomView implements SubView {
         this.sundial3 = new Sundial( centerX + 128, centerY, "sundial3");
 
 		this.clue = new Clue(STAGE_WIDTH/2,STAGE_HEIGHT/2 + 96, "RoomViewClue");
+		this.gem = new Gem(STAGE_WIDTH/2, STAGE_HEIGHT/2 - 128, "RoomViewGem");
 		this.backpack = new Backpack("Level2_InventoryTrigger");
 		this.coins = new Coins("RoomViewCoinIcon");
         /* The order matters here for composition reasons(?) */
@@ -63,6 +66,9 @@ export class RoomView implements SubView {
         this.group.add(this.backpack.getElement());
         this.group.add(this.coins.getElement());
 		this.group.add(this.clue.getElement());
+		this.group.add(this.gem.getElement());
+
+		this.gem.disable();
 		
 		/* This code makes the cursor into a pointer over the door when it
 		 * is opened. It technically has to do with visuals, so its in the
@@ -85,6 +91,10 @@ export class RoomView implements SubView {
         return this.group;
     }
 
+    getGem() {
+        return this.gem;
+    }
+
     getClue() {
         return this.clue;
     }
@@ -98,6 +108,20 @@ export class RoomView implements SubView {
 
     getCoinDisplay() {
         return this.coins;
+    }
+
+    setSundialHeight(dial: number, val: number) {
+        switch(dial) {
+            case 1:
+                this.sundial1.setHeight(val);
+                break;
+            case 2:
+                this.sundial2.setHeight(val);
+                break;
+            case 3:
+                this.sundial3.setHeight(val);
+                break;
+        }
     }
 
     
