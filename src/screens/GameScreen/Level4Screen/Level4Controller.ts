@@ -63,9 +63,9 @@ export class Level4Controller extends ScreenController {
 
                     this.view.updateLabelColor(labelNode, true);
                     this.model.markPlaced(item.label);
-                    
-                    if(this.model.allPlaced()){
 
+                    if(this.model.allPlaced()){
+                        this.screenSwitcher.switchToScreen("result");
                     }
 
                 } else {

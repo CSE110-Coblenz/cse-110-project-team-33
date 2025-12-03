@@ -41,7 +41,7 @@ class App implements ScreenSwitcher {
     private level3Controller: Level3Controller;
     private level4Controller: Level4Controller;
 	private miniGameController: MiniGameController;
-    // private resultsController: ResultsController;
+    private resultsController: ResultsController;
 	private exitController: ExitController;
 	private loadController: LoadController;
 
@@ -81,7 +81,7 @@ class App implements ScreenSwitcher {
         this.level3Controller = new Level3Controller(this);
         this.level4Controller = new Level4Controller(this);
 		this.miniGameController = new MiniGameController(this);
-        // this.resultsController = new ResultsController(this);
+        this.resultsController = new ResultsController(this);
 		this.exitController = new ExitController(this);
 		this.loadController = new LoadController(this, this.playerDataManager);
 
@@ -96,7 +96,7 @@ class App implements ScreenSwitcher {
         this.layer.add(this.level3Controller.getView().getGroup());
         this.layer.add(this.level4Controller.getView().getGroup());
 		this.layer.add(this.miniGameController.getView().getGroup());
-        // this.layer.add(this.resultsController.getView().getGroup());
+        this.layer.add(this.resultsController.getView().getGroup());
 		this.layer.add(this.exitController.getView().getGroup());
 		this.layer.add(this.loadController.getView().getGroup());
 
@@ -163,7 +163,7 @@ class App implements ScreenSwitcher {
 				this.miniGameController.show();
 				break;
 			case "result":
-				// this.resultsController.show();
+				this.resultsController.show();
 				break;
 			case "exit":
 				this.exitController.show();
