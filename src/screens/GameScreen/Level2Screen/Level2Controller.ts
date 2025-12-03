@@ -11,6 +11,7 @@ import { SundialView } from "./views/SundialView.ts"
 
 export class Level2Controller extends ScreenController {
     private screenSwitcher: ScreenSwitcher;
+    private playerDataManager: PlayerDataManager;
     private model:  	Level2Model;
     
     /* Views */
@@ -20,12 +21,13 @@ export class Level2Controller extends ScreenController {
     private sundial2View:   SundialView;
     private sundial3View:   SundialView;
     
-    constructor(screenSwitcher: ScreenSwitcher) {
+    constructor(screenSwitcher: ScreenSwitcher, playerDataManager: PlayerDataManager) {
         super();
         this.screenSwitcher = screenSwitcher;
+        this.playerDataManager = playerDataManager;
         if(this.screenSwitcher) {/* NOP to shut TSC up */}
 
-		this.model = new Level2Model(screenSwitcher.getPlayerDataManager());
+		this.model = new Level2Model(this.playerDataManager);
         this.levelView = new Level2View();
         this.roomView = new RoomView();
         this.sundial1View = new SundialView("sundial1");

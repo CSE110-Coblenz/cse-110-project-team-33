@@ -5,6 +5,7 @@ import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants.ts";
 export class InventoryView {
     private group: Konva.Group;
     private contentGroup: Konva.Group;
+    private navGroup: Konva.Group; // NEW: Separate group for navigation
     private inventory: InventoryItem[];
     private prevButton: Konva.Image;
     private nextButton: Konva.Image;
@@ -14,6 +15,7 @@ export class InventoryView {
     constructor() {
         this.group = new Konva.Group({ visible: false });
         this.contentGroup = new Konva.Group();
+        this.navGroup = new Konva.Group(); // NEW: Create navigation group
         this.inventory = [];
         this.prevButton = new Konva.Image();
         this.nextButton = new Konva.Image();
@@ -38,12 +40,13 @@ export class InventoryView {
             this.backpack.width(50).height(50);
             this.backpack.x(5).y(5);
             this.backpack.image(image.image());
-            this.group.add(this.backpack);
+            this.navGroup.add(this.backpack); // CHANGED: Add to navGroup
             this.group.getLayer()?.draw();
         });
         
-        // Add contentGroup once in constructor
+        // Add groups in correct order: content first, then navigation on top
         this.group.add(this.contentGroup);
+        this.group.add(this.navGroup); // NEW: Add navGroup last so it's on top
     }
 
     async updateInventory(inventory: InventoryItem[], currentIndex: number): Promise<void> {
@@ -77,7 +80,7 @@ export class InventoryView {
                         image.width(40).height(40);
                         image.x(5).y(STAGE_HEIGHT / 2 - 40);
                         this.prevButton = image;
-                        this.group.add(image);
+                        this.navGroup.add(image); // CHANGED: Add to navGroup
                         this.group.getLayer()?.draw();
                         resolve();
                     });
@@ -89,7 +92,7 @@ export class InventoryView {
                         image.x(STAGE_WIDTH - 5).y(STAGE_HEIGHT / 2 + 10);
                         image.rotation(180);
                         this.nextButton = image;
-                        this.group.add(image);
+                        this.navGroup.add(image); // CHANGED: Add to navGroup
                         this.group.getLayer()?.draw();
                         resolve();
                     });
