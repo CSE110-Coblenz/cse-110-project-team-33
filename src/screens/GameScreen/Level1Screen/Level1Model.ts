@@ -34,7 +34,7 @@ export class Level1Model {
         this.playerDataManager.clearInventory();
 
         if (playerDataManager.getCoins() != null) {
-            playerDataManager.setCoins(0);
+            // playerDataManager.setCoins(0);
             this.coins = playerDataManager.getCoins();
         } else {
             this.coins = -1;
@@ -51,7 +51,6 @@ export class Level1Model {
 
     addToInventory(inventoryItem: InventoryItem): void {
         this.inventory.push(inventoryItem);
-        console.log(this.inventory);
         this.playerDataManager.setInventory(this.inventory);
         console.log(this.playerDataManager.getInventory());
     }
@@ -65,10 +64,10 @@ export class Level1Model {
 
     addToCoins(addedCoins: number) {
         if (this.coins != null) {
-            this.coins += addedCoins;
+            this.playerDataManager.setCoins(this.coins + addedCoins);
         }
         if (this.coins != null) {
-            this.playerDataManager.setCoins(this.coins + addedCoins);
+            this.coins += addedCoins;
         }
     }
 

@@ -37,7 +37,7 @@ class DigitDisplay {
         this.decBtn = new Konva.Image({image: undefined});
         this.bg = new Konva.Image({image: undefined});
 
-        Konva.Image.fromURL("img/level2/digit_bg.png", (img) => {
+        Konva.Image.fromURL("/res/level2/digit_bg.png", (img) => {
             this.bg.image(img.image());
             this.bg.x(0);
             this.bg.y(0);
@@ -45,7 +45,7 @@ class DigitDisplay {
             this.bg.height(32);
         });
 
-        Konva.Image.fromURL("img/level2/inc_btn.png", (img) => {
+        Konva.Image.fromURL("/res/level2/inc_btn.png", (img) => {
             this.incBtn.image(img.image());
             this.incBtn.x(1);
             this.incBtn.y(1);
@@ -53,7 +53,7 @@ class DigitDisplay {
             this.incBtn.height(8);
         });
 
-        Konva.Image.fromURL("img/level2/dec_btn.png", (img) => {
+        Konva.Image.fromURL("/res/level2/dec_btn.png", (img) => {
             this.decBtn.image(img.image());
             this.decBtn.x(1);
             this.decBtn.y(32-8-1);
@@ -145,7 +145,7 @@ export class NumericInput implements Element {
         });
 
         this.bg = new Konva.Image({image: undefined});
-        Konva.Image.fromURL("img/level2/numeric_input_bg.png", (img) => {
+        Konva.Image.fromURL("/res/level2/numeric_input_bg.png", (img) => {
             this.bg.image(img.image());
             this.bg.x(0);
             this.bg.x(0);

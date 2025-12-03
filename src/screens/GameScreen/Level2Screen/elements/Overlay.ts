@@ -18,8 +18,9 @@ export class Overlay implements Element {
     private overlayURL: string;
 
     /* Static getters to actual background URLS */
-    static get debugOverlay()    { return "/img/level2/debug_bg2_overlay.png"; }
-    static get sundialOverlay()    { return "/img/level2/sundial_view_overlay.png"; }
+    static get debugOverlay()    { return "/res/level2/debug_bg2_overlay.png"; }
+    static get mainOverlay()    { return "/res/level2/room_view_bg_overlay.png"; }
+    static get sundialOverlay()    { return "/res/level2/sundial_view_overlay.png"; }
 
     getURL()            { return this.overlayURL; }
     getID()             { return this.id; }

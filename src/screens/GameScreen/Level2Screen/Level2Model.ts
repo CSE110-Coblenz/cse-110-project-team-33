@@ -6,6 +6,8 @@
  *
  */
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
+import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
+import type {  InventoryItem } from "../../../types.ts";
 
 export class Level2Model {
 
@@ -30,14 +32,19 @@ export class Level2Model {
  	private sundial2Hypotenuse: number;
  	private sundial3Hypotenuse: number;
 
+    private playerData: PlayerDataManager;
+
+    private coinsAwarded: boolean;
 
 	/* Constants */
 	defaultSundialWidth()	{ return 12; }
 	maxSundialHeight() 		{ return 4.2; }
-	epsilon() 				{ return 0.001;}
+	epsilon() 				{ return 0.001; }
+	defaultCoinAward() 	    { return 100; }
 	
- 	constructor() {
+ 	constructor(playerData: PlayerDataManager) {
 		this.resetLevel();
+		this.playerData = playerData;
  	}
 
  	resetLevel() {
@@ -45,6 +52,7 @@ export class Level2Model {
  		this.generateTargetHeights();
  		this.isComplete = false;
  		this.updateSundialCalcs();
+	    this.coinsAwarded = false;
  	}
 
 	generateStartingHeights() {
@@ -54,9 +62,9 @@ export class Level2Model {
 			val = Math.floor(val * 100)/100;
 			return val;
 		}
-		this.sundial1CurrentHeight = getRandomInRange(this.maxSundialHeight());
-		this.sundial2CurrentHeight = getRandomInRange(this.maxSundialHeight());
-		this.sundial3CurrentHeight = getRandomInRange(this.maxSundialHeight());
+		this.sundial1CurrentHeight = 0;
+		this.sundial2CurrentHeight = 0;
+		this.sundial3CurrentHeight = 0;
 	}
 
 	generateTargetHeights() {
@@ -82,6 +90,7 @@ export class Level2Model {
 	}
 
 	checkSolution() {
+
 		let isCorrect = true;
 
 		function equalsEpsilon(a: number, b: number, e: number) {
@@ -113,6 +122,27 @@ export class Level2Model {
 		}
 		return false;
 	}
+
+    awardCoins() {
+        /* Ensure coins are awarded only once per level reset */
+        if(this.coinsAwarded == false && this.isComplete == true) {
+            this.coinsAwarded = true;
+            this.playerData.setCoins(
+                this.playerData.getCoins() + this.defaultCoinAward()
+            );
+        }
+    }
+
+    addToInventory(inventoryItem: InventoryItem): void {
+        let inv = this.playerData.getInventory();
+        inv.push(inventoryItem);
+        this.playerData.setInventory(inv);
+        console.log(this.playerData.getInventory());
+    }
+
+    getCoins() {
+        return this.playerData.getCoins();
+    }
 
 	getSundialTargetTheta(dial: number) {
 		const conv = (180 / Math.PI);
