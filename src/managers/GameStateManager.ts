@@ -80,7 +80,7 @@ class App implements ScreenSwitcher {
         this.introController = new IntroScreenController(this, this.playerDataManager);
         this.level3Controller = new Level3Controller(this, this.playerDataManager);
         this.level4Controller = new Level4Controller(this);
-		this.miniGameController = new MiniGameController(this);
+		this.miniGameController = new MiniGameController(this, this.playerDataManager);
         this.resultsController = new ResultsController(this, this.playerDataManager);
 		this.exitController = new ExitController(this);
 		this.loadController = new LoadController(this, this.playerDataManager);

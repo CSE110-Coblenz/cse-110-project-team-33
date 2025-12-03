@@ -28,13 +28,14 @@ export class MiniGameController extends ScreenController {
     
 
 
-    constructor(screenSwitcher: ScreenSwitcher) {
+    constructor(screenSwitcher: ScreenSwitcher, playerDataManager: PlayerDataManager) {
         super();
         this.screenSwitcher = screenSwitcher;
 
         // Initialize model and view
         this.model = new MiniGameModel();
-        if(true){ //placeholder for checking level from player data
+        
+        if(playerDataManager.getLevel() == "level 2"){ //placeholder for checking level from player data
             this.model.initTargets(this.targets1);
         } else {
             this.model.initTargets(this.targets2);
@@ -77,8 +78,10 @@ export class MiniGameController extends ScreenController {
                     this.model.markPlaced(item.label);
 
                     if(this.model.allPlaced()){
-                        if(true){
-                            this.screenSwitcher.switchToScreen("level2");
+                        if(playerDataManager.getLevel() == "level 2"){
+                            this.screenSwitcher.switchToScreen({type: "level2"});
+                        } else {
+                            this.screenSwitcher.switchToScreen({type: "level3"});
                         }
                     }
 
