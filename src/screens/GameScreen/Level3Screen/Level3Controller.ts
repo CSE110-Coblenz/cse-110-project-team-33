@@ -9,7 +9,7 @@ import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
 
 import { ScreenController } from "../../../types.ts";
 import type { ScreenSwitcher } from "../../../types.ts";
-import { InventoryController } from "../../InventoryScreen/InventoryController.ts";
+// import { InventoryController } from "../../InventoryScreen/InventoryController.ts";
 import { TrigUtil } from "../../../utilities/TrigUtil.ts";
 
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
@@ -24,6 +24,8 @@ export class Level3Controller extends ScreenController {
     // all the views
     private view: Level3View;
 
+    private win_sound: HTMLAudioElement;
+
     // constructor
     constructor(screenSwitcher: ScreenSwitcher, playerDataManager: PlayerDataManager) {
         super();
@@ -36,6 +38,9 @@ export class Level3Controller extends ScreenController {
 
         this.model = new Level3Model(playerDataManager);
         this.view = new Level3View(playerDataManager);
+
+        this.win_sound = new Audio("/res/sounds/winner.wav");
+        this.win_sound.volume = 0.2;
         
         //this.view.show(); 
         this.initialize();
@@ -94,6 +99,7 @@ export class Level3Controller extends ScreenController {
             if(action == "backpack"){ // open inventory
                 console.log("backpack clicked from controller");
                 this.screenSwitcher.switchToScreen({type: "inventory"});
+                this.playerDataManager.setLevel({type: "level3"});
             } else if (action == "door") {
                 console.log(this.model.getInventory());
 
@@ -107,9 +113,10 @@ export class Level3Controller extends ScreenController {
                  * - trigger alert implying puzzle not solved yet
                  */
                 if(this.view.isSolved()){
-                    this.view.triggerAlert("I made it across!");
-                    this.playerDataManager.setCoins(150);
-                    this.screenSwitcher.switchToScreen({type: "result"}); // should be level 4 in future
+                    // this.win_sound.play();
+                    // this.view.triggerAlert("I made it across!");
+                    this.playerDataManager.setCoins(600);
+                    this.screenSwitcher.switchToScreen({type: "level4"}); // should be level 4 in future
                 }
                 else {
                     this.view.triggerAlert("I'm not across yet...");
@@ -119,9 +126,8 @@ export class Level3Controller extends ScreenController {
                 this.view.switchToPuzzle();
                 this.view.triggerAlert("I have to find the right path...");
             } else if (action == "prev_level") { // change the player's level to the previous level
-                this.playerDataManager.setLevel({type: "level3"}); // should be level 2 in future
                 // switch to the previous level screen
-                this.screenSwitcher.switchToScreen({type: "level1"}); // should be level 2 in future
+                this.screenSwitcher.switchToScreen({type: "level2"}); // should be level 2 in future
             }
         });
 
@@ -161,7 +167,11 @@ export class Level3Controller extends ScreenController {
         });
         
         node.on("dragstart", () => {
-            this.view.triggerAlert("I think this is a clue!");
+            if(action == "clue"){
+                this.view.triggerAlert("I think this is a clue!");
+            } else if(action == "crystal"){
+                this.view.triggerAlert("A crystal...?");
+            }
             document.body.style.cursor = "grabbing";
             console.log("drag start");
         });

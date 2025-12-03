@@ -14,7 +14,6 @@ export class Level3Model {
     constructor(playerDataManager: PlayerDataManager){
         // initialization of player data when opening level
         this.playerDataManager = playerDataManager; 
-        this.playerDataManager.setLevel({type: "level3"});
 
         // ** get player data
         // inventory
@@ -41,9 +40,9 @@ export class Level3Model {
     }
 
     // set (add to) coins
-    addCoins(added: number) {
+    addCoins() {
         if(this.coins != null){
-            this.playerDataManager.setCoins(150);
+            this.playerDataManager.setCoins(600);
         }
     }
 

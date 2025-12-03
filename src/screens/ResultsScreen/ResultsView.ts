@@ -26,6 +26,10 @@ export class ResultsView implements View {
     private text: Konva.Text;
     private text2: Konva.Text;
 
+    // text for final page
+    private t1: Konva.Text;
+    private t2: Konva.Text;
+
     // constructor
     constructor(screenSwitcher: ScreenSwitcher) {
         this.group = new Konva.Group({visible: false});
@@ -50,6 +54,23 @@ export class ResultsView implements View {
             fill: "black",
             x: 130,
             y: 40
+        });
+
+        this.t1 = new Konva.Text({
+            text: "You've demonstrated your trigonometric prowess,",
+            fontSize: 15,
+            fontFamily: "Press Start 2P",
+            fill: "black",
+            x: 45,
+            y: 350    
+        });
+        this.t2 = new Konva.Text({
+            text: "and have displayed your mathematical abilities!",
+            fontSize: 15,
+            fontFamily: "Press Start 2P",
+            fill: "black",
+            x: 45,
+            y: 380    
         });
 
         this.text = new Konva.Text({
@@ -179,6 +200,8 @@ export class ResultsView implements View {
             })
 
             this.group.add(prompt);
+            this.group.add(this.t1);
+            this.group.add(this.t2);
 
             this.group.getLayer()?.batchDraw();
             } catch (error) {
@@ -230,7 +253,7 @@ export class ResultsView implements View {
             })
 
             const num_crystals = new Konva.Text({
-                text: crystals_str + " crystals",
+                text: crystals_str + "crystals",
                 fontSize: 24,
                 fontFamily: "Press Start 2P",
                 fill: "black",
@@ -252,9 +275,21 @@ export class ResultsView implements View {
      }
 
      // animated congratulations
-     async animatedText(): Promise<void> {
+     async animatedText(str: string): Promise<void> {
         // this.congratulations.opacity(0); // start invisible
 
+        const displayed = new Konva.Text({
+            text: str,
+            fontSize: 36,
+            fontFamily: "Press Start 2P",
+            fill: "black",
+            x: 130,
+            y: 40,
+            opacity: 0 // start invisible
+        })
+        this.group.add(displayed);
+
+        /*
         const congrats = new Konva.Text({
             text: "Congratulations!",
             fontSize: 36,
@@ -265,22 +300,23 @@ export class ResultsView implements View {
             opacity: 0 // start invisible
         })
         this.group.add(congrats);
+        */
 
         const anim = new Konva.Animation(function(frame) {
             const duration = 1000;
             const newOpacity = Math.min(1, frame.time / duration);
 
-            congrats.opacity(newOpacity);
+            displayed.opacity(newOpacity);
             
-            congrats.getLayer()?.batchDraw();
-        }, congrats.getLayer());
+            displayed.getLayer()?.batchDraw();
+        }, displayed.getLayer());
 
         anim.start();
     }
 
     async performActionsWithDelay() {
         console.log("Action 1 started.");
-        this.animatedText();
+        this.animatedText("Congratulations!");
 
         // wait x amount of time
         await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 5 seconds

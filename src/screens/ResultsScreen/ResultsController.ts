@@ -88,7 +88,7 @@ export class ResultsController extends ScreenController {
         node.on('click', () => {
             if(action == "crystal"){
                 console.log("game complete!");
-                this.win_sound.play();
+                // this.win_sound.play();
             } else if(action == "next") {
                 console.log("back button clicked");
                 console.log(String(this.playerData.getCoins()));
@@ -103,26 +103,18 @@ export class ResultsController extends ScreenController {
 
     async performActionsWithDelay() {
         console.log("Action 1 started.");
+        //this.view.animatedText("Congratulations!");
+
         // display text asking what the user wants to do next
         this.view.loadBag(String(this.playerData.getCoins()), "4");
 
         // wait x amount of time
-        await new Promise(resolve => setTimeout(resolve, 8000)); // Wait for 5 seconds
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 5 seconds
 
         // displays coins earned then wait
         console.log("Action 2 started after 5 seconds.");
 
         // display crystals found then wait
         this.view.loadButtons();
-
-        /*
-        const menu = this.view.getMenuButton();
-        const exit = this.view.getExitButton();
-
-        this.handleInteractable(menu, "menu"); // return to menu
-        this.handleInteractable(exit, "exit"); // exit screen
-        */
-
-        // display return to menu & exit buttons
     }
 }

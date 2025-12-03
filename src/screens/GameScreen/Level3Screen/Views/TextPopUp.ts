@@ -94,6 +94,6 @@ export class TextPopUp implements Element{
                 return;
             }
         };
-        animationTimer = setInterval(animFunct, 32);
+        animationTimer = setInterval(animFunct, 16);
     }
 }
