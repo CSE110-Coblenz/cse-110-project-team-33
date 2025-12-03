@@ -65,7 +65,7 @@ export class Level3View implements View {
         this.coins_text = new Konva.Text({
             x: 115,
             y: 20,
-            text: String(100),
+            text: String(this.player_data.getCoins()),
             fontSize: 20,
             fontFamily: "Press Start 2P",
             fill: "black",

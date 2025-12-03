@@ -9,15 +9,15 @@ export class MenuController extends ScreenController {
 	private view: MenuView;
 	private screenSwitcher: ScreenSwitcher;
 
-	private win_sound: HTMLAudioElement;
+	private bgm: HTMLAudioElement;
 
 	constructor(screenSwitcher: ScreenSwitcher) {
 		super();
 		this.screenSwitcher = screenSwitcher;
 
 		// testing audio
-		this.win_sound = new Audio("/res/sounds/bgm.mp3");
-		this.win_sound.volume = 0.1;
+		this.bgm = new Audio("/res/sounds/bgm.mp3");
+		this.bgm.volume = 0.1;
 		
 		this.view = new MenuView(
 			() => this.handleStartClick(),
@@ -27,7 +27,7 @@ export class MenuController extends ScreenController {
 	}
 	
 	private handleStartClick(): void {
-		this.win_sound.play();
+		this.bgm.play();
 		this.screenSwitcher.switchToScreen({ type: "intro" }); 
 	}
 

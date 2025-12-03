@@ -24,8 +24,6 @@ export class Level3Controller extends ScreenController {
     // all the views
     private view: Level3View;
 
-    private win_sound: HTMLAudioElement;
-
     // constructor
     constructor(screenSwitcher: ScreenSwitcher, playerDataManager: PlayerDataManager) {
         super();
@@ -38,9 +36,6 @@ export class Level3Controller extends ScreenController {
 
         this.model = new Level3Model(playerDataManager);
         this.view = new Level3View(playerDataManager);
-
-        this.win_sound = new Audio("/res/sounds/winner.wav");
-        this.win_sound.volume = 0.2;
         
         //this.view.show(); 
         this.initialize();
@@ -115,7 +110,9 @@ export class Level3Controller extends ScreenController {
                 if(this.view.isSolved()){
                     // this.win_sound.play();
                     // this.view.triggerAlert("I made it across!");
-                    this.playerDataManager.setCoins(600);
+                    if(this.playerDataManager.getCoins() != null){
+                        this.playerDataManager.setCoins(this.playerDataManager.getCoins() + 100);
+                    }
                     this.screenSwitcher.switchToScreen({type: "level4"}); // should be level 4 in future
                 }
                 else {
