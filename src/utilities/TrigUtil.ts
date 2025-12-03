@@ -1,7 +1,6 @@
 // Placeholder to put userful math functions.
 // Scope should be static/global, since these will be called from
 // all over the place. Change these rules if needed.
-
 const trigCoordinates = [
   "        (1, 0)",           // 0°
   "   (√3/2, 1/2)",           // 30°

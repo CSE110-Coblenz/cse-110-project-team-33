@@ -1,105 +1,81 @@
 // import statements
 import Konva from "konva";
+
 // import different views
 import type { View } from "../../../types.ts";
 import { Level3PuzzleView } from "./Views/Level3PuzzleView.ts";
-import { Room3View } from "./Views/Room3View.ts";
 
+// import player data to display inventory and coins
+import { PlayerDataManager } from "../../../managers/GameStateManager";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
 
+// handle any text pop ups
+import { TextPopUp } from "./Views/TextPopUp.ts";
+
 export class Level3View implements View {
-    // groups for each
+    // group displays room for level 3
     private group: Konva.Group;
-    private room_group: Konva.Group;
-    private puzzle_group: Konva.Group;
+    private text_group: Konva.Group;
 
+    // every image that makes up the background
+    private background: Konva.Image;
+    private door: Konva.Image;
     private clue: Konva.Image;
+    private water: Konva.Image;
     private puzzle: Level3PuzzleView;
+    private back: Konva.Image; // back button (?)
+    private backpack: Konva.Image; // for inventory
+    private coins: Konva.Image; // coins
+    private coins_text: Konva.Text;
+    private crystal: Konva.Image;
+    private status: boolean; // status of the puzzle
 
-    private room_view: Room3View;
+    // player data to display updated values
+    private player_data: PlayerDataManager;
 
-    constructor() {
+    // text alerts -> not working ** maybe figure out later **
+    private alert: TextPopUp;
+
+    constructor(playerDataManager: PlayerDataManager) {
         // initialize everything
-
         this.group = new Konva.Group({visible: false});
-        this.room_group = new Konva.Group({visible: false});
-        this.puzzle_group = new Konva.Group({visible: false});
+        this.text_group = new Konva.Group();
+        this.alert = new TextPopUp("level3_alerts");
 
+        // player data
+        this.player_data = playerDataManager;
+
+        // all images
+        this.background = new Konva.Image();
+        this.door = new Konva.Image();
         this.clue = new Konva.Image();
+        this.water = new Konva.Image();
+        this.back = new Konva.Image();
+        this.backpack = new Konva.Image();
+        this.coins = new Konva.Image();
+        this.coins_text = new Konva.Text();
+        this.crystal = new Konva.Image();
 
-        this.room_view = new Room3View; // **change this to be the hint view -> get rid of room view maybe or change it to puzzle view idk yet
+        // level 3 -> level 3 puzzle (access from level 3 since no other level needs level 3's puzzle info)
         this.puzzle = new Level3PuzzleView();
+        this.status = false; // this.puzzle.checkAnswer();
 
-        const bg = new Konva.Rect({
-            x: 0,
-            y: 0,
-            width: STAGE_WIDTH,
-            height: STAGE_HEIGHT,
-            fill: "purple", // Sky blue
+        console.log(this.player_data.getCoins())
+
+        this.coins_text = new Konva.Text({
+            x: 115,
+            y: 20,
+            text: String(100),
+            fontSize: 20,
+            fontFamily: "Press Start 2P",
+            fill: "black",
         });
-        this.puzzle_group.add(bg);
-
-        // ** testing to get something to display ** //
-        const background = new Konva.Rect({
-            x: 0,
-            y: 0,
-            width: STAGE_WIDTH,
-            height: STAGE_HEIGHT,
-            fill: "purple", // Sky blue
-        });
-        this.group.add(background);
-
-        // clue -> click on to show hint -> work on that later **
-        Konva.Image.fromURL("/res/Clue.png", (image) => {
-            image.width(100), image.height(100);
-
-            image.x(50), image.y(450);
-
-            this.clue = image;
-            this.group.add(this.clue);
-            
-            // juice
-            image.on('mouseover', () => {
-                image.scale({ x: 1.1, y: 1.1 }); // Slightly enlarge the image
-                image.getLayer()?.draw();
-            });
-            image.on('mouseout', () => {
-                image.scale({ x: 1, y: 1 }); // Reset the image size
-                image.getLayer()?.draw();
-            });
-        });
-
-        // water -> click on to show puzzle -> work on that later**
-        const water = new Konva.Rect({
-            x: 0,
-            y: 300,
-            width: STAGE_WIDTH,
-            height: 120,
-            fill: "blue", // Sky blue
-        });
-        this.group.add(water);
-
-        const test = new Konva.Rect({
-            x: 0,
-            y: 200,
-            width: STAGE_WIDTH,
-            height: 120,
-            fill: "yellow", // Sky blue
-        });
-        this.group.add(test);
-
-        // handle clicking on water **oh my god this fucking works**
-        water.on('click', () => {
-            this.group.add(this.room_view.getGroup());
-            this.room_view.getGroup().moveToTop();
-        });
-
-        test.on('click', () => {
-            this.group.add(this.puzzle.getGroup());
-            this.puzzle.getGroup().moveToTop(); // handles going back and forth
-        })
-
+        this.text_group.add(this.coins_text);
     }// end of constructor
+
+    getView(): Level3View {
+        return this;
+    }
 
     /**
      * Show the screen
@@ -124,4 +100,121 @@ export class Level3View implements View {
         return this.group;
     }
 
+    // promises for the images to appear
+    // functions
+    private async loadBackground(): Promise<void> {
+        try {
+            // beginning of adding all images to the group
+            this.background = await this.loadImage("/res/room.png", STAGE_WIDTH, STAGE_HEIGHT, 0, 0); // room background
+
+            // ** water, backpack, door, clue ** // 
+            const [backpack, water, door, back_button, coins] = await Promise.all([
+                this.loadImage("/res/backpack.png", 50, 50, 5, 5),
+                this.loadImage("/res/Water_layer.png", STAGE_WIDTH, 150, 0, 300),
+                this.loadImage("/res/locked_door.png", 150, 200, 325, 65), // door -> separate to click into next room
+                this.loadImage("/res/arrow.png", 100, 100, 0, 500),
+                this.loadImage("/res/Coins.png", 50, 50, 60, 5)
+            ])
+
+            // clue and the crystal
+            this.crystal = await this.loadImage("/res/crystal.png", 30, 40, 600, 475);
+            this.clue = await this.loadImage("/res/paper.png", 80, 70, 150, 475);
+
+            // asign images to the object's variables
+            this.backpack = backpack;
+            this.coins = coins;
+            this.door = door;
+            this.water = water;
+            this.back = back_button;
+            this.group.add(this.coins_text);
+
+            // add alert placeholder to group
+            this.group.add(this.alert.getElement());
+    
+            this.group.getLayer()?.batchDraw();
+            } catch (error) {
+                console.error("Error loading images:", error);
+        }
+    }
+
+    // general function to load in an image
+    private loadImage(src: string, width: number, height: number, x: number, y: number): Promise<Konva.Image> {
+        return new Promise((resolve, reject) => {
+            Konva.Image.fromURL(src, (image) => {
+                image.width(width);
+                image.height(height);
+                image.x(x);
+                image.y(y);
+                image.listening(true); // Enable events
+                
+                // add to the background group
+                this.group.add(image);
+                resolve(image); // Return the actual image
+            }, reject)
+        });
+    }
+
+    // getters for every clickable/interactable image
+    // the door -> to click to next level
+    getDoor(): Konva.Image {
+        return this.door;
+    }
+
+    // back button -> to move back to a previous screen
+    getBack(): Konva.Image {
+        return this.back;
+    }
+
+    // water -> to click into the puzzle
+    getWater(): Konva.Image {
+        return this.water;
+    }
+
+    // backpack -> to click into the inventory
+    getBackpack(): Konva.Image {
+        return this.backpack;
+    }
+
+    getClue(): Konva.Image {
+        return this.clue;
+    }
+
+    getCrystal(): Konva.Image {
+        return this.crystal;
+    }
+
+    // load the background -> needed for controller to control the view
+    getloadBackground(): Promise<void> {
+        return this.loadBackground();
+    }
+
+    getStatus(): boolean {
+        return this.status;
+    }
+
+    isSolved(): boolean {
+        // this.status = this.puzzle.checkAnswer();
+        return this.puzzle.checkAnswer();
+    }
+
+    switchToPuzzle(): void {
+        this.group.add(this.puzzle.getGroup());
+        this.puzzle.getGroup().moveToTop();
+    }
+
+    // change cursor to a pointer to show its clickable
+    showClickable(node: any): void {
+        node.on('mouseover', () => {
+            document.body.style.cursor = "pointer";
+        });
+        node.on('mouseout', () => {
+            document.body.style.cursor = "default";
+        });
+    }
+
+    // trigger a text alert
+    triggerAlert(text: string) {
+        this.alert.getElement().moveToTop();
+        this.alert.triggerAlert(text);
+    }
 }

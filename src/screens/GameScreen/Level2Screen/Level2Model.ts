@@ -90,6 +90,7 @@ export class Level2Model {
 	}
 
 	checkSolution() {
+
 		let isCorrect = true;
 
 		function equalsEpsilon(a: number, b: number, e: number) {

@@ -8,7 +8,7 @@ import { Level1Controller } from "../screens/GameScreen/Level1Screen/Level1Contr
 import { Level2Controller } from "../screens/GameScreen/Level2Screen/Level2Controller";
 import { Level3Controller } from "../screens/GameScreen/Level3Screen/Level3Controller";
 import { Level4Controller } from "../screens/GameScreen/Level4Screen/Level4Controller.ts";
-// import { ResultsController } from "../screens/ResultsScreen/ResultsController";
+import { ResultsController } from "../screens/ResultsScreen/ResultsController";
 import { ExitController } from "../screens/MenuScreen/ExitScreen/ExitController.ts";
 import { LoadController } from "../screens/MenuScreen/LoadScreen/LoadController.ts";
 import { MiniGameController } from "../screens/GameScreen/MiniGameScreen/MiniGameController.ts";
@@ -41,7 +41,7 @@ class App implements ScreenSwitcher {
     private level3Controller: Level3Controller;
     private level4Controller: Level4Controller;
 	private miniGameController: MiniGameController;
-    // private resultsController: ResultsController;
+    private resultsController: ResultsController;
 	private exitController: ExitController;
 	private loadController: LoadController;
 
@@ -78,10 +78,10 @@ class App implements ScreenSwitcher {
         this.level1Controller = new Level1Controller(this, this.playerDataManager);
         this.level2Controller = new Level2Controller(this);
         this.introController = new IntroScreenController(this, this.playerDataManager);
-        this.level3Controller = new Level3Controller(this);
+        this.level3Controller = new Level3Controller(this, this.playerDataManager);
         this.level4Controller = new Level4Controller(this);
 		this.miniGameController = new MiniGameController(this);
-        // this.resultsController = new ResultsController(this);
+        this.resultsController = new ResultsController(this, this.playerDataManager);
 		this.exitController = new ExitController(this);
 		this.loadController = new LoadController(this, this.playerDataManager);
 
@@ -96,7 +96,7 @@ class App implements ScreenSwitcher {
         this.layer.add(this.level3Controller.getView().getGroup());
         this.layer.add(this.level4Controller.getView().getGroup());
 		this.layer.add(this.miniGameController.getView().getGroup());
-        // this.layer.add(this.resultsController.getView().getGroup());
+        this.layer.add(this.resultsController.getView().getGroup());
 		this.layer.add(this.exitController.getView().getGroup());
 		this.layer.add(this.loadController.getView().getGroup());
 
@@ -108,7 +108,7 @@ class App implements ScreenSwitcher {
 		// this.menuController.getView().show();
 		// this.gamePauseOverlay.setEnabled(false);
 
-		this.switchToScreen({type: "menu"});
+		this.switchToScreen({type: "menu"}); // CHANGE BACK TO LEVEL 1 BEFORE COMMIT AND PUSH
 	}
 
 	switchToScreen(screen: Screen): void {
@@ -123,7 +123,7 @@ class App implements ScreenSwitcher {
         this.level3Controller.hide();
         this.level4Controller.hide();
 		this.miniGameController.hide();
-		// this.resultsController.hide();
+		this.resultsController.hide();
 		this.exitController.hide();
 		this.loadController.hide();
 		// Show the requested screen based on the screen type
@@ -149,24 +149,23 @@ class App implements ScreenSwitcher {
 				break;
             case "level2":
                 this.level2Controller.show();
-		        this.gamePauseOverlay.setEnabled(true);
-		        this.playerDataManager.setLevel({type: "level2"});
+		            this.gamePauseOverlay.setEnabled(true);
+		            this.playerDataManager.setLevel({type: "level2"});
                 break;
             case "level3":
                 this.level3Controller.show();
-		        this.gamePauseOverlay.setEnabled(true);
-		        this.playerDataManager.setLevel({type: "level3"});
+		            this.gamePauseOverlay.setEnabled(true);
+		          this.playerDataManager.setLevel({type: "level3"});
                 break;
             case "level4":
                 this.level4Controller.show();
-		        this.gamePauseOverlay.setEnabled(true);
-		        this.playerDataManager.setLevel({type: "level4"});
+		            this.gamePauseOverlay.setEnabled(true);
                 break;
 			case "minigame":
 				this.miniGameController.show();
 				break;
 			case "result":
-				// this.resultsController.show();
+				this.resultsController.show();
 				break;
 			case "exit":
 				this.exitController.show();
