@@ -65,7 +65,7 @@ export class Level4Controller extends ScreenController {
                     this.model.markPlaced(item.label);
 
                     if(this.model.allPlaced()){
-                        this.screenSwitcher.switchToScreen("result");
+                        this.screenSwitcher.switchToScreen({type: "result"});
                     }
 
                 } else {
