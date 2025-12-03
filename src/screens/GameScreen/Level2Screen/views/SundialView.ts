@@ -51,13 +51,6 @@ export class SundialView implements SubView {
         this.group.add(this.input.getElement());
         this.group.add(this.infoTray.getElement());
 
-
-        /* Update sundial based on input */
-//        this.input.getElement().on("click", () => {
-//            this.dial.setShadowHeight(this.input.getValue());
-//            
-//        });
-
         this.hide();
     }
 

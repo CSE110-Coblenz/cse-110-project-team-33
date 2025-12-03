@@ -2,7 +2,7 @@ import Konva from "konva";
 
 import { ScreenController } from "../../../types.ts";
 import type { ScreenSwitcher } from "../../../types.ts";
-
+import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
 import { Level2View } from "./Level2View.ts"
 import { Level2Model } from "./Level2Model.ts"
 import { RoomView } from "./views/RoomView.ts"
@@ -25,7 +25,7 @@ export class Level2Controller extends ScreenController {
         this.screenSwitcher = screenSwitcher;
         if(this.screenSwitcher) {/* NOP to shut TSC up */}
 
-		this.model = new Level2Model();
+		this.model = new Level2Model(screenSwitcher.getPlayerDataManager());
         this.levelView = new Level2View();
         this.roomView = new RoomView();
         this.sundial1View = new SundialView("sundial1");
@@ -40,11 +40,56 @@ export class Level2Controller extends ScreenController {
         this.levelView.getGroup().on("click", 
         	(evt) => this.commonElementEventHandler(evt));
 
+        /* HACK: Check clue position for dragging into inventory */
+        const clue = this.roomView.getClue();
+        clue.getElement().on("dragend", () => this.clueDragHandler());    
+        const gem = this.roomView.getGem();
+        gem.getElement().on("dragend", () => this.gemDragHandler());  
+
+        this.roomView.getGem().disable(); 
         this.roomView.show();
     }
 
     getView(): Level2View {
+        /* HACK: Ensure that coin display is updated when ScreenSwitcher
+         * selects level 2 */
+        const coinDisplay = this.roomView.getCoinDisplay();
+     	coinDisplay.updateDisplayCoins(this.model.getCoins());
+
+     	this.roomView.setSundialHeight(1, this.model.getSundialHeight(1));
+     	this.roomView.setSundialHeight(2, this.model.getSundialHeight(2));
+     	this.roomView.setSundialHeight(3, this.model.getSundialHeight(3));
+     	this.sundial1View.updateSundialShadow();
+     	this.sundial2View.updateSundialShadow();
+     	this.sundial3View.updateSundialShadow();
+
         return this.levelView;
+    }
+
+    clueDragHandler(): void {
+        const clue = this.roomView.getClue();
+        const clueXPos = clue.getElement().x();
+        const clueYPos = clue.getElement().y();
+        if( (clueXPos <= 64) && (clueYPos <= 64) ) {
+            /* Place clue in inventory */
+            clue.getElement().visible(false);
+            this.model.addToInventory(clue.getInventoryItem(
+                this.model.getSundialTargetTheta(1),
+                this.model.getSundialTargetTheta(2),
+                this.model.getSundialTargetTheta(3)
+            ));
+        }
+    }
+
+    gemDragHandler(): void {
+        const gem = this.roomView.getGem();
+        const xPos = gem.getElement().x();
+        const yPos = gem.getElement().y();
+        if( (xPos <= 64) && (yPos <= 64) ) {
+            /* Place clue in inventory */
+            gem.getElement().visible(false);
+            this.model.addToInventory(gem.getInventoryItem());
+        }
     }
 
     /* This is the *one* event handler that is passed to all elements, it can
@@ -55,17 +100,14 @@ export class Level2Controller extends ScreenController {
     commonElementEventHandler(evt: any): void {
         const target = evt.target;
 
-
+        /* Fixes issue with Group/Shape ID incompatibility */
         let id = target.id();
         if(id == "") {
         	id = target.findAncestor("Group", true).id();
         }
-
 		/* For sundial input handling */
 		let measureTray = null;
 		let inputVal = -1;
-        
-        //alert("[DEBUG] commonElementEventHandler :: " + id);
         /* Conditional based on object ID */
         switch(id) {
             case "sundial1":
@@ -110,32 +152,32 @@ export class Level2Controller extends ScreenController {
 			case "exitDoor":
 				if(this.model.isSolved()) {
 					if(this.roomView.getDoorState()) {
-						// Switch to post level screen
 						this.screenSwitcher.switchToScreen({type: "level3"});
 					} 
 				} else {
 					this.levelView.triggerAlert("This door is locked!");
 				}
 				break;
-			case "RoomViewClue":
-				this.levelView.triggerAlert("A Clue: " + 
-					this.model.getSundialTargetTheta(1).toFixed(2) + "°, " +
-					this.model.getSundialTargetTheta(2).toFixed(2) + "°, " +
-					this.model.getSundialTargetTheta(3).toFixed(2) + "°, "
-				);
-				break;
+		    /* Defined in views/RoomView.ts */
+			case "Level2_InventoryTrigger":
+		        this.screenSwitcher.switchToScreen({type: "inventory"});    
+			    break;
+			
         }
-
-        /* Convenient place to check if the level is solved, since it will occur after every
-         * user interaction. Unoptimized but neat. */
-         if(this.model.checkSolution()) {
-         	this.roomView.setDoorState(true);
-         	this.levelView.triggerAlert("The gate has opened!");
-         }
+        /* Convenient place to check if the level is solved, since it will occur 
+         *after every user interaction. Unoptimized but neat. */
+        if(this.model.checkSolution()) {
+            this.roomView.setDoorState(true);
+            this.levelView.triggerAlert("The gate has opened!");
+            this.roomView.getGem().enable(); 
+            this.model.awardCoins();
+        }
+        /* Similar to above, update coin display at any click */
+        const coinDisplay = this.roomView.getCoinDisplay();
+     	coinDisplay.updateDisplayCoins(this.model.getCoins());
+     	/* Update tiny sundials */
+     	this.roomView.setSundialHeight(1, this.model.getSundialHeight(1));
+     	this.roomView.setSundialHeight(2, this.model.getSundialHeight(2));
+     	this.roomView.setSundialHeight(3, this.model.getSundialHeight(3));
     }
 }
-        /* Update sundial based on input */
-//        this.input.getElement().on("click", () => {
-//            this.dial.setShadowHeight(this.input.getValue());
-//            
-//        });

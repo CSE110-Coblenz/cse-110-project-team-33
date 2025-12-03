@@ -107,14 +107,14 @@ export class IntroScreenView implements View {
             });
         });
 
-        this.page1 = new TextPage("/res/img/intro/text1.png");
-        this.page2 = new TextPage("/res/img/intro/text2.png");
-        this.page3 = new TextPage("/res/img/intro/text3.png");
-        this.page4 = new TextPage("/res/img/intro/text4.png");
+        this.page1 = new TextPage("/res/intro/text1.png");
+        this.page2 = new TextPage("/res/intro/text2.png");
+        this.page3 = new TextPage("/res/intro/text3.png");
+        this.page4 = new TextPage("/res/intro/text4.png");
 
         this.button = new Button(
-            "/res/img/intro/start.png", 
-            "/res/img/intro/next.png"
+            "/res/intro/start.png", 
+            "/res/intro/next.png"
         );
 
         /* Ordering matters */

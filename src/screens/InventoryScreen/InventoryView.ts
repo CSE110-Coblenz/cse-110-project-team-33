@@ -30,11 +30,15 @@ export class InventoryView {
         });
         this.group.add(bg);
 
+        /* WORKAROUND: Reorder how this.backpack gets initialized to
+         * resolve possible race condition between assignment (here) and
+         * access (getBackpack() method). */
+        this.backpack = new Konva.Image({image: undefined});
         Konva.Image.fromURL("/res/backpack.png", (image) => {
-            image.width(50).height(50);
-            image.x(5).y(5);
-            this.group.add(image);
-            this.backpack = image;
+            this.backpack.width(50).height(50);
+            this.backpack.x(5).y(5);
+            this.backpack.image(image.image());
+            this.group.add(this.backpack);
             this.group.getLayer()?.draw();
         });
         

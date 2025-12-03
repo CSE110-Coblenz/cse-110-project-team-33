@@ -18,14 +18,11 @@ export class MiniGameView {
         this.layer.add(this.group);
 
         // background
-        const bg = new Konva.Rect({
-            x: 0,
-            y: 0,
-            width: STAGE_WIDTH,
-            height: STAGE_HEIGHT,
-            fill: "#87DEEB",
+        Konva.Image.fromURL("/res/minigamebackground.png", (image) => {
+            this.group.add(image);
+            image.moveToBottom();
+            this.layer.draw();
         });
-        this.group.add(bg);
     }
 
     getLayer(): Konva.Layer {
@@ -58,18 +55,18 @@ export class MiniGameView {
             y: this.centerY,
             radius: this.radius,
             stroke: "black",
-            fill: "#ede8d0",
+            fill: "#a9a9a9",
             strokeWidth: 2,
         });
 
         const xAxis = new Konva.Line({
             points: [this.centerX - this.radius - 20, this.centerY, this.centerX + this.radius + 20, this.centerY],
-            stroke: "#aaa",
+            stroke: "black",
         });
 
         const yAxis = new Konva.Line({
             points: [this.centerX, this.centerY - this.radius - 20, this.centerX, this.centerY + this.radius + 20],
-            stroke: "#aaa",
+            stroke: "black",
         });
 
         this.group.add(circle, xAxis, yAxis);
