@@ -57,6 +57,10 @@ export class Level4Model {
         if (item) item.placed = true;
     }
 
+    allPlaced(): boolean {
+        return this.items.every(item => item.placed);
+    }
+
     checkWin(): boolean {
         return this.items.every(i => i.placed);
     }

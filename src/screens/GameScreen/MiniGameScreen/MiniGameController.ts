@@ -75,6 +75,11 @@ export class MiniGameController extends ScreenController {
 
                     this.view.updateLabelColor(labelNode, true);
                     this.model.markPlaced(item.label);
+
+                    if(this.model.allPlaced()){
+
+                    }
+                    
                 } else {
                     this.view.updateLabelColor(labelNode, false);
                 }
