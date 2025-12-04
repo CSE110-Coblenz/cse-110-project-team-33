@@ -44,8 +44,8 @@ export class PauseOverlay {
              this.pauseButtonSprite.crop({
                 x:0,
                 y:0,
-                width:16,
-                height:16
+                width:32,
+                height:32
              });
         });
 
@@ -129,7 +129,7 @@ export class PauseOverlay {
             this.exitBtn.visible(false);
             this.state = false;
         } else {
-            this.pauseButtonSprite.cropX(16);
+            this.pauseButtonSprite.cropX(32);
             this.pausedOverlay.visible(true);
             this.resumeBtn.visible(true);
             this.exitBtn.visible(true);
