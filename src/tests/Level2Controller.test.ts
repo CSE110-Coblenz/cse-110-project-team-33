@@ -1,6 +1,23 @@
 // Level2Controller.test.ts
 import { Level2Controller } from "../screens/GameScreen/Level2Screen/Level2Controller.ts";
 
+// Mock PlayerDataManager and its methods
+const mockSetCoins = jest.fn();
+const mockAddToInventory = jest.fn();
+const mockGetCoins = jest.fn(() => 500);
+const mockGetLevel = jest.fn(() => 1);
+
+const MockPlayerDataManager = {
+    getCoins: mockGetCoins,
+    setCoins: mockSetCoins,
+    getLevel: mockGetLevel,
+    setLevel: jest.fn(),
+    clearInventory: jest.fn(),
+    setInventory: jest.fn(),
+    getInventory: jest.fn(() => []),
+    addToInventory: mockAddToInventory,
+} as any;
+
 // Mock ScreenSwitcher with minimal API used by controllers
 const mockSwitchToScreen = jest.fn();
 const mockGetPlayerDataManager = jest.fn();
@@ -115,7 +132,7 @@ describe("Level2Controller integration", () => {
 		// Provide a fake playerData manager when requested
 		mockGetPlayerDataManager.mockReturnValue({ getCoins: jest.fn(() => 0) });
 
-		controller = new Level2Controller(MockScreenSwitcher as any);
+		controller = new Level2Controller(MockScreenSwitcher as any, MockPlayerDataManager);
 		model = (controller as any).model;
 	});
 
