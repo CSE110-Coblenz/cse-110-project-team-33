@@ -16,6 +16,7 @@ import { STAGE_WIDTH, STAGE_HEIGHT } from "../constants.ts";
 import { LocalStorageUtils } from "../utilities/LocalStorageUtils.ts";
 
 import { PauseOverlay } from "../screens/PauseOverlay.ts";
+import { ScreenTransitionOverlay } from "../screens/ScreenTransitionOverlay.ts";
 /**
  * Main Application - Coordinates all screens
  *
@@ -46,6 +47,7 @@ class App implements ScreenSwitcher {
 	private loadController: LoadController;
 
     private gamePauseOverlay: PauseOverlay;
+    private transitionOverlay: ScreenTransitionOverlay;
 
 	constructor(container: string) {
 		// Initialize Konva stage (the main canvas)
@@ -61,7 +63,7 @@ class App implements ScreenSwitcher {
 		this.layer = new Konva.Layer();
 		this.stage.add(this.layer);
 		this.gamePauseOverlay = new PauseOverlay(this);
-
+        this.transitionOverlay = new ScreenTransitionOverlay();
 
 		/* WORKAROUND: It seems that most browsers have some form of image
 		 * interpolation enabled, which blurs pixelated images as they are
@@ -102,17 +104,13 @@ class App implements ScreenSwitcher {
 
         // Add the UI overlay last
         this.layer.add(this.gamePauseOverlay.getGroup());
+        this.layer.add(this.transitionOverlay.getGroup());
         this.gamePauseOverlay.registerKeyEventListener(this.stage.container());
 		// Draw the layer (render everything to the canvas)
 		this.layer.draw();
 		// this.menuController.getView().show();
 		// this.gamePauseOverlay.setEnabled(false);
 
-		this.switchToScreen({type: "menu"}); // CHANGE BACK TO LEVEL 1 BEFORE COMMIT AND PUSH
-	}
-
-	switchToScreen(screen: Screen): void {
-		// Hide all screens first by setting their Groups to invisible
 		this.menuController.hide();
 		this.introController.hide();
 		this.gamePauseOverlay.setEnabled(false);
@@ -126,59 +124,84 @@ class App implements ScreenSwitcher {
 		this.resultsController.hide();
 		this.exitController.hide();
 		this.loadController.hide();
-		// Show the requested screen based on the screen type
-		switch (screen.type) {
-			case "menu":
-				this.menuController.show();
-		        this.gamePauseOverlay.setEnabled(false);
-				break;
-            case "settings":
-				// this.settingsController.show();
-				break;
-			case "intro":
-                this.playerDataManager.setLevel({type: "level1"});
-                this.playerDataManager.clearInventory();
-                this.playerDataManager.setCoins(0);
-			    this.introController.show();
-   		        this.gamePauseOverlay.setEnabled(false);
-			    break;
-			case "inventory":
-				this.inventoryController.show();
-		        this.gamePauseOverlay.setEnabled(false);
-				break;
-			case "level1":
-				this.level1Controller.show();
-		        this.gamePauseOverlay.setEnabled(true);
-				break;
-            case "level2":
-                this.level2Controller.show();
-		            this.gamePauseOverlay.setEnabled(true);
-		            this.playerDataManager.setLevel({type: "level2"});
-                break;
-            case "level3":
-                this.level3Controller.show();
-		            this.gamePauseOverlay.setEnabled(true);
-		          this.playerDataManager.setLevel({type: "level3"});
-                break;
-            case "level4":
-                this.level4Controller.show();
-		            this.gamePauseOverlay.setEnabled(true);
-                break;
-			case "minigame":
-				this.miniGameController.show();
-				break;
-			case "result":
-				this.resultsController.show();
-				break;
-			case "exit":
-				this.exitController.show();
-				break;
-			case "load":
-				this.loadController.show();
-				break;
-		}
-		this.gamePauseOverlay.renderOnTop();
+		this.switchToScreen({type: "menu"}); // CHANGE BACK TO LEVEL 1 BEFORE COMMIT AND PUSH
+	}
+
+	switchToScreen(screen: Screen): void {
+	    /* HACK: Gate the actual screen switching behind a timer's execution,
+	    * use the timer to fade the screen to black, do the screen switching
+	    * (via callback), then fade back in... wow fancy graphics */
+		this.transitionOverlay.fadeOut(() => {
+    		// Hide all screens first by setting their Groups to invisible
+    		this.menuController.hide();
+    		this.introController.hide();
+    		this.gamePauseOverlay.setEnabled(false);
+            // this.settingsController.hide();
+    		this.inventoryController.hide();
+    		this.level1Controller.hide();
+            this.level2Controller.hide();
+            this.level3Controller.hide();
+            this.level4Controller.hide();
+    		this.miniGameController.hide();
+    		this.resultsController.hide();
+    		this.exitController.hide();
+    		this.loadController.hide();
+    		// Show the requested screen based on the screen type
+    		switch (screen.type) {
+    			case "menu":
+    				this.menuController.show();
+    		        this.gamePauseOverlay.setEnabled(false);
+    				break;
+                case "settings":
+    				// this.settingsController.show();
+    				break;
+    			case "intro":
+                    this.playerDataManager.setLevel({type: "level1"});
+                    this.playerDataManager.clearInventory();
+                    this.playerDataManager.setCoins(0);
+    			    this.introController.show();
+       		        this.gamePauseOverlay.setEnabled(false);
+    			    break;
+    			case "inventory":
+    				this.inventoryController.show();
+    		        this.gamePauseOverlay.setEnabled(false);
+    				break;
+    			case "level1":
+    				this.level1Controller.show();
+    		        this.gamePauseOverlay.setEnabled(true);
+    				break;
+                case "level2":
+                    this.level2Controller.show();
+    		            this.gamePauseOverlay.setEnabled(true);
+    		            this.playerDataManager.setLevel({type: "level2"});
+                    break;
+                case "level3":
+                    this.level3Controller.show();
+    		            this.gamePauseOverlay.setEnabled(true);
+    		          this.playerDataManager.setLevel({type: "level3"});
+                    break;
+                case "level4":
+                    this.level4Controller.show();
+    		            this.gamePauseOverlay.setEnabled(true);
+                    break;
+    			case "minigame":
+    				this.miniGameController.show();
+    				break;
+    			case "result":
+    				this.resultsController.show();
+    				break;
+    			case "exit":
+    				this.exitController.show();
+    				break;
+    			case "load":
+    				this.loadController.show();
+    				break;
+    		}
+    		this.gamePauseOverlay.renderOnTop();
+    		this.transitionOverlay.fadeIn();
+		});
 		this.layer.draw();
+
 	}
 
 	getStage(): Konva.Stage {
