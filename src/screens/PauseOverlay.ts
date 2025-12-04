@@ -20,11 +20,10 @@ export class PauseOverlay {
     private screenSwitcher: ScreenSwitcher;
     private resumeBtn: Konva.Image;
     private exitBtn: Konva.Image;
-    private resumeText: Konva.Text;
-    private exitText: Konva.Text;
 
     static get getPauseURL() { return "/res/pause_icon.png"; }
-    static get getBtnURL() { return "/res/button.png"; }
+    static get getResumeBtnURL() { return "/res/ResumeButton.png"; }
+    static get getExitBtnURL() { return "/res/MenuReturn.png"; }
     static get cornerPadding() { return 16; }
     static get defaultSize() { return 32; }
     
@@ -83,63 +82,33 @@ export class PauseOverlay {
 */
 
 		this.resumeBtn = new Konva.Image({image: undefined});
-        Konva.Image.fromURL(PauseOverlay.getBtnURL, (img) => {
+        Konva.Image.fromURL(PauseOverlay.getResumeBtnURL, (img) => {
         	this.resumeBtn.image(img.image());
         	this.resumeBtn.x(STAGE_WIDTH/2);
-        	this.resumeBtn.y(STAGE_HEIGHT/2 - 128);
-        	this.resumeBtn.width(176);
-        	this.resumeBtn.height(60);
-        	this.resumeBtn.offsetX(64);
+        	this.resumeBtn.y(STAGE_HEIGHT/2 - 140);
+        	this.resumeBtn.width(352);
+        	this.resumeBtn.height(120);
+        	this.resumeBtn.offsetX(352/2);
         	this.resumeBtn.visible(false);
         });
 
-        this.resumeText = new Konva.Text({
-            text: "Resume",
-            align: "center",
-            fontSize: 24,
-            fontFamily: "Press Start 2P",
-            fill: "black",
-            x: STAGE_WIDTH/2,
-            y: STAGE_HEIGHT/2 - 128,
-            height: 60,
-            width: 176,
-            offsetX:64,
-            offsetY:-15,
-            visible: false,
-        });
-
-        this.exitText = new Konva.Text({
-            text: "Exit",
-            align: "center",
-            fontSize: 24,
-            fontFamily: "Press Start 2P",
-            fill: "black",
-            x: STAGE_WIDTH/2,
-            y: STAGE_HEIGHT/2,
-            height: 60,
-            width: 176,
-            offsetX:64,
-            offsetY:-15,
-            visible: false,
-        });
-
 		this.exitBtn = new Konva.Image({image: undefined});
-        Konva.Image.fromURL(PauseOverlay.getBtnURL, (img) => {
+        Konva.Image.fromURL(PauseOverlay.getExitBtnURL, (img) => {
         	this.exitBtn.image(img.image());
         	this.exitBtn.x(STAGE_WIDTH/2);
-        	this.exitBtn.y(STAGE_HEIGHT/2);
-        	this.exitBtn.width(176);
-        	this.exitBtn.height(60);
-        	this.exitBtn.offsetX(64);
+        	this.exitBtn.y(STAGE_HEIGHT/2 + 20);
+        	this.exitBtn.width(352);
+        	this.exitBtn.height(120);
+        	this.exitBtn.offsetX(352/2);
         	this.exitBtn.visible(false);
         	this.fill
         });
 
-        this.resumeText.on("click", () => {
+        this.resumeBtn.on("click", () => {
             this.togglePauseButton();
         });
 
-        this.exitText.on("click", () => {
+        this.exitBtn.on("click", () => {
             this.togglePauseButton();
             this.screenSwitcher.switchToScreen({type: "menu"});
         });
@@ -149,8 +118,6 @@ export class PauseOverlay {
         this.group.add(this.pauseButtonSprite);
         this.group.add(this.resumeBtn);
         this.group.add(this.exitBtn);
-        this.group.add(this.resumeText);
-        this.group.add(this.exitText);
         this.group.visible(true);
     }
 
@@ -159,16 +126,12 @@ export class PauseOverlay {
             this.pauseButtonSprite.cropX(0);
             this.pausedOverlay.visible(false);
             this.resumeBtn.visible(false);
-            this.resumeText.visible(false);
-            this.exitText.visible(false);
             this.exitBtn.visible(false);
             this.state = false;
         } else {
             this.pauseButtonSprite.cropX(16);
             this.pausedOverlay.visible(true);
             this.resumeBtn.visible(true);
-            this.resumeText.visible(true);
-            this.exitText.visible(true);
             this.exitBtn.visible(true);
             this.state = true;
         }
