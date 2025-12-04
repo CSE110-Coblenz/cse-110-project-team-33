@@ -162,6 +162,9 @@ export class Level2Controller extends ScreenController {
 			case "Level2_InventoryTrigger":
 		        this.screenSwitcher.switchToScreen({type: "inventory"});    
 			    break;
+			 case "Level2_MinigameTrigger":
+			    this.screenSwitcher.switchToScreen({type: "minigame"});
+			    break;
 			
         }
         /* Convenient place to check if the level is solved, since it will occur 
