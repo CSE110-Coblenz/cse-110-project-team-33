@@ -2,6 +2,7 @@ import { ScreenController } from "../../../types.ts";
 import type { ScreenSwitcher } from "../../../types.ts";
 import { Level2View } from "./Level2View.ts"
 import { Level2Model } from "./Level2Model.ts"
+import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
 import { RoomView } from "./views/RoomView.ts"
 import { SundialView } from "./views/SundialView.ts"
 
