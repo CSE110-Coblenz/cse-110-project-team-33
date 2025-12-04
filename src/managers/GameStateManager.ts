@@ -229,7 +229,7 @@ export class PlayerDataManager {
 
 	public getCoins(): number | null {
 		if (this.playerData != null) {
-			return this.playerData?.coins;
+			return this.playerData.coins;
 		} else {
 			return null;
 		}
