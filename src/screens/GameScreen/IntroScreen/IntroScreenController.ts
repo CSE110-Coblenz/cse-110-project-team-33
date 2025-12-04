@@ -46,6 +46,14 @@ export class IntroScreenController extends ScreenController {
         this.currentTextPage = 1;
         this.view.getButton().on("click", () => this.buttonCallback());
         this.startBackgroundScrollAnimation();
+
+    // Do not overwrite saved player level when constructing the intro
+    // screen — controllers are instantiated at app startup. The app
+    // should set the current level when switching screens via
+    // GameStateManager.switchToScreen(). Only reset inventory here if
+    // we explicitly want to start a new game.
+    // this.playerDataManager.setLevel({type: "level1"});
+    this.playerDataManager.setInventory([]);
     }
 
     startBackgroundScrollAnimation() {

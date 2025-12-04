@@ -10,7 +10,6 @@ import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
 import type {  InventoryItem } from "../../../types.ts";
 
 export class Level2Model {
-
 	private isComplete: boolean;
 	private sundial1TargetHeight: number;	
 	private sundial2TargetHeight: number;	
