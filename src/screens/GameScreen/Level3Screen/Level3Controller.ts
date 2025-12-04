@@ -111,7 +111,7 @@ export class Level3Controller extends ScreenController {
                     // this.win_sound.play();
                     // this.view.triggerAlert("I made it across!");
                     if(this.playerDataManager.getCoins() != null){
-                        this.playerDataManager.setCoins(this.playerDataManager.getCoins() + 100);
+                        this.playerDataManager.setCoins(300);
                     }
                     this.screenSwitcher.switchToScreen({type: "level4"}); // should be level 4 in future
                 }

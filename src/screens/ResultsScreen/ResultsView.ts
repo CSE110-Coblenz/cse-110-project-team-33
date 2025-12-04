@@ -253,7 +253,7 @@ export class ResultsView implements View {
             })
 
             const num_crystals = new Konva.Text({
-                text: crystals_str + "crystals",
+                text: crystals_str + " crystals",
                 fontSize: 24,
                 fontFamily: "Press Start 2P",
                 fill: "black",
