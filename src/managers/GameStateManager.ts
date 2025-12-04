@@ -78,7 +78,7 @@ class App implements ScreenSwitcher {
 		// this.settingsController = new SettingsController(this);
 		this.inventoryController = new InventoryController(this, this.playerDataManager);
         this.level1Controller = new Level1Controller(this, this.playerDataManager);
-        this.level2Controller = new Level2Controller(this);
+        this.level2Controller = new Level2Controller(this, this.playerDataManager);
         this.introController = new IntroScreenController(this, this.playerDataManager);
         this.level3Controller = new Level3Controller(this, this.playerDataManager);
         this.level4Controller = new Level4Controller(this);
@@ -106,6 +106,7 @@ class App implements ScreenSwitcher {
         this.layer.add(this.gamePauseOverlay.getGroup());
         this.layer.add(this.transitionOverlay.getGroup());
         this.gamePauseOverlay.registerKeyEventListener(this.stage.container());
+
 		// Draw the layer (render everything to the canvas)
 		this.layer.draw();
 		// this.menuController.getView().show();

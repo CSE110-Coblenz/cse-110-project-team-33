@@ -3,7 +3,7 @@ import type { Target } from "./Level4Model.ts";
 import { Level4View } from "./Level4View.ts";
 import { ScreenController } from "../../../types.ts";
 import type { ScreenSwitcher } from "../../../types.ts";
-import { STAGE_HEIGHT, STAGE_WIDTH } from "../../../constants.ts";
+// STAGE constants not needed in this controller file
 
 export class Level4Controller extends ScreenController {
     private screenSwitcher: ScreenSwitcher;

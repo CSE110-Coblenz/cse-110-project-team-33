@@ -1,4 +1,4 @@
-import type {PlayerData} from "./types.ts";
+import type {PlayerData} from "../types.ts";
 
 const STORAGE_KEY = 'playerData';
 
