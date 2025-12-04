@@ -44,7 +44,7 @@ export class InventoryController extends ScreenController {
         const backToLevel = this.view.getBackpack();
         
         console.log("Setting up backpack listener");
-        backToLevel.listening(true);
+        // backToLevel.listening(true);
 
         backToLevel.on("mouseover", () => {
             document.body.style.cursor = "pointer";
@@ -77,8 +77,8 @@ export class InventoryController extends ScreenController {
         console.log("Next button:", nextButton);
 
         if (prevButton && nextButton) {
-            prevButton.listening(true);
-            nextButton.listening(true);
+            // prevButton.listening(true);
+            // nextButton.listening(true);
 
             prevButton.on("mouseover", () => {
                 document.body.style.cursor = "pointer";
@@ -122,7 +122,13 @@ export class InventoryController extends ScreenController {
 
     async show(): Promise<void> {
         console.log("Showing inventory screen");
-        this.listenersSetup = false; // Reset to allow re-setup
+        /* NOTE: I disabled the line below, as every time the inventory
+         * was being displayed, it was reregistering (anonymous) handlers
+         * on the UI buttons, causing weird issues were currentIndex got
+         * shifted mid item-rendering, causing some items to overlap. 
+         *   -CL
+         */
+        // this.listenersSetup = false; // Reset to allow re-setup
         await this.refreshInventory();
         this.view.show();
     }

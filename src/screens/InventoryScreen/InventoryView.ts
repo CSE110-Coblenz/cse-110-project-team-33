@@ -56,6 +56,7 @@ export class InventoryView {
     
     async renderInventory(currentIndex: number): Promise<void> {
         this.contentGroup.destroyChildren();
+        this.contentGroup.visible(false);
 
         // If inventory is empty, show a message
         if (this.inventory.length === 0) {
@@ -106,10 +107,12 @@ export class InventoryView {
             // Load the inventory item image and wait for it
             await new Promise<void>((resolve) => {
                 Konva.Image.fromURL("/res/" + inventoryItem.image, (image) => {
-                    image.width(inventoryItem.width).height(inventoryItem.height);
-                    image.x(STAGE_WIDTH / 2 - inventoryItem.width / 2).y(STAGE_HEIGHT / 2 - inventoryItem.height / 2);
+                    image.width(inventoryItem.width);
+                    image.height(inventoryItem.height);
+                    image.x(STAGE_WIDTH / 2 - inventoryItem.width / 2);
+                    image.y(STAGE_HEIGHT / 2 - inventoryItem.height / 2);
                     this.contentGroup.add(image);
-                    this.group.getLayer()?.draw();
+                    // this.group.getLayer()?.draw();
                     resolve();
                 });
             });
@@ -160,7 +163,7 @@ export class InventoryView {
                 this.contentGroup.add(text3);
             }
         }
-        
+        this.contentGroup.visible(true);        
         this.group.getLayer()?.draw();
     }
 

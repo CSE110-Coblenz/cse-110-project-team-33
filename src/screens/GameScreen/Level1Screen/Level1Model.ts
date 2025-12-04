@@ -28,9 +28,7 @@ export class Level1Model {
     constructor(playerDataManager: PlayerDataManager) {
         // Player Data
         this.playerDataManager = playerDataManager;
-        // this.inventory = this.playerDataManager.getInventory();
         this.inventory = [];
-        this.playerDataManager.clearInventory();
 
         if (playerDataManager.getCoins() != null) {
             // playerDataManager.setCoins(0);

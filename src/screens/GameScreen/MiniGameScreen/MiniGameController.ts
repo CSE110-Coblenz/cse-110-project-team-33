@@ -78,7 +78,7 @@ export class MiniGameController extends ScreenController {
                     this.model.markPlaced(item.label);
 
                     if(this.model.allPlaced()){
-                        if(playerDataManager.getLevel() == "level 2"){
+                        if(playerDataManager.getLevel().type == "level2"){
                             this.screenSwitcher.switchToScreen({type: "level2"});
                         } else {
                             this.screenSwitcher.switchToScreen({type: "level3"});

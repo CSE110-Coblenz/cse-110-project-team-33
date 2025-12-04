@@ -15,6 +15,7 @@ import { Background } from "../elements/Background";
 import { Backpack } from "../elements/Backpack";
 import { Coins } from "../elements/Coins";
 import { Gem } from "../elements/Gem";
+import { MinigameTrigger } from "../elements/MinigameTrigger";
 import { Overlay } from "../elements/Overlay";
 import { ReturnArrow } from "../elements/ReturnArrow";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../../constants";
@@ -36,6 +37,8 @@ export class RoomView implements SubView {
 	private backpack: Backpack;
 	private coins: Coins;
 	
+	private chest: MinigameTrigger;
+	
     private isDoorOpen: boolean;
 
     constructor(){
@@ -56,9 +59,15 @@ export class RoomView implements SubView {
 		this.gem = new Gem(STAGE_WIDTH/2, STAGE_HEIGHT/2 - 128, "RoomViewGem");
 		this.backpack = new Backpack("Level2_InventoryTrigger");
 		this.coins = new Coins("RoomViewCoinIcon");
+
+		this.chest = new MinigameTrigger(
+		    STAGE_WIDTH * 0.8, 175, 
+		    "Level2_MinigameTrigger"
+		);
         /* The order matters here for composition reasons(?) */
         this.group.add(this.bg.getElement());
         this.group.add(this.door.getElement());
+        this.group.add(this.chest.getElement());
         this.group.add(this.sundial1.getElement());
         this.group.add(this.sundial2.getElement());
         this.group.add(this.sundial3.getElement());
@@ -108,6 +117,10 @@ export class RoomView implements SubView {
 
     getCoinDisplay() {
         return this.coins;
+    }
+
+    getMinigameTrigger() {
+        return this.chest;
     }
 
     setSundialHeight(dial: number, val: number) {
