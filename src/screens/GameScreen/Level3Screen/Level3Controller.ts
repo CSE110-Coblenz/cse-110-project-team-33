@@ -15,7 +15,6 @@ import { TrigUtil } from "../../../utilities/TrigUtil.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../../constants.ts";
 
 export class Level3Controller extends ScreenController {
-    private group: Konva.Group;
     private screenSwitcher: ScreenSwitcher;
     private model: Level3Model;
     private playerDataManager: PlayerDataManager;
@@ -33,8 +32,7 @@ export class Level3Controller extends ScreenController {
         // initialize all elements
         this.screenSwitcher = screenSwitcher;
         this.playerDataManager = playerDataManager;
-        this.crystalTrig = new TrigUtil(); // needed for the crystal
-        this.group = new Konva.Group({visible: true});
+    this.crystalTrig = new TrigUtil(); // needed for the crystal
 
         this.model = new Level3Model(playerDataManager);
         this.view = new Level3View(playerDataManager);
@@ -177,7 +175,7 @@ export class Level3Controller extends ScreenController {
         });
         
         node.on("dragmove", () => {
-            const pos = node.position();
+            // dragmove intentionally does not use the position value here
         });
         
         // check if when the cursor is let go, if the object is "over" the back to put it into the inventory

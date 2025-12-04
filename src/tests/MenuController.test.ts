@@ -16,6 +16,12 @@ let mockStartButton: any;
 let mockLoadButton: any;
 let mockExitButton: any;
 
+// Mock audio stuff
+Audio: {
+    pause: jest.fn();
+    play: jest.fn();
+}
+
 const createMockImageNode = () => {
     const handlers: Record<string, any> = {};
     

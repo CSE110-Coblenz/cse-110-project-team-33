@@ -1,10 +1,8 @@
-import Konva from "konva";
-
 import { ScreenController } from "../../../types.ts";
 import type { ScreenSwitcher } from "../../../types.ts";
-import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
 import { Level2View } from "./Level2View.ts"
 import { Level2Model } from "./Level2Model.ts"
+import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
 import { RoomView } from "./views/RoomView.ts"
 import { SundialView } from "./views/SundialView.ts"
 
@@ -20,12 +18,14 @@ export class Level2Controller extends ScreenController {
     private sundial2View:   SundialView;
     private sundial3View:   SundialView;
     
-    constructor(screenSwitcher: ScreenSwitcher) {
+    constructor(screenSwitcher: ScreenSwitcher, playerDataManager: PlayerDataManager) {
         super();
         this.screenSwitcher = screenSwitcher;
         if(this.screenSwitcher) {/* NOP to shut TSC up */}
 
-		this.model = new Level2Model(screenSwitcher.getPlayerDataManager());
+    // screenSwitcher may expose playerDataManager at runtime; cast to any to
+    // avoid strict interface mismatches during TS checking in tests.
+    this.model = new Level2Model(playerDataManager);
         this.levelView = new Level2View();
         this.roomView = new RoomView();
         this.sundial1View = new SundialView("sundial1");
@@ -54,7 +54,7 @@ export class Level2Controller extends ScreenController {
         /* HACK: Ensure that coin display is updated when ScreenSwitcher
          * selects level 2 */
         const coinDisplay = this.roomView.getCoinDisplay();
-     	coinDisplay.updateDisplayCoins(this.model.getCoins());
+    	coinDisplay.updateDisplayCoins(this.model.getCoins() as number);
 
      	this.roomView.setSundialHeight(1, this.model.getSundialHeight(1));
      	this.roomView.setSundialHeight(2, this.model.getSundialHeight(2));
@@ -174,7 +174,7 @@ export class Level2Controller extends ScreenController {
         }
         /* Similar to above, update coin display at any click */
         const coinDisplay = this.roomView.getCoinDisplay();
-     	coinDisplay.updateDisplayCoins(this.model.getCoins());
+    	coinDisplay.updateDisplayCoins(this.model.getCoins() as number);
      	/* Update tiny sundials */
      	this.roomView.setSundialHeight(1, this.model.getSundialHeight(1));
      	this.roomView.setSundialHeight(2, this.model.getSundialHeight(2));

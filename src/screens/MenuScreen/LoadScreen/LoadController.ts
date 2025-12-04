@@ -3,51 +3,48 @@ import type { ScreenSwitcher } from "../../../types.ts";
 import { PlayerDataManager } from "../../../managers/GameStateManager.ts";
 import { LoadView } from "./LoadView.ts";
 
-/**
- * LoadController - Handles load screen interactions
- */
 export class LoadController extends ScreenController {
-  private screenSwitcher: ScreenSwitcher;
-  private playerDataManager: PlayerDataManager;
+    private screenSwitcher: ScreenSwitcher;
+    private playerDataManager: PlayerDataManager;
+    private view: LoadView;
 
-  private view: LoadView;
-
-  constructor(screenSwitcher: ScreenSwitcher, playerDataManager: PlayerDataManager) {
-    super();
-    this.screenSwitcher = screenSwitcher;
-    this.playerDataManager = playerDataManager;
-    this.view = new LoadView();
-
-    var levelString = this.playerDataManager.getLevel()?.type;
-    var level = levelString?.charAt(levelString.length - 1);
-    if (level != null) {
-      this.view.setLevel(level);
+    constructor(screenSwitcher: ScreenSwitcher, playerDataManager: PlayerDataManager) {
+        super();
+        this.screenSwitcher = screenSwitcher;
+        this.playerDataManager = playerDataManager;
+        this.view = new LoadView();
+        this.initialize();
     }
 
-    this.initialize();
-  }
-
-  private async initialize(): Promise<void> {
-    await this.view.whenReady(); // Wait for images to load
-    this.setupClickListeners();
-  }
-
-  loadLevel() {
-    var level = this.playerDataManager.getLevel();
-    if (level != null) {
-      this.screenSwitcher.switchToScreen(level);
+    private async initialize(): Promise<void> {
+        await this.view.whenReady(); // Wait for images to load
+        this.setupClickListeners();
     }
-  }
 
-  private setupClickListeners(): void {
+    private updateDisplayedLevel(): void {
+        const levelString = this.playerDataManager.getLevel()?.type;
+        const level = levelString?.charAt(levelString.length - 1);
+        if (level != null) {
+            this.view.setLevel(level);
+        }
+    }
+
+    // Call this when loading the saved level
+    loadLevel() {
+        const level = this.playerDataManager.getLevel();
+        if (level != null) {
+            this.screenSwitcher.switchToScreen(level);
+        }
+    }
+
+    private setupClickListeners(): void {
         const yesButton = this.view.getYesButton();
         const noButton = this.view.getNoButton();
-
-        // Add a pointer cursor to indicate clickability
+        
         this.addClickBehavior(yesButton, "yes");
         this.addClickBehavior(noButton, "no");
     }
-    
+
     private addClickBehavior(node: any, action: string): void {
         node.on("mouseover", () => {
             document.body.style.cursor = "pointer";
@@ -56,21 +53,23 @@ export class LoadController extends ScreenController {
         node.on("mouseout", () => {
             document.body.style.cursor = "default";
         });
-        
-        node.on("click", () => {
-            // Check if the clicked option's value matches the correct answer
-            if (action == "yes") {
-              this.loadLevel();
-            }
 
+        node.on("click", () => {
+            if (action == "yes") {
+                this.loadLevel();
+            }
             if (action == "no") {
-              this.screenSwitcher.switchToScreen({ type: "menu" });
+                this.screenSwitcher.switchToScreen({ type: "menu" });
             }
         });
     }
+    
+    show(): void {
+        this.updateDisplayedLevel(); // Update level before showing
+        this.view.show();
+    }
 
-
-  getView(): LoadView {
-    return this.view;
-  }
+    getView(): LoadView {
+        return this.view;
+    }
 }
