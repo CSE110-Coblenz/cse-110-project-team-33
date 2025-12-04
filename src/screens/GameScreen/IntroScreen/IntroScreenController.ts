@@ -46,9 +46,6 @@ export class IntroScreenController extends ScreenController {
         this.currentTextPage = 1;
         this.view.getButton().on("click", () => this.buttonCallback());
         this.startBackgroundScrollAnimation();
-
-        this.playerDataManager.setLevel({type: "level1"});
-        this.playerDataManager.setInventory([]);
     }
 
     startBackgroundScrollAnimation() {

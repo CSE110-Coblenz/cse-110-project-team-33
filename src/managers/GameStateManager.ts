@@ -136,6 +136,9 @@ class App implements ScreenSwitcher {
 				// this.settingsController.show();
 				break;
 			case "intro":
+                this.playerDataManager.setLevel({type: "level1"});
+                this.playerDataManager.clearInventory();
+                this.playerDataManager.setCoins(0);
 			    this.introController.show();
    		        this.gamePauseOverlay.setEnabled(false);
 			    break;
