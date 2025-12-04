@@ -8,6 +8,7 @@ import { SundialView } from "./views/SundialView.ts"
 
 export class Level2Controller extends ScreenController {
     private screenSwitcher: ScreenSwitcher;
+    private playerDataManager: PlayerDataManager;
     private model:  	Level2Model;
     
     /* Views */
@@ -17,9 +18,10 @@ export class Level2Controller extends ScreenController {
     private sundial2View:   SundialView;
     private sundial3View:   SundialView;
     
-    constructor(screenSwitcher: ScreenSwitcher) {
+    constructor(screenSwitcher: ScreenSwitcher, playerDataManager: PlayerDataManager) {
         super();
         this.screenSwitcher = screenSwitcher;
+        this.playerDataManager = playerDataManager;
         if(this.screenSwitcher) {/* NOP to shut TSC up */}
 
     // screenSwitcher may expose playerDataManager at runtime; cast to any to

@@ -28,7 +28,6 @@ export class Level1Model {
     constructor(playerDataManager: PlayerDataManager) {
         // Player Data
         this.playerDataManager = playerDataManager;
-        this.playerDataManager.setLevel({type : "level1"});
         // this.inventory = this.playerDataManager.getInventory();
         this.inventory = [];
         this.playerDataManager.clearInventory();
