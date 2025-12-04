@@ -6,6 +6,10 @@
 Arc-haeology is a small web-based game designed to challenge young (7-9th grade) students' understanding of basic trigonometry concepts. It was developed by four CSE undergrads at UCSD for the class CSE110.
 It was written in 5-7 weeks, entirely in Typescript + Konva!
 
+## Licensing
+
+This project is covered under the GNU General Public License v3.0 (GPLv3). See the `LICENSE` file for details.
+
 ## Some screenshots... 
 
 <img width="800" height="600" alt="canvas" src="https://github.com/user-attachments/assets/f68de556-b115-4659-a396-427c012ceb4f" />
