@@ -132,7 +132,7 @@ describe("Level2Controller integration", () => {
 		// Provide a fake playerData manager when requested
 		mockGetPlayerDataManager.mockReturnValue({ getCoins: jest.fn(() => 0) });
 
-		controller = new Level2Controller(MockScreenSwitcher as any, MockPlayerDataManager);
+		controller = new Level2Controller(MockScreenSwitcher as any, MockPlayerDataManager as any);
 		model = (controller as any).model;
 	});
 
